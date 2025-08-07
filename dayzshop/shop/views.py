@@ -6,7 +6,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.template.loader import render_to_string
 from cart.models import CartItem
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from cart.utils import get_cart
 
 
@@ -85,4 +85,20 @@ def product_modal(request, product_id):
             product=product
         ).exists()
     }
-    return HttpResponse(render_to_string('shop/includes/product_modal_content.html', context))
+    html = render_to_string('shop/includes/product_modal_content.html', context)
+    return JsonResponse({
+        'success': True,
+        'html': html,
+        'product_name': product.name
+    })
+
+# def product_modal(request, product_id):
+#     product = get_object_or_404(Product, id=product_id)
+#     context = {
+#         'product': product,
+#         'in_cart': CartItem.objects.filter(
+#             cart=get_cart(request),
+#             product=product
+#         ).exists()
+#     }
+#     return HttpResponse(render_to_string('shop/includes/product_modal_content.html', context))
