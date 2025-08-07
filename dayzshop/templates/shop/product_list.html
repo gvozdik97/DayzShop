@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    {% if category %}{{ category.name }}{% else %}Товары{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <!-- Сайдбар с категориями -->
+        <div class="col-md-3">
+            <div class="card mb-4">
+                <div class="card-header bg-dark text-white">
+                    Категории
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item {% if not category %}active{% endif %}">
+                        <a href="{% url 'shop:product_list' %}" class="text-decoration-none">
+                            Все товары
+                        </a>
+                    </li>
+                    {% for cat in categories %}
+                    <li class="list-group-item {% if category.slug == cat.slug %}active{% endif %}">
+                        <a href="{{ cat.get_absolute_url }}" class="text-decoration-none">
+                            {{ cat.name }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <!-- Основной контент -->
+        <div class="col-md-9">
+            <!-- Поиск -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <form method="get" action="{% url 'shop:product_list' %}">
+                        <div class="input-group">
+                            <input type="text" class="form-control" 
+                                   name="search" 
+                                   placeholder="Поиск товаров..."
+                                   value="{{ search_query }}">
+                            <button class="btn btn-warning" type="submit">
+                                <i class="bi bi-search"></i> Найти
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Товары -->
+            <h2>
+                {% if category %}{{ category.name }}{% else %}Все товары{% endif %}
+                <small class="text-muted">({{ page_obj.paginator.count }})</small>
+            </h2>
+            
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                {% for product in page_obj %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                            <img src="{{ product.image.url }}" 
+                                class="card-img-top product-image" 
+                                alt="{{ product.name }}"
+                                style="cursor: pointer;"
+                                data-product-id="{{ product.id }}"
+                                data-bs-toggle="modal" 
+                                data-bs-target="#productModal">
+                            
+                            <div class="card-body">
+                                <h5 class="card-title">{{ product.name }}</h5>
+                                <p class="card-text">{{ product.price }} руб.</p>
+                                <a href="{% url 'cart:add' product.id %}" class="btn btn-warning btn-sm">
+                                    В корзину
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                    <!-- Модальное окно товара -->
+                    <div class="modal fade" id="productModal" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="productModalLabel">Загрузка...</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body" id="productModalBody">
+                                    <div class="text-center py-5">
+                                        <div class="spinner-border" role="status">
+                                            <span class="visually-hidden">Загрузка...</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+
+            <!-- Пагинация -->
+            {% if page_obj.paginator.num_pages > 1 %}
+            <nav class="mt-4">
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page=1{% if search_query %}&search={{ search_query }}{% endif %}">
+                            &laquo; Первая
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}">
+                            Назад
+                        </a>
+                    </li>
+                    {% endif %}
+
+                    <li class="page-item active">
+                        <span class="page-link">
+                            Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+                        </span>
+                    </li>
+
+                    {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}">
+                            Вперед
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if search_query %}&search={{ search_query }}{% endif %}">
+                            Последняя &raquo;
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

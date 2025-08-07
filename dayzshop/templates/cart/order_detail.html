@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Заказ #{{ order.id }}{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Заказ #{{ order.id }}</h1>
+    
+    <div class="card mt-4">
+        <div class="card-header">
+            <h5>Информация о заказе</h5>
+        </div>
+        <div class="card-body">
+            <p><strong>Статус:</strong> {% if order.is_paid %}Оплачен{% else %}Ожидает оплаты{% endif %}</p>
+            <p><strong>Дата:</strong> {{ order.created_at }}</p>
+            <p><strong>Steam ID:</strong> {{ order.steam_id }}</p>
+            <p><strong>Сумма:</strong> {{ order.total_price }} руб.</p>
+        </div>
+    </div>
+    {% include 'cart/includes/_order_items.html' %}
+</div>
+{% endblock %}

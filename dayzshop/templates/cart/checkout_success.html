@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Заказ оформлен{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="alert alert-success">
+        <h4 class="alert-heading">Заказ #{{ order.id }} успешно оформлен!</h4>
+        <p>Товары будут выданы в течение 15 минут.</p>
+        <hr>
+        <p class="mb-0">SteamID: <strong>{{ order.steam_id }}</strong></p>
+    </div>
+    <a href="{% url 'shop:product_list' %}" class="btn btn-primary">
+        Вернуться в магазин
+    </a>
+</div>
+{% endblock %}

@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load cart_tags %}
+
+{% block title %}{{ product.name }} - {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <!-- Изображение товара -->
+        <div class="col-md-6">
+            <div class="card mb-4">
+                {% if product.image %}
+                <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}" style="max-height: 500px; object-fit: contain;">
+                {% else %}
+                <img src="{% static 'img/no-image.jpg' %}" class="card-img-top" alt="No image">
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Информация о товаре -->
+        <div class="col-md-6">
+            <h1 class="mb-3">{{ product.name }}</h1>
+            
+            <div class="d-flex align-items-center mb-3">
+                <span class="h4 text-primary me-3">{{ product.price }} руб.</span>
+                {% if product.available %}
+                <span class="badge bg-success">В наличии</span>
+                {% else %}
+                <span class="badge bg-secondary">Нет в наличии</span>
+                {% endif %}
+            </div>
+
+            <div class="mb-4">
+                <h5>Описание:</h5>
+                <p>{{ product.description|linebreaks }}</p>
+            </div>
+
+            <!-- Форма добавления в корзину -->
+            {% if product.available %}
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <form id="add-to-cart-form" method="post" action="{% url 'cart:add' product.id %}">
+                        {% csrf_token %}
+                        <div class="row g-3 align-items-center">
+                            <div class="col-auto">
+                                <label for="quantity" class="col-form-label">Количество:</label>
+                            </div>
+                            <div class="col-auto">
+                                <div class="input-group" style="width: 140px;">
+                                    <button type="button" class="btn btn-outline-secondary minus-btn">-</button>
+                                    <input type="number" name="quantity" id="quantity" 
+                                           class="form-control text-center" value="1" min="1">
+                                    <button type="button" class="btn btn-outline-secondary plus-btn">+</button>
+                                </div>
+                            </div>
+                            {% comment %} <div class="col-auto">
+                                <button type="submit" class="btn btn-warning">
+                                    <i class="bi bi-cart-plus"></i> В корзину
+                                </button>
+                            </div> {% endcomment %}
+                            <button class="btn btn-warning add-to-cart-btn {% if request|is_in_cart:product %}disabled{% endif %}" 
+                                    data-product-id="{{ product.id }}">
+                                {% if request|is_in_cart:product %}
+                                    <i class="bi bi-check"></i> В корзине
+                                {% else %}
+                                    <i class="bi bi-cart-plus"></i> В корзину
+                                {% endif %}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Дополнительная информация -->
+            <div class="mt-4">
+                <h5>Характеристики:</h5>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <strong>Категория:</strong> 
+                        <a href="{{ product.category.get_absolute_url }}">{{ product.category.name }}</a>
+                    </li>
+                    <li class="list-group-item"><strong>Вес:</strong> 0.5 кг</li>
+                    <li class="list-group-item"><strong>Размеры:</strong> 10 × 5 × 3 см</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Похожие товары -->
+    <div class="mt-5">
+        <h3 class="mb-4">Похожие товары</h3>
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            {% for similar in similar_products %}
+            <div class="col">
+                <div class="card h-100">
+                    <a href="{{ similar.get_absolute_url }}">
+                        <img src="{{ similar.image.url|default:'/static/img/no-image.jpg' }}" 
+                            class="card-img-top" alt="{{ similar.name }}">
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <a href="{{ similar.get_absolute_url }}" class="text-decoration-none">
+                                {{ similar.name }}
+                            </a>
+                        </h5>
+                        <p class="card-text text-muted">{{ similar.price }} руб.</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

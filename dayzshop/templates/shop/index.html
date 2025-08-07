@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Главная - DayZ Donate{% endblock %}
+
+{% block content %}
+<!-- Hero-секция -->
+<div class="hero-section bg-dark text-white py-5 mb-4">
+    <div class="container text-center">
+        <h1 class="display-4">DAYZ DONATE SHOP</h1>
+        <p class="lead">Официальный магазин сервера <strong>DayZ Survivors</strong></p>
+    </div>
+</div>
+
+<!-- Блок описания сервера -->
+<div class="container mb-5">
+    {% include 'shop/includes/_server_info.html' %}
+</div>
+
+<!-- Популярные товары -->
+<div class="container mb-5">
+    <h2 class="text-center mb-4">Популярные товары</h2>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+        {% for product in featured_products %}
+            {% include 'shop/includes/_product_cart.html' %}
+            {% empty %}
+            <div class="col-12">
+                <div class="alert alert-info">Товары временно отсутствуют</div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

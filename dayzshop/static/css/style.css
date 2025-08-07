@@ -1,0 +1,167 @@
+html, body {
+    height: 100%;
+}
+
+body {
+    font-family: 'Russo One', sans-serif;
+    background-color: #278c60;
+    color: #e0e0e0;
+}
+
+.hero-section {
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                url('../img/dayz-bg.jpg') no-repeat center center;
+    background-size: cover;
+    border-bottom: 3px solid #ffc107;
+}
+
+.server-features li {
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.server-features i {
+    font-size: 1.2rem;
+}
+
+/* Адаптивные изображения */
+.img-server {
+    max-height: 300px;
+    object-fit: cover;
+}
+
+/* Категории */
+.list-group-item.active {
+    background-color: #ffc107;
+    border-color: #ffc107;
+    color: #000;
+}
+
+.list-group-item a {
+    color: inherit;
+}
+
+/* Карточки товаров */
+.card {
+    background-color: #09ed2c;
+    border: 1px solid #333;
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.card-img-top {
+    height: 180px;
+    object-fit: cover;
+}
+
+/* static/css/style.css */
+.add-to-cart-btn {
+    transition: all 0.3s ease;
+    min-width: 40px;
+}
+
+.cart-counter {
+    transition: all 0.3s;
+    font-size: 0.7rem;
+    position: relative;
+    top: -8px;
+    right: -8px;
+}
+
+.quantity-input {
+    max-width: 50px;
+    text-align: center;
+}
+
+/* Анимация кнопки */
+@keyframes bounce {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.btn.disabled {
+    pointer-events: none;
+    opacity: 0.9;
+}
+
+.btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.btn-success .bi-check {
+    animation: bounce 0.5s;
+}
+
+.btn-warning {
+    background-color: #ff8c00;
+    border-color: #ff8c00;
+    color: #121212;
+}
+
+.btn-warning:hover {
+    background-color: #e07d00;
+    border-color: #e07d00;
+}
+
+.navbar-brand {
+    font-family: 'Russo One', sans-serif;
+    font-size: 1.5rem;
+    color: #ff8c00 !important;
+}
+
+.nav-link {
+    font-size: 1.1rem;
+}
+
+.footer {
+    position: sticky;
+    flex-shrink: 0;
+    top: 100vh;
+    width: 100%;
+    border-top: 3px solid #ff8c00;
+}
+
+/* Пагинация */
+.page-item.active .page-link {
+    background-color: #ffc107;
+    border-color: #ffc107;
+    color: #000;
+}
+
+.page-link {
+    color: #ffc107;
+}
+
+/* Детальная страница товара */
+.img-fluid {
+    max-height: 500px;
+    object-fit: contain;
+}
+
+.item-total {
+    transition: color 0.3s;
+}
+.item-updated {
+    color: #28a745;
+    font-weight: bold;
+}
+
+/* Стили для модального окна товара */
+#productModal .modal-dialog {
+    max-width: 800px;
+}
+
+#productModal .product-image {
+    max-height: 300px;
+    object-fit: contain;
+}
+
+#productModal .quantity-input {
+    width: 50px;
+    text-align: center;
+}

@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block title %}Корзина{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">Ваша корзина</h1>
+    
+    {% if cart.items.all %}
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Товар</th>
+                    <th>Количество</th>
+                    <th>Цена</th>
+                    <th>Сумма</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart.items.all %}
+                <tr>
+                    <td>{{ item.product.name }}</td>
+                    <td>
+                        <div class="input-group" style="max-width: 120px;">
+                            <button class="btn btn-outline-secondary minus-btn" 
+                                    data-item-id="{{ item.id }}">-</button>
+                            <input type="number" class="form-control quantity-input"
+                                value="{{ item.quantity }}" min="1"
+                                data-item-id="{{ item.id }}">
+                            <button class="btn btn-outline-secondary plus-btn"
+                                    data-item-id="{{ item.id }}">+</button>
+                        </div>
+                    </td>
+                    <td>{{ item.price }} руб.</td>
+                    <td>{{ item.total_price }} руб.</td>
+                    <td>
+                        <a href="{% url 'cart:remove' item.id %}" class="btn btn-danger btn-sm">
+                            Удалить
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="3">Итого:</th>
+                    <th>{{ item.total_price }} руб.</th>
+                    <th></th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    
+    <div class="d-flex justify-content-between">
+        <a href="{% url 'shop:product_list' %}" class="btn btn-secondary">
+            Продолжить покупки
+        </a>
+        <a href="{% url 'cart:checkout' %}" class="btn btn-warning">
+            Оформить заказ
+        </a>
+        <form method="post" action="{% url 'cart:clear' %}" class="d-inline" 
+            onsubmit="return confirm('Точно очистить корзину? Все товары будут удалены.')">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger me-2">
+                <i class="bi bi-trash-fill"></i> Очистить всё
+            </button>
+        </form>
+    </div>
+    {% else %}
+    <div class="alert alert-info">
+        Ваша корзина пуста. <a href="{% url 'shop:product_list' %}">Начать покупки</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
