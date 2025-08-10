@@ -45,7 +45,7 @@ def product_list(request, category_slug=None):
     })
 
 def product_detail(request, id, slug):
-    product = get_object_or_404(Product, id=id, slug=slug, available=True)
+    product = get_object_or_404(Product, id=id, slug=slug)
     similar_products = Product.objects.filter(
         category=product.category,
         available=True
@@ -77,28 +77,23 @@ def faq(request):
     return render(request, 'shop/faq.html')
 
 def product_modal(request, product_id):
-    product = get_object_or_404(Product, id=product_id)
-    context = {
-        'product': product,
-        'in_cart': CartItem.objects.filter(
-            cart=get_cart(request),
-            product=product
-        ).exists()
-    }
-    html = render_to_string('shop/includes/product_modal_content.html', context)
-    return JsonResponse({
-        'success': True,
-        'html': html,
-        'product_name': product.name
-    })
-
-# def product_modal(request, product_id):
-#     product = get_object_or_404(Product, id=product_id)
-#     context = {
-#         'product': product,
-#         'in_cart': CartItem.objects.filter(
-#             cart=get_cart(request),
-#             product=product
-#         ).exists()
-#     }
-#     return HttpResponse(render_to_string('shop/includes/product_modal_content.html', context))
+    try:
+        product = Product.objects.get(id=product_id)
+        context = {
+            'product': product,
+            'in_cart': CartItem.objects.filter(
+                cart=get_cart(request),
+                product=product
+            ).exists()
+        }
+        html = render_to_string('shop/includes/product_modal_content.html', context)
+        return JsonResponse({
+            'success': True,
+            'html': html,
+            'product_name': product.name
+        })
+    except Product.DoesNotExist:
+        return JsonResponse({
+            'success': False,
+            'error': f'Товар с ID {product_id} не найден'
+        }, status=404)

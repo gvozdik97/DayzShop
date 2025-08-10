@@ -67,6 +67,12 @@
                                     <i class="bi bi-cart-plus"></i> В корзину
                                 {% endif %}
                             </button>
+                            <button class="btn btn-outline-secondary" 
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#productModal" 
+                                    data-product-id="{{ product.id }}">
+                                Быстрый просмотр
+                            </button>
                         </div>
                     </form>
                 </div>

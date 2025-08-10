@@ -18,7 +18,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    'cart',
+    "django.contrib.humanize",
+    "cart",
     "shop",
     "bootstrap5",
 ]
@@ -109,3 +110,6 @@ EMAIL_HOST_USER = 'your_email@yandex.ru'
 EMAIL_HOST_PASSWORD = 'your_password'
 DEFAULT_FROM_EMAIL = 'your_email@yandex.ru'
 CONTACT_EMAIL = 'contact@yourdomain.com'
+
+USE_L10N = True  # Включить локализацию
+USE_THOUSAND_SEPARATOR = True  # Разделитель тысяч
