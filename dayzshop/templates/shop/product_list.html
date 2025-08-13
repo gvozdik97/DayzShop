@@ -10,20 +10,26 @@
         <div class="row">
             <!-- Сайдбар с категориями -->
             <div class="col-md-3">
-                <div class="card mb-4">
-                    <div class="card-header text-white">
-                        Категории
+                <div class="card mb-4 border-0 shadow-sm">
+                    <div class="card-header bg-dark text-white py-3">
+                        <div class="d-flex align-items-center">  <!-- Новое: выравнивание иконки и текста -->
+                            <i class="bi bi-collection fs-5 me-2"></i>  <!-- Увеличил иконку -->
+                            <h5 class="mb-0">Категории</h5>  <!-- Убрал лишний отступ -->
+                        </div>
                     </div>
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item {% if not category %}active{% endif %}">
-                            <a href="{% url 'shop:product_list' %}" class="text-decoration-none">
-                                Все товары
+                        <li class="list-group-item {% if not category %}active-category{% endif %}">
+                            <a href="{% url 'shop:product_list' %}" class="text-decoration-none d-flex align-items-center">
+                                <i class="bi bi-grid me-2"></i>  <!-- Добавил иконку -->
+                                <span>Все товары</span>
                             </a>
                         </li>
                         {% for cat in categories %}
-                        <li class="list-group-item {% if category.slug == cat.slug %}active{% endif %}">
-                            <a href="{{ cat.get_absolute_url }}" class="text-decoration-none">
-                                {{ cat.name }}
+                        <li class="list-group-item {% if category.slug == cat.slug %}active-category{% endif %}">
+                            <a href="{{ cat.get_absolute_url }}" class="text-decoration-none d-flex align-items-center">
+                                <i class="bi bi-tag me-2"></i>  <!-- Добавил иконки для категорий -->
+                    <span>{{ cat.name }}</span>
+                    <span class="badge bg-secondary ms-auto">{{ cat.products.count }}</span>
                             </a>
                         </li>
                         {% endfor %}
@@ -36,15 +42,15 @@
                 <!-- Поиск -->
                 <div class="card mb-4">
                     <div class="card-body">
-                        <form method="get" action="{% url 'shop:product_list' %}">
+                        <form method="get" action="{% url 'shop:product_list' %}" class="search-form">
                             <div class="input-group">
-                                <input type="text" class="form-control" 
+                                <input type="text" class="form-control search-input" 
                                     name="search" 
                                     pattern=".{3,}" 
                                     title="Минимум 3 символа"
                                     placeholder="Поиск товаров..."
                                     value="{{ search_query }}">
-                                <button class="btn btn-warning" type="submit">
+                                <button class="btn btn-search" type="submit">
                                     <i class="bi bi-search"></i> Найти
                                 </button>
                             </div>

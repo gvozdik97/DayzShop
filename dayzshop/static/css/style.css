@@ -35,11 +35,24 @@ body {
     object-fit: cover;
 }
 
-/* Категории */
-.list-group-item.active {
-    background-color: #ffc107;
-    border-color: #ffc107;
-    color: #000;
+.active-category {
+    background-color: #f8f9fa;
+    border-left: 4px solid #28a745 !important;
+}
+
+.list-group-item:hover {
+    background-color: #f1f1f1;
+}
+
+/* Иконки в категориях */
+.list-group-item i {
+    color: #28a745;
+    font-size: 0.9rem;
+}
+
+/* Заголовок карточки */
+.card-header {
+    background: linear-gradient(135deg, #1a3a32, #28a745) !important;  /* Градиентный фон */
 }
 
 .list-group-item a {
@@ -124,6 +137,64 @@ body {
 
 .quantity-input:focus {
     border-color: #ffc107;
+}
+
+/* Основной стиль кнопки */
+.btn-search {
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 30px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Стиль для кнопки в форме поиска */
+.search-form .btn-search {
+    border-radius: 0 30px 30px 0;
+    padding: 8px 25px;
+}
+
+/* Стиль для поля ввода */
+.search-input {
+    border-radius: 30px 0 0 30px !important;
+    border-right: none !important;
+}
+
+/* Эффекты при наведении */
+.btn-search:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    color: white;
+}
+
+.btn-search:active {
+    transform: translateY(0);
+}
+
+/* Анимация "пульсации" при фокусе */
+.btn-search:focus {
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(167, 119, 227, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(167, 119, 227, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(167, 119, 227, 0); }
+}
+
+/* Иконка поиска */
+.bi-search {
+    margin-right: 5px;
+    transition: transform 0.3s ease;
+}
+
+.btn-search:hover .bi-search {
+    transform: scale(1.1);
 }
 
 /* Анимация кнопки */
@@ -371,3 +442,4 @@ btn-hover-fill:hover {
 .table-transparent {
     background-color: rgba(255, 255, 255, 0.7) !important;
 }
+

@@ -56,19 +56,53 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    document.querySelectorAll('.plus-btn').forEach(btn => {
+    document.querySelectorAll('.plus-btn, .minus-btn').forEach(btn => {
         btn.addEventListener('click', function() {
-            const input = this.parentElement.querySelector('.quantity-input');
-            input.value = parseInt(input.value) + 1;
+            const input = this.closest('.input-group').querySelector('.quantity-input');
+            const itemId = input.dataset.itemId;
+            let newQuantity = parseInt(input.value);
+            
+            if (this.classList.contains('plus-btn')) {
+                newQuantity++;
+            } else {
+                newQuantity = Math.max(1, newQuantity - 1);
+            }
+            
+            updateCartItem(itemId, newQuantity, input);
         });
     });
+    
+    // Функция обновления через AJAX
+    function updateCartItem(itemId, newQuantity, input) {
+        fetch(`/cart/update/${itemId}/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: `quantity=${newQuantity}`
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                input.value = data.new_quantity;
+                // Обновляем отображение суммы
+                const totalElement = input.closest('tr').querySelector('.item-total');
+                if (totalElement) {
+                    totalElement.textContent = `${data.item_total} руб.`;
+                    totalElement.classList.add('item-updated');
+                    setTimeout(() => totalElement.classList.remove('item-updated'), 1000);
+                }
+                // Обновляем общую сумму
+                document.querySelector('.cart-total').textContent = `${data.cart_total} руб.`;
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            location.reload(); // Перезагрузка при ошибке
+        });
+    }
 
-    document.querySelectorAll('.minus-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const input = this.parentElement.querySelector('.quantity-input');
-            if (input.value > 1) input.value = parseInt(input.value) - 1;
-        });
-    });
 
     // Добавление в корзину
     document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
