@@ -1,45 +1,73 @@
 {% load humanize %}
 
-<div class="row">
+<div class="row g-3">  
+    <!-- Левая колонка (изображение) -->
     <div class="col-md-6">
         {% if product.image %}
-            <img src="{{ product.image.url }}" class="img-fluid rounded" alt="{{ product.name }}">
+            <img src="{{ product.image.url }}" 
+                 class="img-fluid rounded shadow-sm" 
+                 alt="{{ product.name }}"
+                 style="max-height: 400px; object-fit: contain;">
         {% else %}
-            <div class="bg-light p-5 text-center">Нет изображения</div>
+            <div class="bg-light p-5 text-center rounded">
+                <i class="bi bi-image text-muted" style="font-size: 3rem;"></i>
+                <p class="mt-2">Нет изображения</p>
+            </div>
         {% endif %}
     </div>
+
+    <!-- Правая колонка (информация) -->
     <div class="col-md-6">
-        <h3>{{ product.name }}</h3>
-        <p class="text-muted">{{ product.category.name }}</p>
+        <!-- Заголовок и категория -->
+        <h3 class="mb-3">
+            <a href="{{ product.get_absolute_url }}" class="text-decoration-none">
+                {{ product.name }}
+            </a>
+        </h3>
+        <p class="text-muted mb-4">
+            <i class="bi bi-tag-fill"></i> {{ product.category.name }}
+        </p>
         
-        <div class="mb-4">
-            <span class="h4">{{ product.price|floatformat:"0"|intcomma }} руб.</span>
-            {% if product.available %}
-                <span class="badge bg-success ms-2">В наличии</span>
-            {% else %}
-                <span class="badge bg-secondary ms-2">Нет в наличии</span>
-            {% endif %}
+        <!-- Цена и наличие -->
+        <div class="d-flex align-items-center mb-4">
+            <span class="h4 fw-bold text-primary">{{ product.price|floatformat:"0"|intcomma }} руб.</span>
+            <span class="badge {% if product.available %}bg-success{% else %}bg-secondary{% endif %} ms-3">
+                {% if product.available %}В наличии{% else %}Нет в наличии{% endif %}
+            </span>
         </div>
-        
+
+        <!-- Описание -->
         <div class="mb-4">
-            <h5>Описание:</h5>
-            <p>{{ product.description }}</p>
+            <h5 class="border-bottom pb-2">Описание</h5>
+            <p class="mt-2">{{ product.description|linebreaksbr }}</p>  
         </div>
-        
+
+        <!-- Блок с количеством и кнопкой (только если в наличии) -->
         {% if product.available %}
-        <div class="d-flex align-items-center">
+        <div class="d-flex align-items-center mt-auto pt-3 border-top">
+            <!-- Счётчик -->
             <div class="input-group me-3" style="width: 140px;">
-                <button class="btn btn-outline-secondary minus-btn">-</button>
-                <input type="number" class="form-control text-center quantity-input" value="1" min="1">
-                <button class="btn btn-outline-secondary plus-btn">+</button>
+                <button class="btn btn-outline-secondary minus-btn" type="button">
+                    <i class="bi bi-dash"></i>
+                </button>
+                <input type="number" 
+                       class="form-control text-center quantity-input" 
+                       value="1" 
+                       min="1"
+                       aria-label="Количество">
+                <button class="btn btn-outline-secondary plus-btn" type="button">
+                    <i class="bi bi-plus"></i>
+                </button>
             </div>
             
-            <button class="btn btn-warning add-to-cart-btn {% if in_cart %}disabled{% endif %}" 
-                    data-product-id="{{ product.id }}">
+            <!-- Кнопка корзины -->
+            <button class="btn btn-warning add-to-cart-btn flex-grow-1 {% if in_cart %}disabled{% endif %}" 
+                    data-product-id="{{ product.id }}"
+                    style="min-width: 120px;">
                 {% if in_cart %}
-                    <i class="bi bi-check"></i> В корзине
+                    <i class="bi bi-check-circle"></i> В корзине
                 {% else %}
-                    <i class="bi bi-cart-plus"></i> В корзину
+                    <i class="bi bi-cart-plus"></i> Добавить
                 {% endif %}
             </button>
         </div>

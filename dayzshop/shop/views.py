@@ -41,7 +41,6 @@ def product_list(request, category_slug=None):
         'category': category,
         'categories': categories,
         'page_obj': page_obj,
-        # 'search_query': search_query
     })
 
 def product_detail(request, id, slug):

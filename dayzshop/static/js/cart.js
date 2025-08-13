@@ -1,29 +1,29 @@
 // static/js/cart.js
 document.addEventListener('DOMContentLoaded', function() {
     // Функция для получения CSRF токена
-    function getCookie(name) {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            const cookies = document.cookie.split(';');
-            for (let i = 0; i < cookies.length; i++) {
-                const cookie = cookies[i].trim();
-                if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
-            }
-        }
-        return cookieValue;
-    }
+    // function getCookie(name) {
+    //     let cookieValue = null;
+    //     if (document.cookie && document.cookie !== '') {
+    //         const cookies = document.cookie.split(';');
+    //         for (let i = 0; i < cookies.length; i++) {
+    //             const cookie = cookies[i].trim();
+    //             if (cookie.substring(0, name.length + 1) === (name + '=')) {
+    //                 cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+    //                 break;
+    //             }
+    //         }
+    //     }
+    //     return cookieValue;
+    // }
 
     // Обновление счетчика в шапке
-    function updateCartCounter(count) {
-        const counter = document.querySelector('.cart-counter');
-        if (counter) {
-            counter.textContent = count;
-            counter.classList.toggle('d-none', count <= 0);
-        }
-    }
+    // function updateCartCounter(count) {
+    //     const counter = document.querySelector('.cart-counter');
+    //     if (counter) {
+    //         counter.textContent = count;
+    //         counter.classList.toggle('d-none', count <= 0);
+    //     }
+    // }
 
     // Блокировка кнопки "В корзину"
     function disableAddButton(productId) {
@@ -48,7 +48,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // Обработка кнопок +/-
     document.querySelectorAll('.quantity-input').forEach(input => {
         input.addEventListener('change', function() {
-            if (this.value < 1) this.value = 1;
+            const itemId = this.dataset.itemId;
+            fetch(`/cart/update/${itemId}/`, {
+                method: 'POST',
+                body: `quantity=${this.value}`
+            }).then(response => response.json());
         });
     });
 
@@ -129,5 +133,31 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
         });
+    });
+    document.getElementById('addToCartBtn').addEventListener('click', function() {
+        const btn = this;
+        
+        // 1. Блокируем кнопку
+        btn.disabled = true;
+        
+        // 2. Меняем иконку и текст
+        btn.innerHTML = '<i class="bi bi-check2"></i> Добавлено';
+        
+        // 3. Активируем Glass-эффект
+        btn.classList.remove('btn-success');
+        btn.classList.add('btn-glass');
+        
+        // 4. Разблокируем через 500 мс
+        setTimeout(() => btn.disabled = false, 500);
+        
+        // Здесь ваш код добавления в корзину
+        console.log('Товар добавлен!');
+        
+        // 5. Возврат в исходное состояние через 3 сек (опционально)
+        setTimeout(() => {
+            btn.classList.remove('btn-glass');
+            btn.classList.add('btn-success');
+            btn.innerHTML = '<i class="bi bi-cart-plus"></i> В корзину';
+        }, 3000);
     });
 });

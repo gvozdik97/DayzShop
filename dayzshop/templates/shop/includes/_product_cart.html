@@ -1,24 +1,63 @@
 {% load static %}
-<div class="col">
-    <div class="card h-100 shadow-sm">
-        <a href="{{ product.get_absolute_url }}">
+{% load cart_tags %}
+
+<div class="col-12 col-sm-6 col-md-4 mb-4">
+    <div class="card h-100 shadow-sm d-flex flex-column">
+        <a href="{{ product.get_absolute_url }}" class="flex-grow-1">
             {% if product.image %}
-            <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+            <img src="{{ product.image.url }}" class="card-img-top img-fluid" alt="{{ product.name }}" style="height: 180px; object-fit: cover;">
             {% else %}
-            <img src="{% static 'img/no-image.jpg' %}" class="card-img-top" alt="No image">
+            <img src="{% static 'img/no-image.jpg' %}" class="card-img-top img-fluid" alt="No image" style="height: 180px; object-fit: cover;">
             {% endif %}
         </a>
-        <div class="card-body">
-            <h5 class="card-title">{{ product.name }}</h5>
-            <p class="card-text text-muted">{{ product.description|truncatechars:60 }}</p>
-        </div>
-        <div class="card-footer bg-white">
-            <div class="d-flex justify-content-between align-items-center">
-                <span class="h5 text-dark mb-0">{{ product.price }} руб.</span>
-                <a href="{% url 'cart:add' product.id %}" class="btn btn-warning btn-sm">
-                    В корзину
-                </a>
+        <div class="card-body d-flex flex-column">
+            <h5 class="card-title mb-2">{{ product.name|truncatechars:30 }}</h5>
+            <div class="mt-auto">
+                <div class="d-flex justify-content-between align-items-center flex-wrap">
+                    <span class="h6 mb-0">{{ product.price }} руб.</span>
+                    <a id="addToCartBtn" href="{% url 'cart:add' product.id %}" 
+                    class="btn {% if product|is_in_cart:request %}disabled{% else %}btn-success{% endif %} mt-1"
+                    style="min-width: 100px; white-space: nowrap;">
+                        {% if product|is_in_cart:request %}
+                            <i class="bi bi-check"></i> В корзине
+                        {% else %}
+                            <i class="bi bi-cart-plus"></i> В корзину
+                        {% endif %}
+                    </a>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+{% block javascript %}
+    <script src="{% static 'js/cart.js' %}"></script>
+{% endblock %}
+{% comment %} <script>
+document.getElementById('addToCartBtn').addEventListener('click', function() {
+    const btn = this;
+    
+    // 1. Блокируем кнопку
+    btn.disabled = true;
+    
+    // 2. Меняем иконку и текст
+    btn.innerHTML = '<i class="bi bi-check2"></i> Добавлено';
+    
+    // 3. Активируем Glass-эффект
+    btn.classList.remove('btn-success');
+    btn.classList.add('btn-glass-green');
+    
+    // 4. Разблокируем через 500 мс
+    setTimeout(() => btn.disabled = false, 500);
+    
+    // Здесь ваш код добавления в корзину
+    console.log('Товар добавлен!');
+    
+    // 5. Возврат в исходное состояние через 3 сек (опционально)
+    setTimeout(() => {
+        btn.classList.remove('btn-glass-green');
+        btn.classList.add('btn-success');
+        btn.innerHTML = '<i class="bi bi-cart-plus"></i> В корзину';
+    }, 3000);
+});
+</script> {% endcomment %}

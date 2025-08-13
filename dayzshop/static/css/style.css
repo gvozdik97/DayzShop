@@ -8,11 +8,16 @@ body {
     color: #e0e0e0;
 }
 
+.main-content {
+    margin-top: var(--header-height);
+}
+
 .hero-section {
     background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
                 url('../img/dayz-bg.jpg') no-repeat center center;
     background-size: cover;
-    border-bottom: 3px solid #ffc107;
+    border-bottom: 3px solid #eee;
+    border-radius: 25px;
 }
 
 .server-features li {
@@ -43,14 +48,19 @@ body {
 
 /* Карточки товаров */
 .card {
-    background-color: #09ed2c;
-    border: 1px solid #333;
+    background-color: #006A4E;
+    border: 1px solid #eee;
     transition: all 0.3s ease;
+    color: #eee
 }
 
 .card:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.card-body {
+    flex: 1 0 auto; /* Занимает оставшееся пространство */
 }
 
 .card-img-top {
@@ -72,9 +82,48 @@ body {
     right: -8px;
 }
 
+.cart-link {
+    min-width: 70px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.cart-link .badge {
+    font-size: 0.7rem;
+    padding: 0.25em 0.4em;
+}
+
+.cart-icon-wrapper {
+    position: relative;
+    display: inline-block;
+    line-height: 1;
+}
+
+.cart-badge {
+    top: -5px;
+    left: 65%;
+    font-size: 0.6rem;
+    padding: 0.2em 0.4em;
+    background-color: #dc3545;
+    border-radius: 50rem;
+    color: white;
+    transform: translateX(-50%);
+}
+
+/* Для лучшего отображения иконки */
+.bi-cart4 {
+    font-size: 1.25rem;
+}
+
 .quantity-input {
+    transition: border-color 0.3s;
     max-width: 50px;
     text-align: center;
+}
+
+.quantity-input:focus {
+    border-color: #ffc107;
 }
 
 /* Анимация кнопки */
@@ -86,11 +135,6 @@ body {
 .btn.disabled {
     pointer-events: none;
     opacity: 0.9;
-}
-
-.btn-success {
-    background-color: #28a745;
-    border-color: #28a745;
 }
 
 .btn-success .bi-check {
@@ -108,14 +152,168 @@ body {
     border-color: #e07d00;
 }
 
+.btn-neon {
+    background: rgba(255, 255, 255, 0.2) !important;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    transition: all 0.3s;
+    box-shadow: 0 0 10px #eee;
+}
+.btn-neon:hover {
+    box-shadow: 0 0 15px #eee, 0 0 30px #eee;
+    transform: translateY(-2px);
+}
+
+.btn-gradient {
+    background: linear-gradient(45deg, #11998e, #38ef7d);
+    border: none;
+    color: white;
+    transition: all 0.3s;
+}
+.btn-gradient:hover {
+    background: linear-gradient(45deg, #38ef7d, #11998e);
+    transform: scale(1.05);
+}
+
+.btn-success {
+    background-color: #2ecc71;
+    transition: all 0.4s ease;
+}
+
+.btn-success:hover {
+    background-color: rgba(163, 230, 53, 0.7) !important; /* 70% прозрачности */
+    border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+/* Стиль после добавления (Glass с зелёным оттенком) */
+.btn-glass {
+    background: rgba(40, 167, 69, 0.15) !important;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(40, 167, 69, 0.4) !important;
+    color: white !important;
+    box-shadow: 0 0 10px rgba(40, 167, 69, 0.2);
+}
+
+/* Hover для Glass-состояния */
+.btn-glass:hover {
+    background: rgba(40, 167, 69, 0.25) !important;
+}
+
+/* Анимация нажатия */
+#addToCartBtn:active {
+    transform: scale(0.95);
+}
+
+btn-primary:hover {
+    background-color: rgba(13, 110, 253, 0.7) !important; /* Полупрозрачный primary */
+    border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+/* Анимация перехода */
+@keyframes glassTransition {
+    0% { background: var(--bs-primary); }
+    100% { background: rgba(255, 255, 255, 0.15); }
+}
+
+.btn-3d:active {
+    transform: translateY(3px);
+    box-shadow: none !important;
+}
+
+btn-hover-fill:hover {
+    color: white !important;
+    background-color: var(--bs-danger) !important;
+}
+
+.navbar {
+    transition: all 0.3s ease;
+}
+
 .navbar-brand {
     font-family: 'Russo One', sans-serif;
     font-size: 1.5rem;
-    color: #12100f !important;
+    color: #eee !important;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
 }
 
 .nav-link {
     font-size: 1.1rem;
+}
+
+.navbar-nav .nav-item {
+    margin: 0 0.25rem;
+}
+
+.navbar-nav .nav-link {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+@media (min-width: 992px) {
+    .navbar-nav .nav-item {
+        margin: 0 0.3rem;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .navbar-collapse {
+        padding-top: 1rem;
+    }
+    .navbar-nav {
+        align-items: flex-start !important;
+    }
+    .nav-item {
+        width: 100%;
+    }
+    .nav-link {
+        padding: 0.5rem 0 !important;
+    }
+    .navbar-brand {
+        margin-right: auto;
+    }
+    .navbar-collapse {
+        background-color: #343a40;
+        padding: 15px;
+        margin-top: 10px;
+        border-radius: 5px;
+    }
+}
+
+@media (max-width: 767px) {
+    .table-responsive {
+        font-size: 0.9rem;
+    }
+    .btn {
+        padding: 0.25rem 0.5rem;
+    }
+    .table td, .table th {
+        padding: 0.5rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .card {
+        min-height: 300px; 
+    }
+    .card-title {
+        font-size: 1rem;
+    }
+    .card-footer .btn {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.8rem;
+        min-width: 80px;
+    }
+}
+
+@media (max-width: 768px) {
+    .fixed-header {
+        height: 50px;
+    }
+    .main-content {
+        margin-top: 50px;
+    }
 }
 
 .footer {
@@ -152,6 +350,10 @@ body {
 }
 
 /* Стили для модального окна товара */
+.modal.fade .modal-dialog {
+    transition: transform 0.3s ease-out;
+}
+
 #productModal .modal-dialog {
     max-width: 800px;
 }
@@ -164,4 +366,8 @@ body {
 #productModal .quantity-input {
     width: 50px;
     text-align: center;
+}
+
+.table-transparent {
+    background-color: rgba(255, 255, 255, 0.7) !important;
 }

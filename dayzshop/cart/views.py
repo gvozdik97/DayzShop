@@ -7,35 +7,25 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from decimal import Decimal
 from django.urls import reverse
+from cart.utils import get_cart
+from django.db.models import Prefetch
 
 
-def get_cart(request):
-    """Безопасное получение или создание корзины"""
-    if request.user.is_authenticated:
-        cart, created = Cart.objects.get_or_create(user=request.user)
-    else:
-        if not request.session.session_key:
-            request.session.create()
-        session_key = request.session.session_key
-        cart, created = Cart.objects.get_or_create(session_key=session_key)
-    return cart
+# def get_cart(request):
+#     """Безопасное получение или создание корзины"""
+#     if request.user.is_authenticated:
+#         cart, created = Cart.objects.get_or_create(user=request.user)
+#     else:
+#         if not request.session.session_key:
+#             request.session.create()
+#         session_key = request.session.session_key
+#         cart, created = Cart.objects.get_or_create(session_key=session_key)
+#     return cart
 
 def cart_detail(request):
     cart = get_cart(request)
     return render(request, 'cart/detail.html', {'cart': cart})
 
-# def add_to_cart(request, product_id):
-#     product = get_object_or_404(Product, id=product_id)
-#     cart = get_cart(request)
-#     item, created = CartItem.objects.get_or_create(
-#         cart=cart,
-#         product=product,
-#         defaults={'price': product.price}
-#     )
-#     if not created:
-#         item.quantity += 1
-#         item.save()
-#     return redirect('cart:detail')
 def add_to_cart(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     cart = get_cart(request)
@@ -91,12 +81,20 @@ def clear_cart(request):
     return redirect('cart:detail') 
 
 def order_list(request):
-    orders = Order.objects.filter(user=request.user)
+    orders = Order.objects.filter(user=request.user).select_related('user').prefetch_related(
+        Prefetch('orderitem_set', queryset=OrderItem.objects.select_related('product'))
+    )
     return render(request, 'cart/order_list.html', {'orders': orders})
 
 @login_required
 def order_detail(request, pk):
-    order = get_object_or_404(Order, pk=pk, user=request.user)
+    order = get_object_or_404(
+        Order.objects.select_related('user').prefetch_related(
+            Prefetch('orderitem_set', queryset=OrderItem.objects.select_related('product'))
+        ),
+        pk=pk,
+        user=request.user  # Проверка прав
+    )
     return render(request, 'cart/order_detail.html', {'order': order})
 
 @login_required

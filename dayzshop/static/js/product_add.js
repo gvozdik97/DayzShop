@@ -79,8 +79,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Функция для получения CSRF токена
-    function getCookie(name) {
-        // ... (та же реализация, что и в предыдущем примере)
-    }
+    // // Функция для получения CSRF токена
+    // function getCookie(name) {
+    //     // ... (та же реализация, что и в предыдущем примере)
+    // }
 });

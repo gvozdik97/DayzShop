@@ -11,7 +11,7 @@
             <!-- Сайдбар с категориями -->
             <div class="col-md-3">
                 <div class="card mb-4">
-                    <div class="card-header bg-dark text-white">
+                    <div class="card-header text-white">
                         Категории
                     </div>
                     <ul class="list-group list-group-flush">
@@ -40,6 +40,8 @@
                             <div class="input-group">
                                 <input type="text" class="form-control" 
                                     name="search" 
+                                    pattern=".{3,}" 
+                                    title="Минимум 3 символа"
                                     placeholder="Поиск товаров..."
                                     value="{{ search_query }}">
                                 <button class="btn btn-warning" type="submit">
@@ -58,53 +60,10 @@
                 
                 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
                     {% for product in page_obj %}
-                        <div class="col-md-4 mb-4">
-                            <div class="card h-100">
-                                <img src="{{ product.image.url }}" 
-                                    class="card-img-top product-image" 
-                                    alt="{{ product.name }}"
-                                    style="cursor: pointer;"
-                                    data-bs-toggle="modal" 
-                                    data-bs-target="#productModal"
-                                    data-product-id="{{ product.id }}">
-                                
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ product.name }}</h5>
-                                    <p class="card-text">{{ product.price }} руб.</p>
-                                    <a href="{% url 'cart:add' product.id %}" class="btn btn-warning btn-sm">
-                                        В корзину
-                                    </a>
-                                    <button class="btn btn-outline-secondary" 
-                                            data-bs-toggle="modal" 
-                                            data-bs-target="#productModal"
-                                            data-product-id="{{ product.id }}">
-                                        Быстрый просмотр
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+                        {% include 'shop/includes/_product_cart.html' %}
                     {% endfor %}
-                    <!-- Модальное окно товара -->
-                    <div class="modal fade" id="productModal" tabindex="-1" aria-hidden="true">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="productModalLabel">Загрузка...</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                </div>
-                                <div class="modal-body" id="productModalBody">
-                                    <div class="text-center py-5">
-                                        <div class="spinner-border" role="status">
-                                            <span class="visually-hidden">Загрузка...</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
+                    {% include 'shop/includes/_product_modal.html' %}
                 </div>
 
                 <!-- Пагинация -->

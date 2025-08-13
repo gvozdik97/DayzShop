@@ -7,6 +7,13 @@ document.addEventListener('DOMContentLoaded', function() {
         const modalBody = document.getElementById('productModalBody');
         const modalTitle = document.getElementById('productModalLabel');
         
+        console.log('Product ID:', productId);
+        console.log('Modal elements:', { 
+            body: modalBody, 
+            title: modalTitle,
+            button: button
+        });
+        
         // Показываем загрузку
         modalBody.innerHTML = `
             <div class="text-center py-5">
@@ -16,8 +23,11 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>`;
         
         // Загружаем данные
+        console.log(`Fetching: /products/${productId}/modal/`);
         fetch(`/products/${productId}/modal/`)
             .then(async response => {
+                console.log('Response status:', response.status); // Статус ответа
+                console.log('Headers:', [...response.headers.entries()]); // Все заголовки
                 const contentType = response.headers.get('content-type');
                 if (!response.ok) {
                     const error = contentType?.includes('application/json') 
@@ -90,13 +100,12 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    function getCookie(name) {
-        const cookies = document.cookie.split(';');
-        for (let cookie of cookies) {
-            const [key, value] = cookie.trim().split('=');
-            if (key === name) return decodeURIComponent(value);
-        }
-        return null;
-    }
-    // Вспомогательные функции...
+    // function getCookie(name) {
+    //     const cookies = document.cookie.split(';');
+    //     for (let cookie of cookies) {
+    //         const [key, value] = cookie.trim().split('=');
+    //         if (key === name) return decodeURIComponent(value);
+    //     }
+    //     return null;
+    // }
 });

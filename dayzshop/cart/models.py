@@ -35,8 +35,17 @@ class CartItem(models.Model):
     def total_price(self):
         return self.price * self.quantity
 
+class OrderQuerySet(models.QuerySet):
+    def optimized(self):
+        return self.select_related('user').prefetch_related(
+            models.Prefetch(
+                'orderitem_set',
+                queryset=OrderItem.objects.select_related('product')
+            )
+        )
 
 class Order(models.Model):
+    objects = OrderQuerySet.as_manager()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     products = models.ManyToManyField(Product, through='OrderItem')
     total_price = models.DecimalField(max_digits=10, decimal_places=2)

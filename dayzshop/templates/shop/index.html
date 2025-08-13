@@ -4,62 +4,51 @@
 {% block title %}Главная - DayZ Donate{% endblock %}
 
 {% block content %}
-<!-- Hero-секция -->
-<div class="hero-section bg-dark text-white py-5 mb-4">
-    <div class="container text-center">
-        <h1 class="display-4">DAYZ DONATE SHOP</h1>
-        <p class="lead">Официальный магазин сервера <strong>DayZ Survivors</strong></p>
-    </div>
-</div>
-
-<!-- Блок описания сервера -->
-<div class="container mb-5">
-    {% include 'shop/includes/_server_info.html' %}
-</div>
-
-<!-- Популярные товары -->
-<div class="container mb-5">
-    <h2 class="text-center mb-4">Популярные товары</h2>
-    <div class="row row-cols-1 row-cols-md-3 g-4">
-        {% for product in featured_products %}
-            <div class="col">
-                <div class="card h-100">
-                    <!-- Изменяем ссылку на триггер модального окна -->
-                    <img src="{{ product.image.url }}" 
-                        class="card-img-top product-image" 
-                        alt="{{ product.name }}"
-                        style="cursor: pointer;"
-                        data-bs-toggle="modal" 
-                        data-bs-target="#productModal"
-                        data-product-id="{{ product.id }}">
-                    
-                    <div class="card-body">
-                        <h5 class="card-title">{{ product.name }}</h5>
-                        <p class="card-text">{{ product.price }} руб.</p>
-                        <a href="{% url 'cart:add' product.id %}" class="btn btn-warning btn-sm">
-                            В корзину
-                        </a>
-                    </div>
-                </div>
-            </div>
-        {% endfor %}
-    </div>
-</div>
-<div class="modal fade" id="productModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Загрузка...</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body" id="productModalBody">
-                <div class="text-center py-5">
-                    <div class="spinner-border" role="status">
-                        <span class="visually-hidden">Загрузка...</span>
-                    </div>
-                </div>
-            </div>
+    <!-- Hero-секция -->
+    <div class="hero-section bg-dark py-5 mb-4">
+        <div class="container text-center">
+            <h1 class="display-4">DAYZ DONATE SHOP</h1>
+            <p class="lead">Официальный магазин сервера <strong>DayZ Survivors</strong></p>
         </div>
     </div>
-</div>
+
+    <!-- Блок описания сервера -->
+    <div class="container mb-5">
+        {% include 'shop/includes/_server_info.html' %}
+    </div>
+
+    <!-- Популярные товары -->
+    <div class="container mb-5">
+        <h2 class="text-center mb-4">Популярные товары</h2>
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            {% if featured_products %}
+                {% for product in featured_products %}
+                    {% comment %} <div class="col">
+                        <div class="card h-100">
+                            <a href="{{ product.get_absolute_url }}">
+                                {% if product.image %}
+                                <img src="{{ product.image.url }}" class="card-img-top img-fluid" alt="{{ product.name }}" style="height: 180px; object-fit: cover;">
+                                {% else %}
+                                <img src="{% static 'img/no-image.jpg' %}" class="card-img-top img-fluid" alt="No image" style="height: 180px; object-fit: cover;">
+                                {% endif %}
+                            </a>
+                            <div class="card-body">
+                                <h5 class="card-title">{{ product.name|truncatechars:30 }}</h5>
+                                <span class="h6 text-dark mb-0 me-2">{{ product.price }} руб.</span>
+                                <a href="{% url 'cart:add' product.id %}" class="btn btn-glass">
+                                    В корзину
+                                </a> 
+                            </div>
+                        </div>
+                    </div> {% endcomment %}
+                    {% include 'shop/includes/_product_cart.html' %}
+                {% endfor %}
+            {% else %}
+                <div class="alert alert-info">Популярные товары отсутствуют</div>
+            {% endif %}
+            {% include 'shop/includes/_product_modal.html' %}
+        </div>
+    </div>
+    <!-- Модальное окно товара -->
+    {% include 'shop/includes/_product_modal.html' %}
 {% endblock %}

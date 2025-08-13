@@ -30,7 +30,13 @@
                         {% csrf_token %}
                         <div class="mb-3">
                             <label for="steam_id" class="form-label">Ваш SteamID</label>
-                            <input type="text" class="form-control" id="steam_id" name="steam_id" required>
+                            <input type="text" 
+                            class="form-control" 
+                            id="steam_id" 
+                            name="steam_id"
+                            pattern="STEAM_\d:\d:\d+" 
+                            title="Формат: STEAM_X:X:XXXXXX"
+                            required>
                         </div>
                         <button type="submit" class="btn btn-warning w-100">Подтвердить заказ</button>
                     </form>
