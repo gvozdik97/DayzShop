@@ -225,16 +225,24 @@ body {
 }
 
 .btn-neon {
-    background: rgba(255, 255, 255, 0.2) !important;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    color: white;
-    transition: all 0.3s;
-    box-shadow: 0 0 10px #eee;
+    position: relative;
+    overflow: hidden;
 }
-.btn-neon:hover {
-    box-shadow: 0 0 15px #eee, 0 0 30px #eee;
-    transform: translateY(-2px);
+
+.btn-neon:after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -60%;
+    width: 20%;
+    height: 200%;
+    background: rgba(255,255,255,0.2);
+    transform: rotate(30deg);
+    transition: all 0.3s;
+}
+
+.btn-neon:hover:after {
+    left: 120%;
 }
 
 .btn-gradient {
@@ -249,8 +257,18 @@ body {
 }
 
 .btn-success {
-    background-color: #2ecc71;
-    transition: all 0.4s ease;
+    background: linear-gradient(135deg, #28a745, #218838);
+    color: white;
+}
+
+.btn-dark {
+    background: linear-gradient(135deg, #343a40, #23272b);
+    color: white;
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #dc3545, #c82333);
+    color: white;
 }
 
 .btn-success:hover {
@@ -288,9 +306,24 @@ btn-primary:hover {
     100% { background: rgba(255, 255, 255, 0.15); }
 }
 
+.btn-3d {
+    position: relative;
+    transition: all 0.3s ease;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 500;
+    box-shadow: 0 4px 0 rgba(0,0,0,0.2);
+}
+
+.btn-3d:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 rgba(0,0,0,0.2);
+}
+
 .btn-3d:active {
-    transform: translateY(3px);
-    box-shadow: none !important;
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 rgba(0,0,0,0.2);
 }
 
 btn-hover-fill:hover {
@@ -338,6 +371,11 @@ btn-hover-fill:hover {
 
 .nav-link {
     font-size: 1.1rem;
+    transition: opacity 0.3s;
+}
+
+.nav-link:hover {
+    opacity: 0.8;
 }
 
 .navbar-nav .nav-item {
@@ -347,6 +385,11 @@ btn-hover-fill:hover {
 .navbar-nav .nav-link {
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
+}
+
+/* Иконки */
+.bi {
+    margin-right: 8px;
 }
 
 @media (min-width: 992px) {
@@ -411,6 +454,22 @@ btn-hover-fill:hover {
     }
     .main-content {
         margin-top: 50px;
+    }
+    .d-flex.flex-wrap {
+        flex-direction: column;
+    }
+    
+    .flex-grow-1 {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+
+@media (max-width: 400px) {
+    #addToCartBtn {
+        min-width: 100px;
+        padding: 0.35rem 0.5rem;
+        font-size: 0.85rem;
     }
 }
 

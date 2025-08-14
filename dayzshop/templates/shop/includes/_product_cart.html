@@ -16,8 +16,8 @@
                 <div class="d-flex justify-content-between align-items-center flex-wrap">
                     <span class="h6 mb-0">{{ product.price }} руб.</span>
                     <a id="addToCartBtn" href="{% url 'cart:add' product.id %}" 
-                    class="btn {% if product|is_in_cart:request %}disabled{% else %}btn-success{% endif %} mt-1"
-                    style="min-width: 100px; white-space: nowrap;">
+                    class="btn {% if product|is_in_cart:request %}}btn-success disabled{% else %}btn-success{% endif %} mt-1"
+                    style="min-width: 100px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                         {% if product|is_in_cart:request %}
                             <i class="bi bi-check"></i> В корзине
                         {% else %}
@@ -33,31 +33,3 @@
 {% block javascript %}
     <script src="{% static 'js/cart.js' %}"></script>
 {% endblock %}
-{% comment %} <script>
-document.getElementById('addToCartBtn').addEventListener('click', function() {
-    const btn = this;
-    
-    // 1. Блокируем кнопку
-    btn.disabled = true;
-    
-    // 2. Меняем иконку и текст
-    btn.innerHTML = '<i class="bi bi-check2"></i> Добавлено';
-    
-    // 3. Активируем Glass-эффект
-    btn.classList.remove('btn-success');
-    btn.classList.add('btn-glass-green');
-    
-    // 4. Разблокируем через 500 мс
-    setTimeout(() => btn.disabled = false, 500);
-    
-    // Здесь ваш код добавления в корзину
-    console.log('Товар добавлен!');
-    
-    // 5. Возврат в исходное состояние через 3 сек (опционально)
-    setTimeout(() => {
-        btn.classList.remove('btn-glass-green');
-        btn.classList.add('btn-success');
-        btn.innerHTML = '<i class="bi bi-cart-plus"></i> В корзину';
-    }, 3000);
-});
-</script> {% endcomment %}

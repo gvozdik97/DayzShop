@@ -57,16 +57,16 @@
     </div>
     
     <div class="d-flex flex-wrap justify-content-between gap-2 mt-3">
-        <a href="{% url 'shop:product_list' %}" class="btn btn-success btn-3d flex-grow-1">
-            Продолжить покупки
+        <a href="{% url 'shop:product_list' %}" class="btn btn-success btn-3d flex-grow-1" style="min-width: 200px;">
+            <i class="bi bi-cart-plus"></i> Продолжить покупки
         </a>
-        <a href="{% url 'cart:checkout' %}" class="btn btn-dark btn-neon btn-3d flex-grow-1">
-            Оформить заказ
+        <a href="{% url 'cart:checkout' %}" class="btn btn-dark btn-neon btn-3d flex-grow-1" style="min-width: 200px;">
+            <i class="bi bi-credit-card"></i> Оформить заказ
         </a>
-        <form method="post" action="{% url 'cart:clear' %}" class="flex-grow-1"
+        <form method="post" action="{% url 'cart:clear' %}" class="flex-grow-1 d-grid" style="min-width: 200px;"
             onsubmit="return confirm('Точно очистить корзину? Все товары будут удалены.')">
             {% csrf_token %}
-            <button type="submit" class="btn btn-danger w-100 me-2 btn-3d">
+            <button type="submit" class="btn btn-danger btn-3d w-100">
                 <i class="bi bi-trash-fill"></i> Очистить
             </button>
         </form>
