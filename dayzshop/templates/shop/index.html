@@ -23,24 +23,6 @@
         <div class="row row-cols-1 row-cols-md-3 g-4">
             {% if featured_products %}
                 {% for product in featured_products %}
-                    {% comment %} <div class="col">
-                        <div class="card h-100">
-                            <a href="{{ product.get_absolute_url }}">
-                                {% if product.image %}
-                                <img src="{{ product.image.url }}" class="card-img-top img-fluid" alt="{{ product.name }}" style="height: 180px; object-fit: cover;">
-                                {% else %}
-                                <img src="{% static 'img/no-image.jpg' %}" class="card-img-top img-fluid" alt="No image" style="height: 180px; object-fit: cover;">
-                                {% endif %}
-                            </a>
-                            <div class="card-body">
-                                <h5 class="card-title">{{ product.name|truncatechars:30 }}</h5>
-                                <span class="h6 text-dark mb-0 me-2">{{ product.price }} руб.</span>
-                                <a href="{% url 'cart:add' product.id %}" class="btn btn-glass">
-                                    В корзину
-                                </a> 
-                            </div>
-                        </div>
-                    </div> {% endcomment %}
                     {% include 'shop/includes/_product_cart.html' %}
                 {% endfor %}
             {% else %}

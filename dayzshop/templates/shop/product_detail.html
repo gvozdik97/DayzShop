@@ -54,11 +54,6 @@
                                     <button type="button" class="btn btn-outline-secondary plus-btn">+</button>
                                 </div>
                             </div>
-                            {% comment %} <div class="col-auto">
-                                <button type="submit" class="btn btn-warning">
-                                    <i class="bi bi-cart-plus"></i> В корзину
-                                </button>
-                            </div> {% endcomment %}
                             <button class="btn btn-warning add-to-cart-btn {% if request|is_in_cart:product %}disabled{% endif %}" 
                                     data-product-id="{{ product.id }}">
                                 {% if request|is_in_cart:product %}

@@ -56,6 +56,11 @@ body {
     background: linear-gradient(135deg, #157347 0%, #0f5c3a 100%);
 }
 
+.card-header h5 {
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
 .list-group-item a {
     color: inherit;
 }
@@ -422,6 +427,16 @@ btn-hover-fill:hover {
     }
 }
 
+@media (max-width: 767.98px) {
+    .card-header h5 {
+        font-size: 1.05rem !important;  /* Чуть больше базового fs-6 */
+        margin-left: 0.25rem;
+    }
+    .card-header .bi {
+        font-size: 1.1rem !important;
+    }
+}
+
 @media (max-width: 767px) {
     .table-responsive {
         font-size: 0.9rem;
@@ -448,6 +463,16 @@ btn-hover-fill:hover {
     }
 }
 
+@media (max-width: 575.98px) {
+    .card-header h5 {
+        font-size: 1rem !important;
+        letter-spacing: 0.3px;
+    }
+    .card-header .bi {
+        font-size: 1rem !important;
+    }
+}
+
 @media (max-width: 768px) {
     .fixed-header {
         height: 50px;
@@ -470,6 +495,9 @@ btn-hover-fill:hover {
         min-width: 100px;
         padding: 0.35rem 0.5rem;
         font-size: 0.85rem;
+    }
+    .card-header h5 {
+        font-size: 0.95rem !important;
     }
 }
 
@@ -596,4 +624,35 @@ btn-hover-fill:hover {
     .profile-icon-wrapper i {
         font-size: 1.2rem !important;
     }
+}
+
+/* Стили для переключателя языка */
+#languageDropdown {
+    min-width: 60px;
+    text-align: center;
+}
+
+.glass-dropdown {
+    background: rgba(26, 30, 35, 0.95) !important;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.glass-dropdown .dropdown-item {
+    color: #eee;
+    border-radius: 6px;
+    margin: 2px 6px;
+    width: auto;
+}
+
+.glass-dropdown .dropdown-item:hover {
+    background: rgba(40, 167, 69, 0.3) !important;
+}
+
+/* Иконка языка */
+.bi-translate {
+    font-size: 1.1rem;
+    vertical-align: middle;
 }

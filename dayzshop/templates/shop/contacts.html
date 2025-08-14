@@ -1,35 +1,37 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
-{% block title %}Контакты{% endblock %}
+{% block title %}{% trans "Контакты" %}{% endblock %}
 
 {% block content %}
 <div class="card mt-4">
-    <div class="card-header">Форма обратной связи</div>
+    <div class="card-header">{% trans "Форма обратной связи" %}</div>
     <div class="card-body">
         <form method="post">
             {% csrf_token %}
             <div class="mb-3">
-                <label for="email" class="form-label">Ваш Email</label>
+                <label for="email" class="form-label">{% trans "Ваш Email" %}</label>
                 <input type="email" class="form-control" id="email" name="email" required>
             </div>
             <div class="mb-3">
-                <label for="message" class="form-label">Сообщение</label>
+                <label for="message" class="form-label">{% trans "Сообщение" %}</label>
                 <textarea class="form-control" id="message" name="message" rows="3" required></textarea>
             </div>
-            <button type="submit" class="btn btn-gradient">Отправить</button>
+            <button type="submit" class="btn btn-gradient">{% trans "Отправить" %}</button>
         </form>
     </div>
 </div>
+
 <div class="container mt-5">
-    <h1 class="mb-4">Контакты</h1>
+    <h1 class="mb-4">{% trans "Контакты" %}</h1>
     
     <div class="row">
         <div class="col-md-6">
             <div class="card mb-4">
                 <div class="card-body">
-                    <h5 class="card-title">Техническая поддержка</h5>
+                    <h5 class="card-title">{% trans "Техническая поддержка" %}</h5>
                     <p class="card-text">
-                        <i class="bi bi-envelope"></i> Email: support@dayzdonate.ru<br>
+                        <i class="bi bi-envelope"></i> {% trans "Email" %}: support@dayzdonate.ru<br>
                         <i class="bi bi-telegram"></i> Telegram: @dayzdonate_support<br>
                         <i class="bi bi-discord"></i> Discord: DayZ Donate#1234
                     </p>
@@ -40,11 +42,13 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Реквизиты</h5>
+                    <h5 class="card-title">{% trans "Реквизиты" %}</h5>
                     <p class="card-text">
+                        {% blocktrans %}
                         ИП Иванов И.И.<br>
                         ИНН 123456789012<br>
                         ОГРНИП 123456789012345
+                        {% endblocktrans %}
                     </p>
                 </div>
             </div>
