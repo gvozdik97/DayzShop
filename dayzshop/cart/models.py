@@ -1,17 +1,35 @@
 from django.db import models
 from shop.models import Product
-from django.contrib.auth.models import User
 from decimal import Decimal
 from django.db.models import Sum
+from django.conf import settings
 
+
+User = settings.AUTH_USER_MODEL
 
 class Cart(models.Model):
-    session_key = models.CharField(max_length=40, blank=True)
+    session_key = models.CharField(
+        max_length=40, 
+        null=True, 
+        blank=True,
+        db_index=True
+    )
     user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = [['user'], ['session_key']]  # Уникальность
+        constraints = [
+            models.UniqueConstraint(
+                fields=['session_key'], 
+                name='unique_session_key',
+                condition=models.Q(session_key__isnull=False)
+            ),
+            models.UniqueConstraint(
+                fields=['user'], 
+                name='unique_user_cart',
+                condition=models.Q(user__isnull=False)
+            )
+        ]
 
     @property
     def items_count(self):

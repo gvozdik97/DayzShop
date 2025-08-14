@@ -1,5 +1,7 @@
 from django.contrib import admin
 from .models import Order, OrderItem
+from django.contrib.auth import get_user_model
+
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):

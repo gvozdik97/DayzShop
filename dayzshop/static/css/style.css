@@ -52,7 +52,8 @@ body {
 
 /* Заголовок карточки */
 .card-header {
-    background: linear-gradient(135deg, #1a3a32, #28a745) !important;  /* Градиентный фон */
+    color: white !important;
+    background: linear-gradient(135deg, #157347 0%, #0f5c3a 100%);
 }
 
 .list-group-item a {
@@ -297,6 +298,32 @@ btn-hover-fill:hover {
     background-color: var(--bs-danger) !important;
 }
 
+/* Стиль кнопки Steam */
+.btn-steam {
+    background: linear-gradient(135deg, #1b2838 0%, #171a21 100%);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.btn-steam:hover {
+    background: linear-gradient(135deg, #171a21 0%, #1b2838 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    color: #fff;
+}
+
+/* Аватар в шапке */
+.navbar .dropdown-toggle img {
+    transition: transform 0.3s;
+}
+
+.navbar .dropdown-toggle:hover img {
+    transform: scale(1.1);
+}
+
 .navbar {
     transition: all 0.3s ease;
 }
@@ -392,18 +419,55 @@ btn-hover-fill:hover {
     flex-shrink: 0;
     top: 100vh;
     width: 100%;
-    border-top: 3px solid #ff8c00;
+    border-top: 1px solid #eee;
 }
 
-/* Пагинация */
-.page-item.active .page-link {
-    background-color: #ffc107;
-    border-color: #ffc107;
-    color: #000;
+/* Зеленая пагинация с градиентами */
+.pagination-btn {
+    background: linear-gradient(135deg, #198754 0%, #157347 100%);
+    color: white !important;
+    border: 1px solid #146c43;
+    margin: 0 4px;
+    min-width: 40px;
+    text-align: center;
+    border-radius: 6px !important;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-.page-link {
-    color: #ffc107;
+.pagination-btn:hover {
+    background: linear-gradient(135deg, #157347 0%, #0f5c3a 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    color: #fff;
+}
+
+.pagination-active {
+    background: linear-gradient(135deg, #20c997 0%, #198754 100%) !important;
+    border: 1px solid #1aa179 !important;
+    color: white !important;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(32, 201, 151, 0.3);
+    border-radius: 6px !important;
+}
+
+.page-item.disabled .page-link {
+    background-color: #e9ecef;
+    color: #6c757d;
+}
+
+@media (max-width: 576px) {
+    .pagination-btn, .pagination-active {
+        min-width: 36px;
+        height: 36px;
+        padding: 0.5rem;
+        margin: 0 2px;
+        font-size: 0.9rem;
+    }
+    
+    .bi {
+        font-size: 1rem;
+    }
 }
 
 /* Детальная страница товара */
@@ -443,3 +507,34 @@ btn-hover-fill:hover {
     background-color: rgba(255, 255, 255, 0.7) !important;
 }
 
+.glass-dropdown {
+    background: rgba(26, 30, 35, 0.95) !important;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.hover-bg:hover {
+    background: rgba(40, 167, 69, 0.3) !important;
+    border-radius: 6px;
+}
+
+.profile-icon-wrapper {
+    transition: all 0.3s ease;
+}
+
+.profile-icon-wrapper:hover {
+    background: rgba(40, 167, 69, 0.3) !important;
+    transform: scale(1.05);
+}
+
+@media (max-width: 992px) {
+    .profile-icon-wrapper {
+        width: 36px !important;
+        height: 36px !important;
+    }
+    .profile-icon-wrapper i {
+        font-size: 1.2rem !important;
+    }
+}
