@@ -13,6 +13,15 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# Настройки для Debug Toolbar
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
+
+DEBUG_TOOLBAR_CONFIG = {
+    'SHOW_TOOLBAR_CALLBACK': lambda request: DEBUG,
+}
+
 AUTH_USER_MODEL = "users.User"
 
 INSTALLED_APPS = [
@@ -29,6 +38,7 @@ INSTALLED_APPS = [
     "bootstrap5",
     "social_django",
     'django_extensions',
+    'debug_toolbar',
 ]
 
 
@@ -36,12 +46,13 @@ MIDDLEWARE = [
     "social_django.middleware.SocialAuthExceptionMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    'django.middleware.locale.LocaleMiddleware',
+    # 'django.middleware.locale.LocaleMiddleware',
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 
@@ -111,21 +122,13 @@ SOCIAL_AUTH_PIPELINE = (
 )
 
 LANGUAGE_CODE = 'ru'
-LANGUAGES = (
-    ('ru', 'Русский'),
-    ('en', 'English'),
-)
-
-LOCALE_PATHS = [
-    os.path.join(BASE_DIR, 'locale'),
-]
 
 
 USE_I18N = True
 USE_L10N = True
-# USE_TZ = True
+USE_TZ = True
 
-# TIME_ZONE = "UTC"
+TIME_ZONE = "UTC"
 
 
 STATIC_URL = "/static/"
