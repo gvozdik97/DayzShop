@@ -1,43 +1,49 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from shop.models import Product
 from django.contrib import messages
-from .models import CartItem, Order, OrderItem
 from django.contrib.auth.decorators import login_required
-from django.urls import reverse
-from cart.utils import get_cart
+from django.db import transaction
 from django.db.models import Prefetch
+from django.http import JsonResponse
+from decimal import Decimal
+
+from cart.utils import get_cart
+from shop.models import Product
+from .models import CartItem, Order, OrderItem
 
 
 def cart_detail(request):
     cart = get_cart(request)
     return render(request, "cart/detail.html", {"cart": cart})
 
-
+@transaction.atomic
 def add_to_cart(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     cart = get_cart(request)
     quantity = int(request.POST.get("quantity", 1))
 
-    # Проверяем, есть ли уже товар в корзине
-    cart_item, created = CartItem.objects.get_or_create(
-        cart=cart,
-        product=product,
-        defaults={"quantity": quantity, "price": product.price},
-    )
+    try:
+        cart_item, created = CartItem.objects.get_or_create(
+            cart=cart,
+            product=product,
+            defaults={
+                'quantity': quantity,
+                'price': product.price
+            }
+        )
+        
+        if not created:
+            cart_item.quantity += quantity
+            cart_item.save()
 
-    if not created:
-        cart_item.quantity += quantity
-        cart_item.save()
-        messages.success(request, f'Количество "{product.name}" обновлено в корзине')
-    else:
-        messages.success(request, f'"{product.name}" добавлен в корзину')
-
-    # Редирект на предыдущую страницу или на страницу товара
-    redirect_url = request.META.get(
-        "HTTP_REFERER", reverse("shop:product_detail", args=[product.id, product.slug])
-    )
-    return redirect(redirect_url)
-
+        return JsonResponse({
+            'success': True,
+            'message': f'"{product.name}" добавлен в корзину',
+            'cart_count': cart.items.count(),
+            'cart_total': str(cart.get_total_price)
+        })
+    except Exception as e:
+        transaction.set_rollback(True)
+        return JsonResponse({'error': str(e)}, status=500)
 
 def update_cart_item(request, item_id):
     cart_item = get_object_or_404(CartItem, id=item_id, cart=get_cart(request))

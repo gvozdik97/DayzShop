@@ -8,40 +8,12 @@
 {% block content %}
     <div class="container mt-5">
         <div class="row">
-            <!-- Сайдбар с категориями -->
-            <div class="col-md-3">
-                <div class="card mb-4 border-0 shadow-sm">
-                    <div class="card-header py-3">
-                        <div class="d-flex align-items-center">  
-                            <i class="bi bi-collection fs-5 fs-sm-4 me-2"></i>  
-                            <h5 class="mb-0 fs-6 fs-sm-4 ps-1 ps-sm-0">Категории</h5>
-                        </div>
-                    </div>
-                    <ul class="list-group list-group-flush category-menu">
-                        <li class="list-group-item {% if not category %}active-category{% endif %}">
-                            <a href="{% url 'shop:product_list' %}" class="text-decoration-none d-flex align-items-center">
-                                <i class="bi bi-grid me-2"></i>
-                                <span>Все товары</span>
-                            </a>
-                        </li>
-                        {% for cat in categories %}
-                        <li class="list-group-item {% if category.slug == cat.slug %}active-category{% endif %}">
-                            <a href="{{ cat.get_absolute_url }}" class="text-decoration-none d-flex align-items-center">
-                                <i class="bi bi-tag me-2"></i>
-                                <span>{{ cat.name }}</span>
-                                <span class="badge bg-secondary ms-auto">{{ cat.products.count }}</span>
-                            </a>
-                        </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
 
             <!-- Основной контент -->
-            <div class="col-md-9">
+            <div class="col-md-12">
                 
                 <!-- Поиск -->
-                <div class="card mb-4 search-container">
+                <div class="mb-4 search-container">
                     <form method="get" action="{% url 'shop:product_list' %}" class="search-form">
                         <div class="input-group search-group">
                             <button class="input-group-text search-icon-link" type="submit">
@@ -58,14 +30,31 @@
                         </div>
                     </form>
                 </div>
+
+                <!-- Категории -->
+                <div class="mb-4 categories-scroll">
+                    <div class="d-flex flex-wrap gap-2">
+                        <a href="{% url 'shop:product_list' %}" 
+                        class="btn btn-category {% if not category %}active-category{% endif %}">
+                            <i class="bi bi-grid me-2"></i>Все товары
+                        </a>
+                        {% for cat in categories %}
+                        <a href="{{ cat.get_absolute_url }}" 
+                        class="btn btn-category {% if category.slug == cat.slug %}active-category{% endif %}">
+                            <i class="bi bi-tag me-2"></i>{{ cat.name }}
+                            <span class="badge-count">{{ cat.products.count }}</span>
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
                 
                 <!-- Товары -->
                 <h2>
                     {% if category %}{{ category.name }}{% else %}Все товары{% endif %}
-                    <small class="text-muted">({{ page_obj.paginator.count }})</small>
+                    {% comment %} <small class="text-muted">({{ page_obj.paginator.count }})</small> {% endcomment %}
                 </h2>
                 
-                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
                     {% for product in page_obj %}
                         {% include 'shop/includes/_product_cart.html' %}
                     {% endfor %}
@@ -134,6 +123,7 @@
         </div>
     </div>
 {% endblock %}
+
 {% block javascript %}
     <script src="{% static 'js/product_modal.js' %}"></script>
 {% endblock %}

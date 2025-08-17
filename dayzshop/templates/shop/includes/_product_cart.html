@@ -25,7 +25,7 @@
             <div class="card-actions mt-auto">
                 <div class="d-flex justify-content-between align-items-center flex-wrap">
                     <span class="h6 mb-0 text-white price-badge">{{ product.price }} ₽</span>
-                    <a id="addToCartBtn" href="{% url 'cart:add' product.id %}" 
+                    {% comment %} <a id="addToCartBtn" href="{% url 'cart:add' product.id %}" 
                     class="btn btn-translucent-green {% if product|is_in_cart:request %}} disabled{% else %}{% endif %}"
                     style="min-width: 100px;">
                         {% if product|is_in_cart:request %}
@@ -33,13 +33,19 @@
                         {% else %}
                             <i class="bi bi-cart-plus"></i> В корзину
                         {% endif %}
-                    </a>
+                    </a> {% endcomment %}
+                    <button 
+                        class="btn add-to-cart-btn {% if product|is_in_cart:request %}added-to-cart{% endif %}" 
+                        data-product-id="{{ product.id }}"
+                        {% if product|is_in_cart:request %}disabled{% endif %}>
+                        {% if product|is_in_cart:request %}
+                            <i class="bi bi-check-circle-fill"></i> В корзине
+                        {% else %}
+                            <i class="bi bi-cart-plus"></i> В корзину
+                        {% endif %}
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-{% block javascript %}
-    <script src="{% static 'js/cart.js' %}"></script>
-{% endblock %}

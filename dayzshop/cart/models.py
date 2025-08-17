@@ -2,6 +2,7 @@ from django.db import models
 from shop.models import Product
 from django.db.models import Sum
 from django.conf import settings
+from decimal import Decimal
 
 
 User = settings.AUTH_USER_MODEL
@@ -11,6 +12,7 @@ class Cart(models.Model):
     session_key = models.CharField(max_length=40, null=True, blank=True, db_index=True)
     user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
+    total_price = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal('0'))
 
     class Meta:
         constraints = [
@@ -44,9 +46,17 @@ class CartItem(models.Model):
     quantity = models.PositiveIntegerField(default=1)
     price = models.DecimalField(max_digits=10, decimal_places=2)
 
+    class Meta:
+        unique_together = ('cart', 'product')  # Гарантируем уникальность пары cart+product
+        verbose_name = 'Элемент корзины'
+        verbose_name_plural = 'Элементы корзины'
+
     @property
     def total_price(self):
         return self.price * self.quantity
+    
+    def __str__(self):
+        return f"{self.product.name} ({self.quantity})"
 
 
 class OrderQuerySet(models.QuerySet):

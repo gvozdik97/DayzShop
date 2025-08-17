@@ -10,9 +10,14 @@ function getCookie(name) {
 }
 
 function updateCartCounter(count) {
-    const counter = document.querySelector('.cart-counter');
-    if (counter) {
-        counter.textContent = count;
-        counter.classList.toggle('d-none', count <= 0);
+    const counters = document.querySelectorAll('.mini-badge');
+    if (counters.length === 0) {
+        console.warn('Счётчик корзины (.mini-badge) не найден');
+        return;
     }
+    counters.forEach(counter => {
+        counter.textContent = count;
+        counter.classList.add('animate-bounce');
+        setTimeout(() => counter.classList.remove('animate-bounce'), 500);
+    });
 }

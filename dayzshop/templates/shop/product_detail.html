@@ -75,10 +75,11 @@
                                     </div>
                                     
                                     <div class="col-auto">
-                                        <button type="submit" 
-                                                class="btn btn-translucent-green {% if request|is_in_cart:product %}disabled{% endif %}" 
-                                                data-product-id="{{ product.id }}">
-                                            {% if request|is_in_cart:product %}
+                                        <button 
+                                            class="btn add-to-cart-btn {% if product|is_in_cart:request %}added-to-cart{% endif %}" 
+                                            data-product-id="{{ product.id }}"
+                                            {% if product|is_in_cart:request %}disabled{% endif %}>
+                                            {% if product|is_in_cart:request %}
                                                 <i class="bi bi-check-circle-fill"></i> В корзине
                                             {% else %}
                                                 <i class="bi bi-cart-plus"></i> В корзину

@@ -18,17 +18,33 @@ body {
     padding-top: 80px;
 }
 
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+btn-primary:hover {
+    background-color: rgba(13, 110, 253, 0.7) !important; /* Полупрозрачный primary */
+    border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+/* Анимация перехода */
+@keyframes glassTransition {
+    0% { background: var(--bs-primary); }
+    100% { background: rgba(255, 255, 255, 0.15); }
+}
+
 .navbar {
     transition: all 0.3s ease;
-    background-color: #f8f9fa !important; /* Светло-серый */
+    background-color: #f8f9fa !important;
     backdrop-filter: blur(8px);
     border: 1px solid #e0e0e0;
     box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
-    /* background-color: rgba(15, 20, 25, 0.95) !important; */
-    /* backdrop-filter: blur(10px); */
-    /* border: 1px solid rgba(255, 255, 255, 0.1); */
     border-radius: 30px !important;
-    /* box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); */
     margin: 15px;
 }
 
@@ -39,7 +55,6 @@ body {
     font-weight: 600;
     letter-spacing: 0.5px;
     transition: all 0.3s ease;
-    /* color: #eee !important; */
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
 }
@@ -48,7 +63,6 @@ body {
     color: #1b5e20 !important;
 }
 
-/* Аватар в шапке */
 .navbar .dropdown-toggle img {
     transition: transform 0.3s;
 }
@@ -58,8 +72,6 @@ body {
 }
 
 .nav-link {
-    /* font-size: 1.1rem;
-    transition: opacity 0.3s; */
     color: #4a6350 !important;
     padding: 0.5rem 1rem !important;
     margin: 0 0.25rem;
@@ -67,9 +79,6 @@ body {
     transition: all 0.3s ease;
 }
 
-/* .nav-link:hover {
-    opacity: 0.8;
-} */
 .nav-link:hover,
 .nav-link:focus {
     color: #1b5e20 !important;
@@ -90,15 +99,8 @@ body {
     border-left: 3px solid #4caf50 !important;
 }
 
-/* .glass-dropdown {
-    background: rgba(26, 30, 35, 0.95) !important;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 12px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-} */
 .glass-dropdown {
-    background: rgba(248, 249, 250, 0.98) !important; /* Светлый */
+    background: rgba(248, 249, 250, 0.98) !important;
     backdrop-filter: blur(12px);
     border: 1px solid #e0e0e0 !important;
     border-radius: 12px;
@@ -114,16 +116,6 @@ body {
     color: #1b5e20 !important;
 }
 
-/* .glass-dropdown .dropdown-item {
-    color: #eee;
-    border-radius: 6px;
-    margin: 2px 6px;
-    width: auto;
-}
-
-.glass-dropdown .dropdown-item:hover {
-    background: rgba(40, 167, 69, 0.3) !important;
-} */
 
 /* Иконки */
 .bi {
@@ -169,6 +161,7 @@ body {
 
 .main-content {
     margin-top: var(--header-height);
+    margin-bottom: 30px;
 }
 
 /* .hero-section {
@@ -275,10 +268,13 @@ body {
     width: 100%;
     padding: 10px;
     display: flex;
+    position: relative;
     align-items: center;
     justify-content: center;
     background-color: transparent;
     overflow: hidden;
+    z-index: 2;
+    background-color: transparent;
 }
 
 .card-img-top {
@@ -335,7 +331,6 @@ body {
     background-color: rgba(255, 255, 255, 0.1);
     border: none;
     backdrop-filter: blur(8px);
-    /* background-color: #006A4E; */
     border: 1px solid #eee;
     transition: all 0.3s ease;
     color: #eee;
@@ -354,12 +349,6 @@ body {
     width: 100%;
     padding-top: 10px;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-/* static/css/style.css */
-.add-to-cart-btn {
-    transition: all 0.3s ease;
-    min-width: 40px;
 }
 
 .cart-counter {
@@ -388,7 +377,7 @@ body {
     line-height: 1;
 }
 
-.cart-badge {
+/* .cart-badge {
     top: -5px;
     left: 65%;
     font-size: 0.6rem;
@@ -397,6 +386,15 @@ body {
     border-radius: 50rem;
     color: white;
     transform: translateX(-50%);
+} */
+
+.mini-badge {
+    width: 18px; 
+    height: 18px; 
+    display: flex;
+    align-items: center; 
+    justify-content: center;
+    font-size: 0.65em;
 }
 
 /* Стили для страницы товара */
@@ -505,10 +503,10 @@ body {
 }
 
 /* Анимация кнопки */
-@keyframes bounce {
+/* @keyframes bounce {
     0%, 100% { transform: scale(1); }
     50% { transform: scale(1.1); }
-}
+} */
 
 .btn.disabled {
     pointer-events: none;
@@ -562,53 +560,6 @@ body {
     transform: scale(1.05);
 }
 
-.btn-translucent-green {
-    /* Яркий полупрозрачный фон с эффектом стекла */
-    background: rgba(46, 204, 64, 0.3) !important; /* Более насыщенный зелёный */
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(46, 204, 64, 0.6) !important; /* Яркая обводка */
-    
-    /* Текст и форма */
-    color: white !important;
-    font-weight: 600; /* Жирный шрифт */
-    border-radius: 8px;
-    
-    /* Анимации и эффекты */
-    transition: all 0.3s ease;
-    box-shadow: 
-        0 2px 10px rgba(0, 0, 0, 0.2),
-        0 0 12px rgba(46, 204, 64, 0.4); /* Зелёное свечение */
-}
-
-/* Состояние при наведении */
-.btn-translucent-green:hover {
-    background: rgba(46, 204, 64, 0.4) !important;
-    border-color: rgba(46, 204, 64, 0.8) !important;
-    transform: translateY(-2px);
-    box-shadow: 
-        0 4px 15px rgba(0, 0, 0, 0.25),
-        0 0 18px rgba(46, 204, 64, 0.6); /* Усиленное свечение */
-}
-
-/* Кнопка "В корзине" (disabled) */
-.btn-translucent-green.disabled {
-    background: rgba(32, 201, 151, 0.15) !important; /* Бирюзовый (приглушённый) */
-    border: 1px solid rgba(32, 201, 151, 0.3) !important;
-    color: rgba(255, 255, 255, 0.7) !important; /* Полупрозрачный текст */
-    cursor: default;
-    box-shadow: 
-        0 2px 8px rgba(0, 0, 0, 0.1),
-        inset 0 0 8px rgba(32, 201, 151, 0.2); /* Свечение внутрь */
-}
-
-/* Анимация нажатия */
-.btn-translucent-green:active {
-    transform: translateY(0);
-    box-shadow: 
-        0 1px 5px rgba(0, 0, 0, 0.1),
-        0 0 8px rgba(46, 204, 64, 0.3);
-}
-
 .btn-dark {
     background: linear-gradient(135deg, #343a40, #23272b);
     color: white;
@@ -638,16 +589,83 @@ body {
     transform: scale(0.95);
 }
 
-btn-primary:hover {
-    background-color: rgba(13, 110, 253, 0.7) !important; /* Полупрозрачный primary */
-    border-color: rgba(255, 255, 255, 0.3) !important;
+.add-to-cart-btn {
+    background: rgba(46, 204, 64, 0.3) !important; 
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(46, 204, 64, 0.6) !important;
+    
+    color: white !important;
+    font-weight: 600;
+    border-radius: 8px;
+
+    transition: all 0.3s ease;
+    box-shadow: 
+        0 2px 10px rgba(0, 0, 0, 0.2),
+        0 0 12px rgba(46, 204, 64, 0.4);
 }
 
-/* Анимация перехода */
-@keyframes glassTransition {
-    0% { background: var(--bs-primary); }
-    100% { background: rgba(255, 255, 255, 0.15); }
+.add-to-cart-btn.loading {
+    opacity: 0.8;
 }
+
+.add-to-cart-btn.loading .spinner {
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 1s linear infinite;
+}
+
+.add-to-cart-btn.added-to-cart {
+    background: rgba(250, 255, 253, 0.2) !important;
+    border: 1px solid rgba(240, 250, 247, 0.2) !important;
+    color: rgba(255, 255, 255, 0.9) !important;
+    cursor: not-allowed;
+    box-shadow: none;
+    backdrop-filter: blur(1px);
+}
+
+.add-to-cart-btn:hover {
+    background: rgba(46, 204, 64, 0.4) !important;
+    border-color: rgba(46, 204, 64, 0.8) !important;
+    transform: translateY(-2px);
+    box-shadow: 
+        0 4px 15px rgba(0, 0, 0, 0.25),
+        0 0 18px rgba(46, 204, 64, 0.6);
+}
+
+.add-to-cart-btn.added-to-cart:hover {
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+.add-to-cart-btn:active {
+    transform: translateY(0);
+    box-shadow: 
+        0 1px 5px rgba(0, 0, 0, 0.1),
+        0 0 8px rgba(46, 204, 64, 0.3);
+}
+
+/* .add-to-cart-btn.added {
+    background: rgba(250, 255, 253, 0.2) !important;
+    border: 1px solid rgba(240, 250, 247, 0.2) !important;
+    color: rgba(255, 255, 255, 0.4) !important;
+    cursor: not-allowed;
+    box-shadow: none;
+    backdrop-filter: blur(1px);
+} */
+
+.add-to-cart-btn.error {
+    background-color: #e53e3e !important;
+    border-color: #e53e3e !important;
+    color: rgba(255, 255, 255, 0.4) !important;
+    cursor: not-allowed;
+    box-shadow: none;
+    backdrop-filter: blur(1px);
+}
+
 
 .btn-3d {
     position: relative;
@@ -711,9 +729,6 @@ btn-hover-fill:hover {
     body {
         padding-top: 60px;
     }
-    /* .navbar {
-        border-radius: 0 !important;
-    } */
     .navbar-collapse {
         background-color: rgba(248, 249, 250, 0.98) !important;
         border: 1px solid #e0e0e0;
@@ -823,6 +838,26 @@ btn-hover-fill:hover {
     .category-menu {
         backdrop-filter: none;
         background-color: rgba(30, 30, 30, 0.9);
+    }
+    .categories-scroll {
+        overflow-x: auto;
+        white-space: nowrap;
+        padding-bottom: 10px;
+        -webkit-overflow-scrolling: touch;
+    }
+    .categories-scroll .d-flex {
+        flex-wrap: nowrap;
+        display: inline-flex;
+    }
+    .btn-category {
+        padding: 6px 12px;
+        font-size: 13px;
+    }
+    .btn-category i {
+        margin-right: 4px;
+    }
+    .badge-count {
+        margin-left: 4px;
     }
 }
 
@@ -971,13 +1006,6 @@ btn-hover-fill:hover {
 
 .card:hover .card-shine-effect {
     left: 150%;
-}
-
-/* Гарантируем, что изображение будет поверх эффекта */
-.cart-image-container {
-    position: relative;
-    z-index: 2;
-    background-color: transparent;
 }
 
 
@@ -1131,4 +1159,171 @@ btn-hover-fill:hover {
 /* Фикс для z-index в модальных окнах */
 .debug-toolbar-always-on-top {
     z-index: 10001 !important;
+}
+
+/* Стили для SVG иконки профиля */
+.svg-icon {
+    width: 40px;
+    height: 40px;
+    transition: all 0.3s ease;
+}
+
+/* Анимация при наведении */
+.dropdown-toggle:hover .svg-icon {
+    transform: scale(1.1);
+}
+
+/* Стили для кнопок категорий */
+:root {
+    --green-100: rgba(120, 200, 150, 0.15);  /* Светло-зеленый (основной) */
+    --green-200: rgba(100, 180, 130, 0.25);  /* Зеленый средней насыщенности */
+    --green-300: #64c282;                     /* Яркий акцентный зеленый */
+    --green-border: rgba(100, 180, 130, 0.4); /* Границы */
+}
+
+.btn-category {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(4px);
+    display: inline-flex;
+    align-items: center;
+}
+
+.btn-category:hover {
+    background: var(--green-100);
+    border-color: var(--green-border);
+    color: white;
+    transform: translateY(-1px);
+}
+
+.active-category {
+    background: var(--green-200) !important;
+    border-color: var(--green-border) !important;
+    color: white !important;
+    box-shadow: 0 2px 8px rgba(100, 180, 130, 0.2);
+}
+
+.badge-count {
+    background: var(--green-100);
+    color: #e8f5e9;
+    border-radius: 12px;
+    padding: 2px 8px;
+    font-size: 12px;
+    margin-left: 8px;
+    font-weight: 500;
+}
+
+.active-category .badge-count {
+    background: var(--green-300);
+    color: white;
+}
+
+/* Анимация при наведении */
+.btn-category:hover .bi {
+    animation: bounce 0.5s;
+}
+
+/* @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+} */
+
+.category-menu .list-group-item a:hover i {
+    opacity: 1 !important;
+    transition: opacity 0.2s ease;
+}
+
+/* Можно добавить в CSS для горизонтального скролла на мобильных */
+.categories-scroll {
+    overflow-x: auto;
+    white-space: nowrap;
+    padding-bottom: 10px;
+}
+
+.categories-scroll .d-flex {
+    flex-wrap: nowrap;
+    padding-bottom: 5px;
+}
+
+
+/* Анимации */
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+@keyframes highlight {
+    0% { background-color: rgba(32, 201, 151, 0.3); }
+    100% { background-color: transparent; }
+}
+
+/* Уведомления */
+.toast-notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: all 0.3s ease;
+    z-index: 9999;
+}
+
+.toast-notification.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.toast-notification.success {
+    background-color: #38a169;
+}
+
+.toast-notification.error {
+    background-color: #e53e3e;
+}
+
+.animate-bounce {
+    animation: bounce 0.5s;
+}
+
+/* Анимации в корзине */
+.updated {
+    animation: highlight 1s;
+}
+
+.removing {
+    opacity: 0;
+    transform: translateX(100px);
+    transition: all 0.5s ease;
+}
+
+.cart-empty-message {
+    text-align: center;
+    padding: 20px;
+    font-size: 1.2rem;
+    color: #718096;
+}
+
+/* .spinner {
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 1s ease-in-out infinite;
+} */
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
 }
