@@ -201,6 +201,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    
+
     // ==================== ОБРАБОТЧИКИ СОБЫТИЙ ====================
     // Добавление в корзину
     document.body.addEventListener('click', function(e) {
@@ -277,26 +279,5 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
         }
-    });
-    document.getElementById('apply-discount').addEventListener('click', function() {
-        const code = document.getElementById('discount-code').value;
-        fetch('/cart/apply-discount/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'X-CSRFToken': getCookie('csrftoken')
-            },
-            body: `discount_code=${encodeURIComponent(code)}`
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                showToast(data.message, 'success');
-                // Обновляем суммы на странице
-                document.querySelector('.cart-total').textContent = `${data.total_after_discount} руб.`;
-            } else {
-                showToast(data.message, 'error');
-            }
-        });
     });
 });

@@ -44,10 +44,11 @@ class Cart(models.Model):
 
     @property
     def get_total_price_after_discount(self):
-        """Фактическая сумма к оплате (с учетом скидок)"""
+        """Фактическая сумма к оплате (с учетом скидок) только для выбранных товаров"""
+        selected_items = self.items.filter(is_selected=True)
         return sum(
-            item.product.price * item.quantity  # price уже содержит скидку
-            for item in self.items.all()
+            item.product.price * item.quantity
+            for item in selected_items
         )
 
     @property
@@ -72,6 +73,7 @@ class CartItem(models.Model):
         decimal_places=2,
         verbose_name='Цена на момент добавления'
     )
+    is_selected = models.BooleanField(default=True, verbose_name="Выбран")
 
     class Meta:
         unique_together = ('cart', 'product')

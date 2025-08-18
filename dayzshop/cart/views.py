@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.db.models import Prefetch
 from django.http import JsonResponse
-from decimal import Decimal
+from django.views.decorators.http import require_POST
 
 from cart.utils import get_cart
 from shop.models import Product
@@ -13,7 +13,21 @@ from .models import CartItem, Order, OrderItem
 
 def cart_detail(request):
     cart = get_cart(request)
-    return render(request, "cart/detail.html", {"cart": cart})
+    
+    all_selected = False
+    if cart.items.exists():
+        all_selected = not cart.items.filter(is_selected=False).exists()
+    
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        return JsonResponse({
+            'total_selected_price': cart.get_total_price_after_discount,
+            'all_selected': all_selected
+        })
+    
+    return render(request, "cart/detail.html", {
+        "cart": cart,
+        "all_selected": all_selected
+    })
 
 @transaction.atomic
 def add_to_cart(request, product_id):
@@ -64,7 +78,6 @@ def update_cart_item(request, item_id):
 
     return redirect("cart:detail")
 
-
 def remove_from_cart(request, item_id):
     cart_item = get_object_or_404(CartItem, id=item_id, cart=get_cart(request))
     product_name = cart_item.product.name
@@ -73,46 +86,11 @@ def remove_from_cart(request, item_id):
     messages.success(request, f'"{product_name}" удален из корзины')
     return redirect("cart:detail")
 
-
 def clear_cart(request):
     cart = get_cart(request)
     cart.items.all().delete()
     messages.success(request, "✅ Корзина полностью очищена")
     return redirect("cart:detail")
-
-# def apply_discount(request):
-#     if request.method == 'POST':
-#         cart = get_cart(request)
-#         discount_code = request.POST.get('discount_code')
-#         success, message = cart.apply_discount(discount_code)
-        
-#         if request.is_ajax():
-#             return JsonResponse({
-#                 'success': success,
-#                 'message': message,
-#                 'discount_amount': str(cart.get_discount_amount),
-#                 'total_after_discount': str(cart.get_total_price_after_discount)
-#             })
-#         else:
-#             if success:
-#                 messages.success(request, message)
-#             else:
-#                 messages.error(request, message)
-#             return redirect('cart:detail')
-
-# def remove_discount(request):
-#     cart = get_cart(request)
-#     cart.clear_discount()
-    
-#     if request.is_ajax():
-#         return JsonResponse({
-#             'success': True,
-#             'message': 'Скидка удалена',
-#             'total_after_discount': str(cart.get_total_price_after_discount)
-#         })
-#     else:
-#         messages.success(request, 'Скидка удалена')
-#         return redirect('cart:detail')
 
 def order_list(request):
     orders = (
@@ -126,7 +104,6 @@ def order_list(request):
     )
     return render(request, "cart/order_list.html", {"orders": orders})
 
-
 @login_required
 def order_detail(request, pk):
     order = get_object_or_404(
@@ -139,7 +116,6 @@ def order_detail(request, pk):
         user=request.user,  # Проверка прав
     )
     return render(request, "cart/order_detail.html", {"order": order})
-
 
 @login_required
 def checkout(request):
@@ -174,3 +150,32 @@ def checkout(request):
         "cart/checkout.html",
         {"cart": cart, "total_price": cart.get_total_price},  # Передаем как свойство
     )
+
+@require_POST
+def toggle_item_selection(request, item_id):
+    cart_item = get_object_or_404(CartItem, id=item_id, cart=get_cart(request))
+    cart_item.is_selected = not cart_item.is_selected
+    cart_item.save()
+    
+    cart = cart_item.cart
+    all_selected = not cart.items.filter(is_selected=False).exists()
+    
+    return JsonResponse({
+        'success': True,
+        'is_selected': cart_item.is_selected,
+        'total_selected_price': cart.get_total_price_after_discount,
+        'all_selected': all_selected
+    })
+
+@require_POST
+def select_all_items(request):
+    cart = get_cart(request)
+    is_select_all = request.POST.get('select_all', 'false') == 'true'
+    
+    cart.items.all().update(is_selected=is_select_all)
+    
+    return JsonResponse({
+        'success': True,
+        'is_select_all': is_select_all,
+        'total_selected_price': cart.get_total_price_after_discount
+    })
