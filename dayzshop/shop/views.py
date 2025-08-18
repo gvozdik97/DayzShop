@@ -18,7 +18,7 @@ def index(request):
 def product_list(request, category_slug=None):
     category = None
     categories = Category.objects.all()
-    products = Product.objects.filter(available=True)
+    products = Product.objects.filter(available=True).select_related('category')
 
     # Поиск
     search_query = request.GET.get("search", "")

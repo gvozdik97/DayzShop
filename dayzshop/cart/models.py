@@ -1,8 +1,8 @@
 from django.db import models
-from shop.models import Product
 from django.db.models import Sum
 from django.conf import settings
 from decimal import Decimal
+from django.utils import timezone
 
 
 User = settings.AUTH_USER_MODEL
@@ -34,7 +34,30 @@ class Cart(models.Model):
 
     @property
     def get_total_price(self):
-        return sum(item.price * item.quantity for item in self.items.all())
+        """Общая сумма БЕЗ учета скидок (по старым ценам)"""
+        return sum(
+            item.product.old_price * item.quantity 
+            if item.product.is_on_sale and item.product.old_price 
+            else item.product.price * item.quantity 
+            for item in self.items.all()
+        )
+
+    @property
+    def get_total_price_after_discount(self):
+        """Фактическая сумма к оплате (с учетом скидок)"""
+        return sum(
+            item.product.price * item.quantity  # price уже содержит скидку
+            for item in self.items.all()
+        )
+
+    @property
+    def total_savings(self):
+        """Сумма сэкономленных денег"""
+        savings = Decimal('0')
+        for item in self.items.all():
+            if item.product.is_on_sale and item.product.old_price:
+                savings += (item.product.old_price - item.product.price) * item.quantity
+        return savings
 
     def __str__(self):
         return f"Cart #{self.id}"
@@ -42,12 +65,16 @@ class Cart(models.Model):
 
 class CartItem(models.Model):
     cart = models.ForeignKey(Cart, related_name="items", on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product = models.ForeignKey('shop.Product', on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
+    price = models.DecimalField(
+        max_digits=10, 
+        decimal_places=2,
+        verbose_name='Цена на момент добавления'
+    )
 
     class Meta:
-        unique_together = ('cart', 'product')  # Гарантируем уникальность пары cart+product
+        unique_together = ('cart', 'product')
         verbose_name = 'Элемент корзины'
         verbose_name_plural = 'Элементы корзины'
 
@@ -71,7 +98,7 @@ class OrderQuerySet(models.QuerySet):
 class Order(models.Model):
     objects = OrderQuerySet.as_manager()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    products = models.ManyToManyField(Product, through="OrderItem")
+    products = models.ManyToManyField('shop.Product', through="OrderItem")
     total_price = models.DecimalField(max_digits=10, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
     steam_id = models.CharField(max_length=50)
@@ -87,7 +114,7 @@ class Order(models.Model):
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product = models.ForeignKey('shop.Product', on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
 

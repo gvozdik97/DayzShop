@@ -11,12 +11,11 @@ class Category(models.Model):
         verbose_name = "Категория"
         verbose_name_plural = "Категории"
 
-    def __str__(self):
-        return self.name
-
     def get_absolute_url(self):
         return reverse("shop:product_list_by_category", args=[self.slug])
 
+    def __str__(self):
+        return self.name
 
 class Product(models.Model):
     category = models.ForeignKey(
@@ -34,6 +33,14 @@ class Product(models.Model):
         validators=[MinValueValidator(0)],
         verbose_name="Цена",
     )
+    old_price = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        verbose_name="Старая цена (если есть скидка)"
+    )
+    is_on_sale = models.BooleanField(default=False, verbose_name="Скидка активна")
     image = models.ImageField(upload_to="products/", verbose_name="Изображение")
     available = models.BooleanField(default=True, verbose_name="Доступен")
     created = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
@@ -44,8 +51,17 @@ class Product(models.Model):
         verbose_name_plural = "Товары"
         ordering = ["-created"]
 
-    def __str__(self):
-        return self.name
-
     def get_absolute_url(self):
         return reverse("shop:product_detail", args=[self.id, self.slug])
+
+    @property
+    def discount_percentage(self):
+        """Автоматический расчёт % скидки"""
+        if self.is_on_sale and self.old_price:
+            return int(100 - (self.price / self.old_price * 100))
+        return 0
+
+    def __str__(self):
+        return f"{self.name} - {self.price}₽" + (
+            f" (скидка {self.discount_percentage}%)" if self.is_on_sale else ""
+        )

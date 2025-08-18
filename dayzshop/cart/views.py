@@ -20,6 +20,8 @@ def add_to_cart(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     cart = get_cart(request)
     quantity = int(request.POST.get("quantity", 1))
+    # price = product.old_price if product.is_on_sale else product.price
+    price = product.price
 
     try:
         cart_item, created = CartItem.objects.get_or_create(
@@ -27,7 +29,7 @@ def add_to_cart(request, product_id):
             product=product,
             defaults={
                 'quantity': quantity,
-                'price': product.price
+                'price': price
             }
         )
         
@@ -43,7 +45,10 @@ def add_to_cart(request, product_id):
         })
     except Exception as e:
         transaction.set_rollback(True)
-        return JsonResponse({'error': str(e)}, status=500)
+        return JsonResponse({
+            'success': False,
+            'message': str(e)
+        }, status=400)
 
 def update_cart_item(request, item_id):
     cart_item = get_object_or_404(CartItem, id=item_id, cart=get_cart(request))
@@ -75,6 +80,39 @@ def clear_cart(request):
     messages.success(request, "✅ Корзина полностью очищена")
     return redirect("cart:detail")
 
+# def apply_discount(request):
+#     if request.method == 'POST':
+#         cart = get_cart(request)
+#         discount_code = request.POST.get('discount_code')
+#         success, message = cart.apply_discount(discount_code)
+        
+#         if request.is_ajax():
+#             return JsonResponse({
+#                 'success': success,
+#                 'message': message,
+#                 'discount_amount': str(cart.get_discount_amount),
+#                 'total_after_discount': str(cart.get_total_price_after_discount)
+#             })
+#         else:
+#             if success:
+#                 messages.success(request, message)
+#             else:
+#                 messages.error(request, message)
+#             return redirect('cart:detail')
+
+# def remove_discount(request):
+#     cart = get_cart(request)
+#     cart.clear_discount()
+    
+#     if request.is_ajax():
+#         return JsonResponse({
+#             'success': True,
+#             'message': 'Скидка удалена',
+#             'total_after_discount': str(cart.get_total_price_after_discount)
+#         })
+#     else:
+#         messages.success(request, 'Скидка удалена')
+#         return redirect('cart:detail')
 
 def order_list(request):
     orders = (

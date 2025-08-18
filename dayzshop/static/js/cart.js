@@ -1,5 +1,26 @@
 // static/js/cart.js
 document.addEventListener('DOMContentLoaded', function() {
+    // ==================== АНИМАЦИЯ НАЗВАНИЙ ТОВАРОВ ====================
+    function initMarqueeTitles() {
+        document.querySelectorAll('.product-name').forEach(function(el) {
+            const container = el.parentElement;
+            const textWidth = el.scrollWidth;
+            const containerWidth = container.offsetWidth;
+            
+            if (textWidth > containerWidth) {
+                el.classList.add('marquee');
+                
+                // Создаем клон для плавной анимации
+                const clone = el.cloneNode(true);
+                clone.classList.add('marquee-clone');
+                container.appendChild(clone);
+            }
+        });
+    }
+
+    initMarqueeTitles();
+
+    // ==================== УВЕДОМЛЕНИЯ ====================
     function showToast(message, type = 'success') {
         const toast = document.createElement('div');
         toast.className = `toast-notification ${type}`;
@@ -21,28 +42,40 @@ document.addEventListener('DOMContentLoaded', function() {
         const states = {
             loading: {
                 html: '<span class="spinner"></span> Добавляем...',
-                class: 'loading'
+                class: 'loading',
+                disabled: true,
+                redirect: false
             },
             added: {
                 html: '<i class="bi bi-check-circle-fill"></i> В корзине',
                 class: 'added-to-cart',
-                disabled: true
+                disabled: false,
+                redirect: true
             },
             default: {
                 html: '<i class="bi bi-cart-plus"></i> В корзину',
                 class: '',
-                disabled: false
+                disabled: false,
+                redirect: false
             },
             error: {
                 html: '<i class="bi bi-exclamation-triangle"></i> Ошибка',
                 class: 'error',
-                disabled: false
+                disabled: false,
+                redirect: false
             }
         };
         
         button.innerHTML = states[state].html;
-        button.className = `add-to-cart-btn btn btn-translucent-green ${states[state].class}`;
+        button.className = `btn add-to-cart-btn ${states[state].class}`;
         button.disabled = states[state].disabled;
+
+        if (state === 'added') {
+            button.dataset.isInCart = 'true';
+            button.style.cursor = 'pointer';
+        } else {
+            button.removeAttribute('data-is-in-cart');
+        }
     }
 
     async function addToCart(productId, button) {
@@ -64,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (data.success) {
                 setCartButtonState(button, 'added');
                 updateCartCounter(data.cart_count);
-                showToast(data.message || 'Товар добавлен в корзину');
+                showToast('Товар добавлен в корзину');
                 // Создаём счётчик, если его нет
                 if (!document.querySelector('.mini-badge')) {
                     const cartUrl = document.getElementById('cart-data').dataset.cartUrl;
@@ -94,7 +127,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             } else {
                 setCartButtonState(button, 'error');
-                showToast(data.message || 'Ошибка добавления', 'error');
+                showToast('Ошибка добавления', 'error');
                 setTimeout(() => setCartButtonState(button, 'default'), 2000);
             }
         } catch (error) {
@@ -154,7 +187,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 setTimeout(() => row.remove(), 500);
                 
                 updateCartCounter(data.cart_count);
-                showToast(data.message || 'Товар удален');
+                showToast('Товар удален');
                 
                 if (data.cart_count === 0) {
                     document.querySelector('.cart-table')?.insertAdjacentHTML('afterend', 
@@ -175,7 +208,11 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!btn) return;
         
         e.preventDefault();
-        if (btn.classList.contains('added-to-cart')) return;
+        
+        if (btn.dataset.isInCart === 'true' || btn.classList.contains('added-to-cart')) {
+            window.location.href = document.getElementById('cart-data').dataset.cartUrl;
+            return;
+        }
         
         addToCart(btn.dataset.productId, btn);
     });
@@ -240,5 +277,26 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
         }
+    });
+    document.getElementById('apply-discount').addEventListener('click', function() {
+        const code = document.getElementById('discount-code').value;
+        fetch('/cart/apply-discount/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: `discount_code=${encodeURIComponent(code)}`
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showToast(data.message, 'success');
+                // Обновляем суммы на странице
+                document.querySelector('.cart-total').textContent = `${data.total_after_discount} руб.`;
+            } else {
+                showToast(data.message, 'error');
+            }
+        });
     });
 });

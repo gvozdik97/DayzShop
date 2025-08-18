@@ -38,6 +38,11 @@ btn-primary:hover {
     100% { background: rgba(255, 255, 255, 0.15); }
 }
 
+@keyframes highlight {
+    0% { background-color: rgba(32, 201, 151, 0.3); }
+    100% { background-color: transparent; }
+}
+
 .navbar {
     transition: all 0.3s ease;
     background-color: #f8f9fa !important;
@@ -434,15 +439,6 @@ btn-primary:hover {
     font-size: 1.25rem;
 }
 
-.quantity-input {
-    transition: border-color 0.3s;
-    max-width: 50px;
-    text-align: center;
-}
-
-.quantity-input:focus {
-    border-color: #ffc107;
-}
 
 /* Основной стиль кнопки */
 .btn-search {
@@ -590,18 +586,27 @@ btn-primary:hover {
 }
 
 .add-to-cart-btn {
+    width: 100% !important;
+    min-width: 100%;
     background: rgba(46, 204, 64, 0.3) !important; 
     backdrop-filter: blur(8px);
     border: 1px solid rgba(46, 204, 64, 0.6) !important;
-    
     color: white !important;
     font-weight: 600;
     border-radius: 8px;
-
     transition: all 0.3s ease;
     box-shadow: 
         0 2px 10px rgba(0, 0, 0, 0.2),
         0 0 12px rgba(46, 204, 64, 0.4);
+}
+
+.add-to-cart-btn:hover {
+    background: rgba(46, 204, 64, 0.4) !important;
+    border-color: rgba(46, 204, 64, 0.8) !important;
+    transform: translateY(-2px);
+    box-shadow: 
+        0 4px 15px rgba(0, 0, 0, 0.25),
+        0 0 18px rgba(46, 204, 64, 0.6);
 }
 
 .add-to-cart-btn.loading {
@@ -621,19 +626,11 @@ btn-primary:hover {
 .add-to-cart-btn.added-to-cart {
     background: rgba(250, 255, 253, 0.2) !important;
     border: 1px solid rgba(240, 250, 247, 0.2) !important;
-    color: rgba(255, 255, 255, 0.9) !important;
+    color: rgba(255, 255, 255, 0.5) !important;
     cursor: not-allowed;
     box-shadow: none;
     backdrop-filter: blur(1px);
-}
-
-.add-to-cart-btn:hover {
-    background: rgba(46, 204, 64, 0.4) !important;
-    border-color: rgba(46, 204, 64, 0.8) !important;
-    transform: translateY(-2px);
-    box-shadow: 
-        0 4px 15px rgba(0, 0, 0, 0.25),
-        0 0 18px rgba(46, 204, 64, 0.6);
+    cursor: pointer;
 }
 
 .add-to-cart-btn.added-to-cart:hover {
@@ -980,9 +977,6 @@ btn-hover-fill:hover {
 }
 
 .price-badge {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 5px 12px;
-    border-radius: 20px;
     font-weight: 600;
 }
 
@@ -1081,11 +1075,28 @@ btn-hover-fill:hover {
     transition: background-color 5000s ease-in-out 0s;
 }
 
+/* Quantity Controls */
+.quantity-control {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .quantity-input {
-    background-color: rgba(255, 255, 255, 0.1) !important;
-    border-color: rgba(255, 255, 255, 0.2) !important;
-    color: white;
+    max-width: 60px;
+    width: 40px;
+    height: 35px;
     text-align: center;
+    padding: 0;
+    margin: 0 -1px;
+    -moz-appearance: textfield; /* Убирает стрелки в Firefox */
+    appearance: textfield;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white !important;
+    line-height: 1;
 }
 
 .quantity-input:focus {
@@ -1093,9 +1104,21 @@ btn-hover-fill:hover {
     box-shadow: 0 0 0 0.25rem rgba(40, 167, 69, 0.25);
 }
 
-/* Анимация кнопок количества */
+/* Убираем стрелки в Webkit-браузерах */
+.quantity-input::-webkit-outer-spin-button,
+.quantity-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
 .minus-btn, .plus-btn {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     transition: all 0.2s ease;
+    line-height: 1;
 }
 
 .minus-btn:hover, .plus-btn:hover {
@@ -1251,46 +1274,66 @@ btn-hover-fill:hover {
 }
 
 
-/* Анимации */
-@keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-5px); }
-}
-
-@keyframes highlight {
-    0% { background-color: rgba(32, 201, 151, 0.3); }
-    100% { background-color: transparent; }
-}
-
 /* Уведомления */
 .toast-notification {
     position: fixed;
-    top: 20px;
-    right: 20px;
-    padding: 12px 16px;
-    border-radius: 8px;
+    top: 13%; /* Расстояние от шапки сайта */
+    left: 50%;
+    transform: translateX(-50%) translateY(-100px);
+    padding: 8px 20px;
+    border-radius: 12px;
     color: white;
     display: flex;
     align-items: center;
     gap: 8px;
     opacity: 0;
-    transform: translateY(-20px);
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     z-index: 9999;
+    font-size: 0.875rem;
+    max-width: 90%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .toast-notification.show {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateX(-50%) translateY(0);
 }
 
 .toast-notification.success {
-    background-color: #38a169;
+    background-color: rgba(40, 167, 69, 0.4);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .toast-notification.error {
-    background-color: #e53e3e;
+    background-color: rgba(220, 53, 69, 0.4);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
+
+.toast-notification i {
+    font-size: 1rem;
+}
+
+/* Анимация появления/исчезания */
+@keyframes toastSlideIn {
+    0% { transform: translateX(-50%) translateY(-100px); opacity: 0; }
+    100% { transform: translateX(-50%) translateY(0); opacity: 1; }
+}
+
+@keyframes toastSlideOut {
+    0% { transform: translateX(-50%) translateY(0); opacity: 1; }
+    100% { transform: translateX(-50%) translateY(-100px); opacity: 0; }
+}
+
+.toast-notification.show {
+    animation: toastSlideIn 0.5s forwards;
+}
+
+.toast-notification.hide {
+    animation: toastSlideOut 0.5s forwards;
+}
+
 
 .animate-bounce {
     animation: bounce 0.5s;
@@ -1324,6 +1367,264 @@ btn-hover-fill:hover {
     animation: spin 1s ease-in-out infinite;
 } */
 
-@keyframes spin {
-    to { transform: rotate(360deg); }
+
+.product-name-wrapper {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    margin-top: 0.25rem;
+}
+
+.product-name {
+    display: inline-block;
+    white-space: nowrap;
+    position: relative;
+    padding-right: 20px; 
+}
+
+.product-name.marquee {
+    animation: marquee 10s linear infinite;
+    padding-left: 100%; 
+    display: inline-block;
+}
+
+.product-name-wrapper:hover .product-name.marquee,
+.product-name-wrapper:hover .marquee-clone {
+    animation-play-state: paused;
+}
+
+
+
+@keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
+}
+
+.cart_category_badge {
+    font-size: 0.7rem;
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255,255,255,0.95);
+    border: 1px solid rgba(255,255,255,0.2);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+}
+
+
+.cart-container .bi {
+    margin: 0 !important;
+    left: -1px;
+}
+
+/* Cart Page Styles */
+.cart-header {
+    color: #e0e0e0;
+}
+
+.cart-icon-wrapper {
+    width: 48px;
+    height: 48px;
+    background-color: var(--bs-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cart-icon-wrapper .bi-cart2 {
+    font-size: 1.5rem;
+    color: white;
+}
+
+/* Cart Card Styles */
+.cart-item {
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.cart-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+/* Product Image in Cart */
+.cart-product-image {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+/* Price Styles */
+.cart-price {
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.cart-old-price {
+    text-decoration: line-through;
+    color: rgba(255, 255, 255, 0.6) !important;
+}
+
+/* Empty Cart Styles */
+.empty-cart-icon {
+    font-size: 3rem;
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.empty-cart {
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Summary Card */
+.cart-summary {
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    position: sticky;
+    top: 20px;
+}
+
+.cart-summary-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Action Buttons */
+.cart-action-btn {
+    transition: all 0.2s ease;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.cart-action-btn:hover {
+    color: var(--bs-danger);
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    transform: scale(1.1);
+}
+
+.cart-actions .btn {
+    transition: all 0.3s ease;
+}
+
+.cart-actions .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Select All Checkbox */
+.cart-select-all {
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.form-check-input {
+    width: 20px;
+    height: 20px;
+}
+
+.cart-badge {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .cart-product-image {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .cart-price {
+        font-size: 1.1rem;
+    }
+    
+    .cart-actions {
+        flex-direction: column;
+    }
+    
+    .cart-actions .btn,
+    .cart-actions form {
+        width: 100%;
+    }
+}
+
+@media (max-width: 576px) {
+    .cart-item .row > div {
+        margin-bottom: 1rem;
+    }
+    
+    .cart-header {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+    }
+    
+    .empty-cart {
+        padding: 2rem 1rem;
+    }
+    
+    .empty-cart-icon {
+        font-size: 2.5rem;
+    }
+}
+
+/* Animations */
+@keyframes cartItemAdded {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.03); }
+    100% { transform: scale(1); }
+}
+
+.cart-item-added {
+    animation: cartItemAdded 0.5s ease;
+}
+
+/* Checkbox hover effect */
+.form-check-input:hover {
+    cursor: pointer;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+
+/* Контейнер для цен */
+.product-price-container {
+    display: flex;
+    align-items: center;
+}
+
+/* Стиль новой цены */
+.product-price-container .text-danger {
+    font-size: 1.25rem;
+    color: #dc3545 !important;
+}
+
+/* Стиль старой цены */
+.product-price-container .text-decoration-line-through {
+    font-size: 0.875rem;
+    color: #6c757d !important;
+    margin-left: 8px; /* Отступ между ценами */
+    position: relative;
+    top: 1px; /* Микро-коррекция выравнивания по вертикали */
+}
+
+/* Горизонтальное расположение для мобильных */
+@media (max-width: 576px) {
+    .product-price-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .product-price-container .text-decoration-line-through {
+        margin-left: 0;
+        margin-top: 2px;
+    }
 }
