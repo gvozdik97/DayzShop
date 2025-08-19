@@ -10,14 +10,14 @@
         <div class="col-md-6">
             <h4>Ваши товары</h4>
             <ul class="list-group mb-4">
-                {% for item in cart.items.all %}
+                {% for item in selected_items %}
                 <li class="list-group-item">
                     {{ item.product.name }} × {{ item.quantity }}
                     <span class="float-end">{{ item.total_price }} руб.</span>
                 </li>
                 {% endfor %}
                 <li class="list-group-item fw-bold">
-                    Итого: <span class="float-end">{{ cart.get_total_price }} руб.</span>
+                    Итого: <span class="float-end">{{ total_price }} руб.</span>
                 </li>
             </ul>
         </div>

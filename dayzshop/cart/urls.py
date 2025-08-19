@@ -11,6 +11,7 @@ urlpatterns = [
     path("orders/", views.order_list, name="order_list"),
     path("order/<int:pk>/", views.order_detail, name="order_detail"),
     path("checkout/", views.checkout, name="checkout"),
+    path('checkout/success/<int:order_id>/', views.checkout_success, name='checkout_success'),
     path("update/<int:item_id>/", views.update_cart_item, name="update"),
     path("toggle-selection/<int:item_id>/", views.toggle_item_selection, name="toggle_selection"),
     path("select-all/", views.select_all_items, name="select_all"),

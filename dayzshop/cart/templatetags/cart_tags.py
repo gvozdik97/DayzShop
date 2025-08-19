@@ -20,3 +20,19 @@ def is_in_cart(product, request):
         return CartItem.objects.filter(
             cart__session_key=request.session.session_key, product=product
         ).exists()
+
+@register.filter
+def multiply(value, arg):
+    """Умножает value на arg"""
+    try:
+        return float(value) * float(arg)
+    except (ValueError, TypeError):
+        return 0
+
+@register.filter
+def floatformat(value, arg=0):
+    """Форматирует число с заданным количеством знаков после запятой"""
+    try:
+        return format(float(value), f'.{arg}f')
+    except (ValueError, TypeError):
+        return value

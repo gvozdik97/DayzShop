@@ -143,7 +143,8 @@ document.addEventListener('DOMContentLoaded', function() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
-                'X-CSRFToken': getCookie('csrftoken')
+                'X-CSRFToken': getCookie('csrftoken'),
+                'X-Requested-With': 'XMLHttpRequest'
             },
             body: `quantity=${newQuantity}`
         })
@@ -200,8 +201,6 @@ document.addEventListener('DOMContentLoaded', function() {
             button.disabled = false;
         }
     }
-
-    
 
     // ==================== ОБРАБОТЧИКИ СОБЫТИЙ ====================
     // Добавление в корзину

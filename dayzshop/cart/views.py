@@ -5,7 +5,7 @@ from django.db import transaction
 from django.db.models import Prefetch
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
-
+from decimal import Decimal
 from cart.utils import get_cart
 from shop.models import Product
 from .models import CartItem, Order, OrderItem
@@ -15,18 +15,39 @@ def cart_detail(request):
     cart = get_cart(request)
     
     all_selected = False
+    selected_count = 0
+    total_savings = Decimal('0')
+    total_price_selected = Decimal('0')
+    
     if cart.items.exists():
         all_selected = not cart.items.filter(is_selected=False).exists()
+        selected_items = cart.items.filter(is_selected=True)
+        selected_count = selected_items.count()
+        
+        for item in selected_items:
+            if item.product.is_on_sale and item.product.old_price:
+                total_savings += (item.product.old_price - item.product.price) * item.quantity
+                total_price_selected += item.product.old_price * item.quantity
+            else:
+                total_price_selected += item.product.price * item.quantity
     
     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-        return JsonResponse({
-            'total_selected_price': cart.get_total_price_after_discount,
-            'all_selected': all_selected
-        })
+        response_data = {
+            'total_price_selected': float(total_price_selected),
+            'total_price_after_discount': float(cart.get_total_price_after_discount),
+            'total_savings': float(total_savings),
+            'all_selected': all_selected,
+            'selected_count': selected_count
+        }
+        # print("AJAX Response:", response_data)  # Для отладки
+        return JsonResponse(response_data)
     
     return render(request, "cart/detail.html", {
         "cart": cart,
-        "all_selected": all_selected
+        "all_selected": all_selected,
+        "selected_count": selected_count,
+        "total_savings": total_savings,
+        "total_price_selected": total_price_selected
     })
 
 @transaction.atomic
@@ -120,36 +141,62 @@ def order_detail(request, pk):
 @login_required
 def checkout(request):
     cart = get_cart(request)
+    
+    # Получаем только выбранные товары
+    selected_items = cart.items.filter(is_selected=True)
+    
+    if not selected_items.exists():
+        messages.error(request, "Выберите хотя бы один товар для оформления заказа")
+        return redirect("cart:detail")
 
     if request.method == "POST":
         try:
-            # Правильное создание заказа без вызова Decimal как функции
+            # Создаем заказ с общей суммой только выбранных товаров
             order = Order.objects.create(
-                user=request.user if request.user.is_authenticated else None,
-                total_price=cart.get_total_price,  # Без скобок, так как это property
+                user=request.user,
+                total_price=sum(
+                    item.product.price * item.quantity 
+                    for item in selected_items
+                ),
                 steam_id=request.POST.get("steam_id"),
             )
 
-            # Переносим товары
-            for item in cart.items.all():
+            # Переносим только выбранные товары
+            for item in selected_items:
                 OrderItem.objects.create(
                     order=order,
                     product=item.product,
                     quantity=item.quantity,
-                    price=item.price,  # Уже Decimal значение
+                    price=item.product.price,
                 )
 
-            cart.items.all().delete()
-            return redirect("cart:checkout_success")
+            # Удаляем только выбранные товары из корзины
+            selected_items.delete()
+            
+            messages.success(request, "Заказ успешно оформлен!")
+            return redirect("cart:checkout_success", order_id=order.id)
 
         except Exception as e:
-            messages.error(request, f"Ошибка оформления: {str(e)}")
+            messages.error(request, f"Ошибка оформления заказа: {str(e)}")
+            return redirect("cart:checkout")
 
     return render(
         request,
         "cart/checkout.html",
-        {"cart": cart, "total_price": cart.get_total_price},  # Передаем как свойство
+        {
+            "cart": cart,
+            "selected_items": selected_items,
+            "total_price": sum(
+                item.product.price * item.quantity 
+                for item in selected_items
+            )
+        }
     )
+
+@login_required
+def checkout_success(request, order_id):
+    order = get_object_or_404(Order, id=order_id, user=request.user)
+    return render(request, "cart/checkout_success.html", {"order": order})
 
 @require_POST
 def toggle_item_selection(request, item_id):
@@ -158,13 +205,31 @@ def toggle_item_selection(request, item_id):
     cart_item.save()
     
     cart = cart_item.cart
-    all_selected = not cart.items.filter(is_selected=False).exists()
+    selected_items = cart.items.filter(is_selected=True)
+    
+    # Вычисляем суммы с учетом скидок
+    total_price_after_discount = sum(
+        item.product.price * item.quantity 
+        for item in selected_items
+    )
+    
+    total_price_selected = Decimal('0')  # Сумма выбранных без скидки
+    total_savings = Decimal('0')         # Экономия
+    
+    for item in selected_items:
+        if item.product.is_on_sale and item.product.old_price:
+            total_savings += (item.product.old_price - item.product.price) * item.quantity
+            total_price_selected += item.product.old_price * item.quantity
+        else:
+            total_price_selected += item.product.price * item.quantity
     
     return JsonResponse({
         'success': True,
         'is_selected': cart_item.is_selected,
-        'total_selected_price': cart.get_total_price_after_discount,
-        'all_selected': all_selected
+        'selected_count': selected_items.count(),
+        'total_price_selected': float(total_price_selected),  # Без скидки
+        'total_price_after_discount': float(total_price_after_discount),  # Со скидкой
+        'total_savings': float(total_savings)
     })
 
 @require_POST
@@ -174,8 +239,28 @@ def select_all_items(request):
     
     cart.items.all().update(is_selected=is_select_all)
     
+    selected_items = cart.items.filter(is_selected=True)
+    
+    total_price_after_discount = sum(
+        item.product.price * item.quantity 
+        for item in selected_items
+    )
+    
+    total_price_selected = Decimal('0')
+    total_savings = Decimal('0')   
+    
+    for item in selected_items:
+        if item.product.is_on_sale and item.product.old_price:
+            total_savings += (item.product.old_price - item.product.price) * item.quantity
+            total_price_selected += item.product.old_price * item.quantity
+        else:
+            total_price_selected += item.product.price * item.quantity
+    
     return JsonResponse({
         'success': True,
         'is_select_all': is_select_all,
-        'total_selected_price': cart.get_total_price_after_discount
+        'selected_count': selected_items.count(),
+        'total_price_selected': float(total_price_selected),  # Без скидки
+        'total_price_after_discount': float(total_price_after_discount),  # Со скидкой
+        'total_savings': float(total_savings)
     })

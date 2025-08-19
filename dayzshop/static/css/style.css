@@ -376,11 +376,11 @@ btn-primary:hover {
     padding: 0.25em 0.4em;
 }
 
-.cart-icon-wrapper {
+/* .cart-icon-wrapper {
     position: relative;
     display: inline-block;
     line-height: 1;
-}
+} */
 
 /* .cart-badge {
     top: -5px;
@@ -482,12 +482,6 @@ btn-primary:hover {
     animation: pulse 1.5s infinite;
 }
 
-/* @keyframes pulse {
-    0% { box-shadow: 0 0 0 0 rgba(167, 119, 227, 0.7); }
-    70% { box-shadow: 0 0 0 10px rgba(167, 119, 227, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(167, 119, 227, 0); }
-} */
-
 /* Иконка поиска */
 .bi-search {
     margin-right: 5px;
@@ -497,12 +491,6 @@ btn-primary:hover {
 .btn-search:hover .bi-search {
     transform: scale(1.1);
 }
-
-/* Анимация кнопки */
-/* @keyframes bounce {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-} */
 
 .btn.disabled {
     pointer-events: none;
@@ -579,6 +567,72 @@ btn-primary:hover {
 .btn-glass:hover {
     background: rgba(40, 167, 69, 0.25) !important;
 }
+
+/* Основные стили кнопки */
+.checkout-btn {
+    background-color: rgba(25, 135, 84, 0.8); 
+    border: none;
+    color: white;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(2px);
+}
+
+/* Стили стрелки */
+.checkout-arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 0.5rem;
+    transition: transform 0.3s ease;
+    width: 20px;
+    height: 20px;
+}
+
+/* Выравнивание иконки стрелки */
+.checkout-arrow i {
+    font-size: 1rem;
+    line-height: 1;
+    vertical-align: baseline; /* Точное выравнивание по базовой линии */
+    position: relative;
+    top: 0.1em; /* Микро-корректировка выравнивания */
+}
+
+/* Состояния кнопки */
+.checkout-btn:hover {
+    background-color: rgba(20, 115, 70, 0.9); /* Менее прозрачный при наведении */
+    box-shadow: 0 2px 8px rgba(25, 135, 84, 0.3);
+}
+
+
+.checkout-btn:hover .checkout-arrow,
+.checkout-btn:focus .checkout-arrow {
+    transform: translateX(4px);
+}
+
+
+.checkout-btn:active {
+    transform: scale(0.98);
+    background-color: rgba(15, 95, 60, 0.95);
+}
+
+.empty_btn {
+    background-color: rgba(25, 135, 84, 0.7); 
+    border: none;
+    color: white;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(2px);
+}
+
+.empty_btn:hover {
+    background-color: rgba(20, 115, 70, 0.8);
+    box-shadow: 0 2px 8px rgba(25, 135, 84, 0.3);
+}
+
+.empty_btn:active {
+    transform: scale(0.98);
+    background-color: rgba(15, 95, 60, 0.85);
+}
+
 
 /* Анимация нажатия */
 #addToCartBtn:active {
@@ -783,17 +837,10 @@ btn-hover-fill:hover {
 }
 
 @media (max-width: 576px) {
-    .card {
-        min-height: 300px; 
-    }
-    .card-title {
+    .bi {
         font-size: 1rem;
     }
-    .card-footer .btn {
-        padding: 0.25rem 0.5rem;
-        font-size: 0.8rem;
-        min-width: 80px;
-    }
+
     .pagination-btn, .pagination-active {
         min-width: 36px;
         height: 36px;
@@ -802,8 +849,59 @@ btn-hover-fill:hover {
         font-size: 0.9rem;
     }
     
-    .bi {
+    .card {
+        min-height: 300px; 
+    }
+    
+    .card-title {
         font-size: 1rem;
+    }
+    .card-footer .btn {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.8rem;
+        min-width: 80px;
+    }
+
+    .cart-item .row > div {
+        margin-bottom: 1rem;
+    }
+    
+    .cart-header {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+    }
+
+    .product-price-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .product-price-container .text-decoration-line-through {
+        margin-left: 0;
+        margin-top: 2px;
+    }
+
+    .cart-select-all .card-body {
+        padding: 0.75rem !important;
+    }
+    
+    .cart-select-all .form-check-label {
+        font-size: 1rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 150px;
+    }
+    
+    .cart-clear-icon-wrapper,
+    .cart-icon-wrapper {
+        width: 32px !important;
+        height: 32px !important;
+    }
+    
+    .cart-clear-icon-wrapper i,
+    .cart-icon-wrapper i {
+        font-size: 1rem !important;
     }
 }
 
@@ -1424,15 +1522,17 @@ btn-hover-fill:hover {
 .cart-icon-wrapper {
     width: 48px;
     height: 48px;
-    background-color: var(--bs-primary);
+    transition: all 0.3s ease;
+    background-color: rgba(25, 135, 84, 0.6) !important;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.cart-icon-wrapper .bi-cart2 {
+.cart-icon-wrapper i {
     font-size: 1.5rem;
     color: white;
+    transition: all 0.3s ease;
 }
 
 /* Cart Card Styles */
@@ -1467,6 +1567,7 @@ btn-hover-fill:hover {
     color: rgba(255, 255, 255, 0.6) !important;
 }
 
+
 /* Empty Cart Styles */
 .empty-cart-icon {
     font-size: 3rem;
@@ -1474,6 +1575,7 @@ btn-hover-fill:hover {
 }
 
 .empty-cart {
+    padding: 2rem 1rem;
     background-color: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(8px);
     border: 1px solid rgba(255, 255, 255, 0.2) !important;
@@ -1491,9 +1593,16 @@ btn-hover-fill:hover {
 .cart-summary-icon {
     width: 40px;
     height: 40px;
+    transition: all 0.3s ease;
+    background-color: rgba(25, 135, 84, 0.4) !important;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.cart-summary-icon i {
+    color: white;
+    transition: all 0.3s ease;
 }
 
 /* Action Buttons */
@@ -1524,10 +1633,6 @@ btn-hover-fill:hover {
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.form-check-input {
-    width: 20px;
-    height: 20px;
-}
 
 .cart-badge {
     width: 30px;
@@ -1558,24 +1663,6 @@ btn-hover-fill:hover {
     }
 }
 
-@media (max-width: 576px) {
-    .cart-item .row > div {
-        margin-bottom: 1rem;
-    }
-    
-    .cart-header {
-        padding-top: 1rem;
-        padding-bottom: 1rem;
-    }
-    
-    .empty-cart {
-        padding: 2rem 1rem;
-    }
-    
-    .empty-cart-icon {
-        font-size: 2.5rem;
-    }
-}
 
 /* Animations */
 @keyframes cartItemAdded {
@@ -1588,15 +1675,10 @@ btn-hover-fill:hover {
     animation: cartItemAdded 0.5s ease;
 }
 
-/* Checkbox hover effect */
-.form-check-input:hover {
-    cursor: pointer;
-    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-}
-
 
 /* Контейнер для цен */
 .product-price-container {
+    color: #198754;
     display: flex;
     align-items: center;
 }
@@ -1610,21 +1692,90 @@ btn-hover-fill:hover {
 /* Стиль старой цены */
 .product-price-container .text-decoration-line-through {
     font-size: 0.875rem;
-    color: #6c757d !important;
+    color: FireBrick !important;
     margin-left: 8px; /* Отступ между ценами */
     position: relative;
     top: 1px; /* Микро-коррекция выравнивания по вертикали */
 }
 
-/* Горизонтальное расположение для мобильных */
-@media (max-width: 576px) {
-    .product-price-container {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    
-    .product-price-container .text-decoration-line-through {
-        margin-left: 0;
-        margin-top: 2px;
-    }
+
+.cart-clear-icon-wrapper {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background-color: rgba(40, 167, 69, 0.1);
+    transition: all 0.3s ease;
+}
+
+.cart-clear-icon-wrapper i {
+    color: rgba(40, 167, 69, 0.7);
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+}
+
+/* .cart-clear-btn:hover .cart-clear-icon-wrapper {
+    background-color: rgba(220, 53, 69, 0.3); 
+} */
+
+.cart-clear-btn:hover .cart-clear-icon-wrapper i {
+    color: rgba(220, 53, 69, 0.9); 
+}
+
+.cart-clear-btn {
+    transition: transform 0.2s ease;
+}
+
+.cart-clear-btn:hover {
+    transform: scale(1.05);
+}
+
+/* Стили для активных чекбоксов */
+.cart-main-checkbox:checked,
+.cart-item-checkbox:checked {
+    background-color: #198754 !important;
+    border-color: #198754 !important;
+}
+
+/* Стили при наведении на чекбоксы */
+.cart-main-checkbox:hover:not(:checked),
+.cart-item-checkbox:hover:not(:checked) {
+    border-color: #198754 !important;
+}
+
+.form-check-input {
+    margin-top: 0 !important;
+    align-self: center;
+    width: 20px;
+    height: 20px;
+    transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-check-input:hover {
+    cursor: pointer;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+.form-check-label, .cart-item-checkbox + span {
+    line-height: 1.2;
+    vertical-align: middle;
+}
+
+/* Стиль для метки активного чекбокса "Выбрать всё" */
+/* .cart-main-checkbox:checked ~ .form-check-label {
+    color: #198754;
+    font-weight: 600;
+} */
+
+/* Стиль для текста активного чекбокса товара */
+/* .cart-item-checkbox:checked + span {
+    color: #198754 !important;
+    font-weight: 500;
+} */
+
+
+.cart-savings {
+    color: firebrick;
 }

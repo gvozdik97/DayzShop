@@ -43,6 +43,17 @@ class Cart(models.Model):
         )
 
     @property
+    def get_total_price_selected(self):
+        """Общая сумма БЕЗ учета скидок только для выбранных товаров"""
+        selected_items = self.items.filter(is_selected=True)
+        return sum(
+            item.product.old_price * item.quantity 
+            if item.product.is_on_sale and item.product.old_price 
+            else item.product.price * item.quantity 
+            for item in selected_items
+        )
+
+    @property
     def get_total_price_after_discount(self):
         """Фактическая сумма к оплате (с учетом скидок) только для выбранных товаров"""
         selected_items = self.items.filter(is_selected=True)
@@ -56,6 +67,16 @@ class Cart(models.Model):
         """Сумма сэкономленных денег"""
         savings = Decimal('0')
         for item in self.items.all():
+            if item.product.is_on_sale and item.product.old_price:
+                savings += (item.product.old_price - item.product.price) * item.quantity
+        return savings
+    
+    @property
+    def total_savings_selected(self):
+        """Сумма сэкономленных денег только для выбранных товаров"""
+        savings = Decimal('0')
+        selected_items = self.items.filter(is_selected=True)
+        for item in selected_items:
             if item.product.is_on_sale and item.product.old_price:
                 savings += (item.product.old_price - item.product.price) * item.quantity
         return savings
