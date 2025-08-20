@@ -14,7 +14,7 @@
             </div>
             <div>
                 <h1 class="h2 fw-bold mb-0">Корзина</h1>
-                <p class="text-muted mb-0 fw-medium">
+                <p class="cart_text_muted mb-0 fw-medium">
                     {{ cart.items.count }} 
                     {% if cart.items.count == 1 %}товар
                     {% elif cart.items.count < 5 
@@ -26,10 +26,10 @@
     </div>
     <div class="row g-4">
         <!-- Основной блок с товарами -->
-        <div class="col-lg-8">
+        <div class="col-12 col-lg-8">
             {% if cart.items.all %}
                 <!-- Блок выбора товаров -->
-                <div class="cart-select-all card border-0 shadow-sm rounded-4 mb-4">
+                <div class="cart-select-all border-0 shadow-sm rounded-4 mb-4">
                     <div class="card-body p-4">
                         <div class="d-flex align-items-center justify-content-between">
                             <div class="d-flex align-items-center gap-3">
@@ -54,13 +54,13 @@
                         <div class="card-body p-4">
                             <div class="d-flex align-items-center gap-3 mb-4">
                                 <input type="checkbox" class="form-check-input cart-item-checkbox" {% if item.is_selected %}checked{% endif %}>
-                                <span class="text-muted fw-medium">Доступно для заказа</span>
+                                <span class="cart_text_muted fw-medium">Доступно для заказа</span>
                             </div>
                             
                             <div class="row g-4">
                                 <!-- Информация о товаре -->
-                                <div class="col-md-6">
-                                    <div class="d-flex gap-3">
+                                <div class="col-12 col-md-6">
+                                    <div class="cart-product-container">
                                         <div class="cart-product-image bg-light rounded-3 overflow-hidden">
                                             {% if item.product.image %}
                                             <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="w-100 h-100 object-fit-cover">
@@ -68,10 +68,14 @@
                                             <img src="{% static 'img/no-image.jpg' %}" alt="No image" class="w-100 h-100 object-fit-cover">
                                             {% endif %}
                                         </div>
-                                        
-                                        <div class="flex-grow-1">
-                                            <h3 class="h5 fw-semibold mb-2 text-white">{{ item.product.name }}</h3>
-                                            <p class="text-muted small mb-3">{{ item.product.description|truncatechars:60 }}</p>
+                                        <div class="cart-product-info">
+                                            <h3 class="h5 fw-semibold mb-2 product-title">{{ item.product.name }}</h3>
+                                            <div class="cart_text_muted mb-3 product-description d-none d-md-block">
+                                                {{ item.product.description|linebreaks|truncatechars:60 }}
+                                            </div>
+                                            <div class="cart_text_muted small mb-3 product-description-sm d-md-none">
+                                                {{ item.product.description|linebreaks|truncatechars:40 }}
+                                            </div>
                                             
                                             <div class="d-flex gap-2">
                                                 <button class="btn btn-sm p-2 cart-action-btn">
@@ -84,21 +88,19 @@
                                         </div>
                                     </div>
                                 </div>
-                                
                                 <!-- Цена и количество -->
-                                <div class="col-md-6">
+                                <div class="col-12 col-md-6 cart-price-section">
                                     <div class="d-flex align-items-center justify-content-between h-100">
                                         <div class="product-price-container">
                                             {% if item.product.is_on_sale and item.product.old_price %}
                                                 <div class="d-flex align-items-center gap-2">
-                                                    <div class="fw-bold fs-4">{{ item.product.price|multiply:item.quantity|floatformat:"0" }} ₽</div>
+                                                    <div class="fw-bold cart-price">{{ item.product.price|multiply:item.quantity|floatformat:"0" }} ₽</div>
                                                     <div class="text-decoration-line-through text-muted small">{{ item.product.old_price|multiply:item.quantity|floatformat:"0" }} ₽</div>
                                                 </div>
                                             {% else %}
-                                                <div class="text-white fw-bold fs-4">{{ item.product.price|multiply:item.quantity|floatformat:"0" }} ₽</div>
+                                                <div class="text-white fw-bold cart-price">{{ item.product.price|multiply:item.quantity|floatformat:"0" }} ₽</div>
                                             {% endif %}
                                         </div> 
-                                        
                                         <div class="d-flex align-items-center gap-2">
                                             <div class="input-group">
                                                 <button class="btn btn-outline-secondary rounded-3 minus-btn" 
@@ -114,7 +116,6 @@
                                                 </button>
                                             </div>
                                         </div>
-                                        
                                     </div>
                                 </div>
                             </div>
@@ -133,14 +134,12 @@
                         <i class="bi bi-cart-plus"></i> Начать покупки
                     </a>
                 </div>
-                
             {% endif %}
         </div>
-        
         <!-- Блок итогов -->
         {% if cart.items.all %}
-        <div class="col-lg-4">
-            <div class="cart-summary card border-0 shadow-sm rounded-4 sticky-top">
+        <div class="col-12 col-lg-4">
+            <div class="cart-summary card border-0 shadow-sm rounded-4 sticky-lg-top">
                 <div class="card-body p-4 border-bottom">
                     <a href="{% url 'cart:checkout' %}" class="btn checkout-btn w-100 py-3 fw-semibold rounded-3 position-relative">
                         Оформить заказ
@@ -159,7 +158,7 @@
                     </div>
 
                     <div class="d-flex justify-content-between align-items-center py-2">
-                        <span class="text-muted">Товары (<span class="selected-items-count">{{ selected_count }}</span>)</span>
+                        <span class="cart_text_muted">Товары (<span class="selected-items-count">{{ selected_count }}</span>)</span>
                         <span class="fw-medium selected-items-price">{{ total_price_selected|floatformat:"0" }} ₽</span>
                     </div>
                     

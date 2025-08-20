@@ -49,7 +49,10 @@
                     <!-- Описание -->
                     <div class="mb-4">
                         <h5 class="text-white-50 mb-2">Описание</h5>
-                        <div class="product-description text-white">
+                        <div class="text-muted product-description mb-3 d-none d-md-block">
+                            {{ product.description|linebreaks }}
+                        </div>
+                        <div class="text-muted small product-description-sm mb-3 d-md-none">
                             {{ product.description|linebreaks }}
                         </div>
                     </div>
