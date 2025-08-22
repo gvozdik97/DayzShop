@@ -78,6 +78,98 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // Функция для обновления состояния ссылки оформления заказа
+    function updateCheckoutLinkState() {
+        const checkboxes = document.querySelectorAll('.cart-item-checkbox:checked');
+        const checkoutLink = document.querySelector('a.checkout-btn, a[href*="checkout"]');
+        
+        if (checkoutLink) {
+            if (checkboxes.length === 0) {
+                // Блокируем ссылку
+                checkoutLink.classList.add('disabled');
+                checkoutLink.style.opacity = '0.6';
+                checkoutLink.style.cursor = 'not-allowed';
+                checkoutLink.style.pointerEvents = 'none';
+                
+                // Сохраняем оригинальный href
+                if (!checkoutLink.dataset.originalHref) {
+                    checkoutLink.dataset.originalHref = checkoutLink.href;
+                }
+                checkoutLink.removeAttribute('href');
+            } else {
+                // Разблокируем ссылку
+                checkoutLink.classList.remove('disabled');
+                checkoutLink.style.opacity = '1';
+                checkoutLink.style.cursor = 'pointer';
+                checkoutLink.style.pointerEvents = 'auto';
+                
+                // Восстанавливаем оригинальный href
+                if (checkoutLink.dataset.originalHref) {
+                    checkoutLink.href = checkoutLink.dataset.originalHref;
+                }
+            }
+        }
+    }
+
+    // Функция для обновления общих сумм корзины
+    async function updateCartTotals() {
+        try {
+            const response = await fetch(window.location.href, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            });
+            
+            const data = await response.json();
+            
+            if (data) {
+                // Обновляем сумму выбранных товаров
+                if (document.querySelector('.selected-items-price')) {
+                    document.querySelector('.selected-items-price').textContent = 
+                        `${parseFloat(data.total_price_selected || 0).toLocaleString('ru-RU')} ₽`;
+                }
+                
+                // Обновляем счетчик выбранных товаров
+                if (document.querySelector('.selected-items-count')) {
+                    document.querySelector('.selected-items-count').textContent = data.selected_count;
+                }
+                
+                // Обновляем итоговую сумму
+                if (document.querySelector('.summary-total-price')) {
+                    document.querySelector('.summary-total-price').textContent = 
+                        `${parseFloat(data.total_price_after_discount || 0).toLocaleString('ru-RU')} ₽`;
+                }
+                
+                // Обновляем блок скидки
+                const savingsElement = document.querySelector('.selected-items-savings');
+                const savingsContainer = document.querySelector('.cart-savings');
+                
+                if (savingsElement && savingsContainer) {
+                    if (data.total_savings > 0 && data.selected_count > 0) {
+                        savingsElement.textContent = `- ${parseFloat(data.total_savings || 0).toLocaleString('ru-RU')} ₽`;
+                        savingsContainer.style.display = 'flex';
+                    } else {
+                        savingsContainer.style.display = 'none';
+                    }
+                }
+
+                // Обновляем состояние кнопки оформления заказа
+                updateCheckoutLinkState();
+            }
+        } catch (error) {
+            console.error('Error updating totals:', error);
+        }
+    }
+
+    function checkSelectAllState() {
+        const checkboxes = document.querySelectorAll('.cart-item-checkbox:checked');
+        const selectAll = document.getElementById('selectAll');
+        if (selectAll) {
+            selectAll.checked = checkboxes.length === document.querySelectorAll('.cart-item-checkbox').length;
+        }
+        updateCheckoutLinkState();
+    }
+
     async function addToCart(productId, button) {
         try {
             setCartButtonState(button, 'loading');
@@ -139,34 +231,46 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     async function updateCartItem(itemId, newQuantity, input) {
-        fetch(`/cart/update/${itemId}/`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'X-CSRFToken': getCookie('csrftoken'),
-                'X-Requested-With': 'XMLHttpRequest'
-            },
-            body: `quantity=${newQuantity}`
-        })
-        .then(response => response.json())
-        .then(data => {
+        try {
+            const response = await fetch(`/cart/update/${itemId}/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': getCookie('csrftoken'),
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: `quantity=${newQuantity}`
+            });
+            
+            const data = await response.json();
+            
             if (data.success) {
                 input.value = data.new_quantity;
-                // Обновляем отображение суммы
-                const totalElement = input.closest('tr').querySelector('.item-total');
-                if (totalElement) {
-                    totalElement.textContent = `${data.item_total} руб.`;
-                    totalElement.classList.add('item-updated');
-                    setTimeout(() => totalElement.classList.remove('item-updated'), 1000);
+                
+                // Обновляем отображение цены товара
+                const priceElement = input.closest('.cart-price-section').querySelector('.cart-price-main');
+                if (priceElement && data.item_total) {
+                    priceElement.textContent = `${parseFloat(data.item_total).toLocaleString('ru-RU')} ₽`;
                 }
-                // Обновляем общую сумму
-                document.querySelector('.cart-total').textContent = `${data.cart_total} руб.`;
+                
+                // Обновляем старую цену (если есть)
+                const oldPriceElement = input.closest('.cart-price-section').querySelector('.cart-price-old');
+                if (oldPriceElement && data.item_total_old) {
+                    oldPriceElement.textContent = `${parseFloat(data.item_total_old).toLocaleString('ru-RU')} ₽`;
+                }
+                
+                // ВАЖНО: Обновляем общие суммы в блоке итогов
+                if (typeof updateCartTotals === 'function') {
+                    await updateCartTotals();
+                }
+                
+                showToast('Количество обновлено');
             }
-        })
-        .catch(error => {
+        } catch (error) {
             console.error('Error:', error);
-            location.reload(); // Перезагрузка при ошибке
-        });
+            showToast('Ошибка обновления', 'error');
+            location.reload();
+        }
     }
 
     async function removeCartItem(itemId, button) {
@@ -279,4 +383,125 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     });
+    
+    document.querySelectorAll('.cart-item-checkbox').forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            const itemId = this.closest('.cart-item').dataset.itemId || 
+                         this.closest('[data-item-id]').getAttribute('data-item-id');
+            
+            fetch(`/cart/toggle-selection/${itemId}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'),
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    checkSelectAllState();
+                    updateCartTotals();
+                    updateCheckoutLinkState();
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                this.checked = !this.checked;
+                updateCheckoutLinkState();
+            });
+        });
+    });
+
+    // Обработчик "Выбрать всё"
+    document.getElementById('selectAll')?.addEventListener('change', function() {
+        fetch('/cart/select-all/', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'),
+                'X-Requested-With': 'XMLHttpRequest',
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `select_all=${this.checked}`
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                document.querySelectorAll('.cart-item-checkbox').forEach(checkbox => {
+                    checkbox.checked = data.is_select_all;
+                });
+                updateCartTotals();
+                updateCheckoutLinkState();
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            this.checked = !this.checked;
+            updateCheckoutLinkState();
+        });
+    });
+
+    // Обработчик очистки корзины
+    document.querySelectorAll('.cart-select-all form[action*="clear"] button').forEach(button => {
+        button.addEventListener('click', function(e) {
+            if (!confirm('Точно очистить корзину? Все товары будут удалены.')) {
+                e.preventDefault();
+            }
+        });
+    });
+
+    // Обработчик клика по заблокированной ссылке
+    document.addEventListener('click', function(e) {
+        const checkoutLink = e.target.closest('a.checkout-btn, a[href*="checkout"]');
+        if (checkoutLink && checkoutLink.classList.contains('disabled')) {
+            e.preventDefault();
+            e.stopPropagation();
+            showToast('Выберите хотя бы один товар для оформления заказа', 'error');
+        }
+    });
+
+    document.querySelectorAll('.wishlist-form').forEach(form => {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const form = this;
+            const button = form.querySelector('button');
+            const icon = button.querySelector('i');
+            const productId = form.action.split('/').filter(Boolean).pop();
+            
+            fetch(form.action, {
+                method: 'POST',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Меняем иконку
+                    if (data.in_wishlist) {
+                        icon.classList.remove('bi-heart');
+                        icon.classList.add('bi-heart-fill', 'text-danger');
+                        button.title = 'Удалить из избранного';
+                    } else {
+                        icon.classList.remove('bi-heart-fill', 'text-danger');
+                        icon.classList.add('bi-heart');
+                        button.title = 'Добавить в избранное';
+                    }
+                    
+                    // Показываем уведомление
+                    showToast(data.message, 'success');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showToast('Ошибка при обновлении избранного', 'error');
+            });
+        });
+    });
+
+    // Инициализация состояния
+    checkSelectAllState();
+    updateCheckoutLinkState();
 });

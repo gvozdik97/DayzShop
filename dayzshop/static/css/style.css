@@ -53,6 +53,13 @@ btn-primary:hover {
     100% { background-color: transparent; }
 }
 
+/* Цветовые утилиты с прозрачностью */
+.text-white-80 { color: rgba(255, 255, 255, 0.8) !important; }
+.text-white-70 { color: rgba(255, 255, 255, 0.7) !important; }
+.text-white-60 { color: rgba(255, 255, 255, 0.6) !important; }
+.text-emerald-300 { color: #6EE7B7 !important; } /* Акцентный зеленый */
+
+
 .navbar {
     transition: all 0.3s ease;
     background-color: #f8f9fa !important;
@@ -278,6 +285,17 @@ btn-primary:hover {
 }
 
 
+.glass-card-effect {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    backdrop-filter: blur(16px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;
+}
+.glass-card-effect:hover {
+    background-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+
 .cart-image-container {
     height: 100%;
     width: 100%;
@@ -439,16 +457,16 @@ btn-primary:hover {
     overflow: hidden;
 }
 
-.product-description {
+.cart-product-description {
     font-size: 0.875rem; /* md+ */
 }
 
-.product-description-sm {
+.cart-product-description-sm {
     font-size: 0.75rem; /* xs-sm */
 }
 
-.product-description,
-.product-description-sm {
+.cart-product-description,
+.cart-product-description-sm {
     color: rgba(255, 255, 255, 0.7) !important;
     transition: color 0.2s ease;
     line-height: 1.4;
@@ -574,6 +592,12 @@ btn-primary:hover {
     transform: scale(1.05);
 }
 
+.checkout-btn-gradient {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.8), rgba(5, 150, 105, 0.8)) !important;
+    color: #FFFFFF !important;
+    font-weight: 600 !important;
+}
+
 .btn-dark {
     background: linear-gradient(135deg, #343a40, #23272b);
     color: white;
@@ -600,7 +624,11 @@ btn-primary:hover {
 
 /* Основные стили кнопки */
 .checkout-btn {
-    padding: 0.75rem 1rem; /* xs-sm */
+    border-radius: 12px;
+    padding-top: 0.65rem !important;
+    padding-bottom: 0.65rem !important;
+    height: auto !important;
+    min-height: 44px; /* xs-sm */
     font-size: 1rem; /* xs-md */
     background-color: rgba(25, 135, 84, 0.8); 
     border: none;
@@ -645,6 +673,16 @@ btn-primary:hover {
 .checkout-btn:active {
     transform: scale(0.98);
     background-color: rgba(15, 95, 60, 0.95);
+}
+
+a.checkout-btn.disabled {
+    opacity: 0.6 !important;
+    cursor: not-allowed !important;
+    pointer-events: none !important;
+}
+
+a.checkout-btn {
+    transition: opacity 0.3s ease;
 }
 
 .empty_btn {
@@ -797,8 +835,21 @@ btn-hover-fill:hover {
     font-size: 1rem; /* xs-md */
 }
 
-.cart-total-price {
+.summary-title {
+    color: #FFFFFF !important;
+    font-size: 1.25rem !important;
+    font-weight: 700 !important;
+}
+.summary-item-text { color: rgba(255, 255, 255, 0.8) !important; }
+.summary-item-price { color: #FFFFFF !important; font-weight: 500 !important; }
+.summary-discount-text { color: #6EE7B7 !important; }
+.summary-discount-price { color: #6EE7B7 !important; font-weight: 500 !important; }
+.summary-total-price {
     font-size: 1.5rem; /* xs-md */
+    color: #FFFFFF !important;
+    font-size: 1.875rem !important;
+    font-weight: 700 !important;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5) !important;
 }
 
 .cart-product-image {
@@ -831,10 +882,36 @@ btn-hover-fill:hover {
     min-width: 180px; /* Минимальная ширина */
 }
 
+.cart-price-main {
+    color: #FFFFFF !important;
+    font-size: 1.5rem !important;
+    font-weight: 700 !important;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4) !important;
+}
+
+.cart-price-old {
+    color: rgba(255, 255, 255, 0.6) !important;
+}
+
+/* Бейдж скидки */
+.discount-percent-badge {
+    background-color: rgba(16, 185, 129, 0.8);
+    color: #FFFFFF;
+    font-weight: 500;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    border-radius: 12px;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+.cart-availability-text { color: rgba(255, 255, 255, 0.8) !important; }
+
 /* Ограничение названия товара 2 строками */
-.product-title {
-    color: rgba(255, 255, 255, 0.8) !important;
-    font-size: 1rem !important;
+.cart-product-title {
+    color: #FFFFFF !important;
+    font-size: 1.125rem !important;
+    font-weight: 600 !important;
     line-height: 1.3;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -844,19 +921,19 @@ btn-hover-fill:hover {
 }
 
 /* Гарантия обрезки текста */
-.cart-product-info .product-title,
-.cart-product-info .product-description,
-.cart-product-info .product-description-sm {
+.cart-product-info .cart-product-title,
+.cart-product-info .cart-product-description,
+.cart-product-info .cart-product-description-sm {
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 100%;
 }
 
 @media (min-width: 768px) {
-    .cart-header h1 {
+    .cart-title-main {
         font-size: 2rem; /* md */
     }
-    .cart-price {
+    .cart-price-main {
         font-size: 1.75rem; /* md */
     }
     .checkout-btn {
@@ -866,7 +943,7 @@ btn-hover-fill:hover {
         width: 96px;
         height: 96px;
     }
-    .product-title {
+    .cart-product-title {
         font-size: 1.25rem !important; /* md+ */
         line-height: 1.3;
     }
@@ -880,17 +957,17 @@ btn-hover-fill:hover {
         position: sticky;
         top: 2rem;
     }
-    .cart-price {
+    .cart-price-main {
         font-size: 2rem;
     }
-    .cart-header h1 {
+    .cart-title-main {
         font-size: 2.5rem; /* lg+ */
     }
     .selected-items-price,
     .selected-items-savings {
         font-size: 1.125rem; /* lg+ */
     }
-    .cart-total-price {
+    .summary-total-price {
         font-size: 2rem; /* lg+ */
     }
     .checkout-btn {
@@ -901,7 +978,7 @@ btn-hover-fill:hover {
         height: 120px;
         min-width: 120px;
     }
-    .product-title {
+    .cart-product-title {
         font-size: 1.1rem !important;
         line-height: 1.4;
         max-height: 2.8em;
@@ -975,7 +1052,7 @@ btn-hover-fill:hover {
     .product-description {
         font-size: 0.9rem;
     }
-    .product-title {
+    .cart-product-title {
         margin-bottom: 0.5rem !important;
     }
 }
@@ -1022,14 +1099,11 @@ btn-hover-fill:hover {
         margin-bottom: 1rem;
     }
 
-    .product-price-container {
+    /* .product-price-container {
         flex-direction: column;
         align-items: flex-start;
-    }
-    .product-price-container .text-decoration-line-through {
-        margin-left: 0;
-        margin-top: 2px;
-    }
+    } */
+
 
     .cart-select-all .card-body {
         padding: 0.75rem !important;
@@ -1042,22 +1116,22 @@ btn-hover-fill:hover {
         max-width: 150px;
     }
     
-    .cart-clear-icon-wrapper,
+    /* .cart-clear-icon-wrapper,
     .cart-icon-wrapper {
         width: 32px !important;
         height: 32px !important;
-    }
-    .cart-clear-icon-wrapper i,
+    } */
+    /* .cart-clear-icon-wrapper i,
     .cart-icon-wrapper i {
         font-size: 1rem !important;
-    }
+    } */
 
-    .product-title {
+    .cart-product-title {
         font-size: 0.9rem !important;
         line-height: 1.2;
         max-height: 2.4em;
     }
-    .product-description-sm {
+    .cart-product-description-sm {
         font-size: 0.7rem;
         line-height: 1.3;
         max-height: 2.6em;
@@ -1368,9 +1442,11 @@ btn-hover-fill:hover {
     margin: 0 -1px;
     -moz-appearance: textfield; /* Убирает стрелки в Firefox */
     appearance: textfield;
-    background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: white !important;
+    color: #FFFFFF !important;
+    font-size: 1.125rem !important;
+    font-weight: 600 !important;
+    background-color: transparent !important;
+    border-color: rgba(255, 255, 255, 0) !important;
     line-height: 1;
 }
 
@@ -1386,7 +1462,8 @@ btn-hover-fill:hover {
     margin: 0;
 }
 
-.minus-btn, .plus-btn {
+/* Кнопки количества */
+.cart-quantity-btn {
     width: 35px;
     height: 35px;
     display: flex;
@@ -1394,19 +1471,22 @@ btn-hover-fill:hover {
     justify-content: center;
     transition: all 0.2s ease;
     line-height: 1;
-}
-
-.minus-btn:hover, .plus-btn:hover {
     background-color: rgba(255, 255, 255, 0.1) !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+    color: rgba(255, 255, 255, 0.8) !important;
 }
 
-.minus-btn:hover:not(.disabled), 
-.plus-btn:hover:not(.disabled) {
-    background-color: rgba(255, 255, 255, 0.1) !important;
+.cart-quantity-btn:hover {
+    background-color: rgba(255, 255, 255, 0.25) !important;
+    transform: translateY(-1px);
 }
 
-.minus-btn:active:not(.disabled), 
-.plus-btn:active:not(.disabled) {
+.cart-quantity-btn:hover:not(.disabled) {
+    background-color: rgba(255, 255, 255, 0.25) !important;
+    transform: translateY(-1px);
+}
+
+.cart-quantity-btn:active:not(.disabled) {
     transform: scale(0.95);
 }
 
@@ -1696,9 +1776,17 @@ btn-hover-fill:hover {
     color: rgba(255, 255, 255, 0.7);
 }
 
-.cart-header h1 {
-    color: #FFFFFF;
-    font-size: 1.75rem; /* xs-sm */
+.cart-icon-gradient {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.8), rgba(5, 150, 105, 0.8)) !important;
+}
+.cart-title-main {
+    font-size: 2rem !important;
+    font-weight: 700 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5) !important;
+}
+.cart-counter-text {
+    color: rgba(255, 255, 255, 0.8) !important;
+    font-weight: 500 !important;
 }
 
 
@@ -1706,7 +1794,7 @@ btn-hover-fill:hover {
     width: 48px;
     height: 48px;
     transition: all 0.3s ease;
-    background-color: rgba(25, 135, 84, 0.6) !important;
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.8), rgba(5, 150, 105, 0.8)) !important;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1732,29 +1820,13 @@ btn-hover-fill:hover {
 }
 
 
-/* Price Styles */
-.cart-price {
-    font-size: 1.5rem;
-}
-
-.cart-old-price {
-    text-decoration: line-through;
-    color: rgba(255, 255, 255, 0.6) !important;
-}
-
-
 /* Empty Cart Styles */
 .empty-cart-icon {
     font-size: 3rem;
     color: rgba(255, 255, 255, 0.3);
 }
-
-.empty-cart {
-    padding: 2rem 1rem;
-    background-color: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.2) !important;
-}
+.empty-cart-title { color: #FFFFFF !important; }
+.empty-cart-text { color: rgba(255, 255, 255, 0.7) !important; }
 
 /* Summary Card */
 .cart-summary {
@@ -1766,24 +1838,22 @@ btn-hover-fill:hover {
 }
 
 .cart-summary-icon {
-    width: 40px;
-    height: 40px;
+    border-radius: 12px;
+    width: 38px;
+    height: 38px;
+    background-color: rgba(16, 185, 129, 0.2);
+    border: 1px solid rgba(16, 185, 129, 0.4); 
+    color: #6EE7B7 !important;
     transition: all 0.3s ease;
-    background-color: rgba(25, 135, 84, 0.4) !important;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.cart-summary-icon i {
-    color: white;
-    transition: all 0.3s ease;
-}
-
 
 /* Стили для иконок действий в корзине */
 .cart-action-btn {
-    line-height: 0.8;
+    line-height: 1;
     width: 24px;
     height: 24px;
     display: flex;
@@ -1792,20 +1862,29 @@ btn-hover-fill:hover {
     border-radius: 8px;
     background-color: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.15);
-    color: rgba(255, 255, 255, 0.7) !important;
+    color: rgba(255, 255, 255, 0.6) !important;
     transition: all 0.3s ease;
     text-decoration: none;
 }
 
+.cart-action-btn:hover {
+    transform: scale(1.1);
+}
+
 /* Сердечко */
-.cart-action-btn:first-child:hover {
+.cart-action-heart:hover {
     background-color: rgba(147, 112, 219, 0.3); 
     border-color: rgba(138, 43, 226, 0.5);    
-    color: #800080 !important;                
+    color: #F9A8D4 !important;               
+}
+
+.cart-action-heart .bi-heart-fill {
+    color: #F9A8D4 !important;
+    animation: heartBeat 0.6s ease;
 }
 
 /* Корзинка */
-.cart-action-btn:last-child:hover {
+.cart-action-trash:hover {
     background-color: rgba(220, 53, 69, 0.3); 
     border-color: rgba(220, 53, 69, 0.5);      
     color: #dc3545 !important;                
@@ -1839,14 +1918,6 @@ btn-hover-fill:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
-
-/* Select All Checkbox */
-.cart-select-all {
-    background-color: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
 
 .cart-badge {
     width: 30px;
@@ -1892,72 +1963,57 @@ btn-hover-fill:hover {
 
 
 /* Контейнер для цен */
-.product-price-container {
+/* .product-price-container {
     color: #198754;
     display: flex;
     align-items: center;
-}
-
-/* Стиль новой цены */
-.product-price-container .text-danger {
-    font-size: 1.25rem;
-    color: #dc3545 !important;
-}
-
-/* Стиль старой цены */
-.product-price-container .text-decoration-line-through {
-    font-size: 0.875rem;
-    color: FireBrick !important;
-    margin-left: 8px; /* Отступ между ценами */
-    position: relative;
-    top: 1px; /* Микро-коррекция выравнивания по вертикали */
-}
+} */
 
 
 .cart-clear-icon-wrapper {
     width: 36px;
     height: 36px;
+    font-size: 1.1rem;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 12px;
-    background-color: rgba(40, 167, 69, 0.1);
+    background-color: rgba(16, 185, 129, 0.2);
+    border: 1px solid rgba(16, 185, 129, 0.4); 
+    color: #6EE7B7 !important;
     transition: all 0.3s ease;
 }
 
-.cart-clear-icon-wrapper i {
-    color: rgba(40, 167, 69, 0.7);
-    font-size: 1.1rem;
-    transition: all 0.3s ease;
-}
 
 /* .cart-clear-btn:hover .cart-clear-icon-wrapper {
     background-color: rgba(220, 53, 69, 0.3); 
 } */
 
-.cart-clear-btn:hover .cart-clear-icon-wrapper i {
-    color: rgba(220, 53, 69, 0.9); 
-}
-
-.cart-clear-btn {
-    transition: transform 0.2s ease;
-}
-
-.cart-clear-btn:hover {
+.cart-clear-icon-wrapper:hover {
+    color: #dc3545 !important;
     transform: scale(1.05);
+    background-color: rgba(220, 53, 69, 0.2); 
+    border-color: rgba(220, 53, 69, 0.3);  
 }
+
 
 /* Стили для активных чекбоксов */
-.cart-main-checkbox:checked,
+.cart-select-all-checkbox:checked,
 .cart-item-checkbox:checked {
-    background-color: #198754 !important;
-    border-color: #198754 !important;
+    background-color: rgba(16, 185, 129, 0.8) !important;
+    border-color: #34D399 !important;
 }
 
 /* Стили при наведении на чекбоксы */
-.cart-main-checkbox:hover:not(:checked),
+.cart-select-all-checkbox:hover:not(:checked),
 .cart-item-checkbox:hover:not(:checked) {
     border-color: #198754 !important;
+}
+
+.cart-select-all-label {
+    color: #FFFFFF !important;
+    font-size: 1.125rem !important;
+    font-weight: 500 !important;
 }
 
 .form-check-input {

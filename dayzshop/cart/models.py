@@ -2,7 +2,6 @@ from django.db import models
 from django.db.models import Sum
 from django.conf import settings
 from decimal import Decimal
-from django.utils import timezone
 
 
 User = settings.AUTH_USER_MODEL

@@ -7,7 +7,7 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from decimal import Decimal
 from cart.utils import get_cart
-from shop.models import Product
+from shop.models import Product, WishlistItem
 from .models import CartItem, Order, OrderItem
 
 
@@ -41,6 +41,14 @@ def cart_detail(request):
         }
         # print("AJAX Response:", response_data)  # Для отладки
         return JsonResponse(response_data)
+    
+    if request.user.is_authenticated:
+        wishlist_products = WishlistItem.objects.filter(
+            wishlist__user=request.user
+        ).values_list('product_id', flat=True)
+        
+        for item in cart.items.all():
+            item.product.in_wishlist = item.product.id in wishlist_products
     
     return render(request, "cart/detail.html", {
         "cart": cart,
@@ -92,10 +100,32 @@ def update_cart_item(request, item_id):
     if new_quantity > 0:
         cart_item.quantity = new_quantity
         cart_item.save()
-        messages.success(request, f'Количество "{cart_item.product.name}" обновлено')
+        
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            # Рассчитываем актуальные суммы
+            item_total = float(cart_item.product.price * cart_item.quantity)
+            item_total_old = None
+            
+            if cart_item.product.is_on_sale and cart_item.product.old_price:
+                item_total_old = float(cart_item.product.old_price * cart_item.quantity)
+            
+            return JsonResponse({
+                'success': True,
+                'new_quantity': cart_item.quantity,
+                'item_total': item_total,
+                'item_total_old': item_total_old,
+                'message': f'Количество "{cart_item.product.name}" обновлено'
+            })
     else:
         cart_item.delete()
-        messages.success(request, f'"{cart_item.product.name}" удален из корзины')
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return JsonResponse({
+                'success': True,
+                'new_quantity': 0,
+                'item_total': 0,
+                'item_total_old': None,
+                'message': f'"{cart_item.product.name}" удален из корзины'
+            })
 
     return redirect("cart:detail")
 

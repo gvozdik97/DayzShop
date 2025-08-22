@@ -9,12 +9,12 @@
     <!-- Заголовок корзины -->
     <div class="cart-header mb-4 py-4">
         <div class="d-flex align-items-center gap-3">
-            <div class="cart-icon-wrapper rounded-4 d-flex align-items-center justify-content-center">
+            <div class="cart-icon-wrapper cart-icon-gradient rounded-4 d-flex align-items-center justify-content-center">
                 <i class="bi bi-cart2"></i>
             </div>
             <div>
-                <h1 class="h2 fw-bold mb-0">Корзина</h1>
-                <p class="cart_text_muted mb-0 fw-medium">
+                <h1 class="h2 fw-bold mb-0 cart-title-main">Корзина</h1>
+                <p class="mb-0 fw-medium cart-counter-text">
                     {{ cart.items.count }} 
                     {% if cart.items.count == 1 %}товар
                     {% elif cart.items.count < 5 
@@ -29,17 +29,17 @@
         <div class="col-12 col-lg-8">
             {% if cart.items.all %}
                 <!-- Блок выбора товаров -->
-                <div class="cart-select-all border-0 shadow-sm rounded-4 mb-4">
+                <div class="cart-select-all border-0 shadow-sm rounded-4 mb-4 glass-card-effect">
                     <div class="card-body p-4">
                         <div class="d-flex align-items-center justify-content-between">
                             <div class="d-flex align-items-center gap-3">
-                                <input type="checkbox" class="form-check-input mt-0 cart-main-checkbox" id="selectAll" {% if all_selected %}checked{% endif %}>
-                                <label for="selectAll" class="form-check-label h5 mb-0 fw-medium">Выбрать всё</label>
+                                <input type="checkbox" class="form-check-input mt-0 cart-select-all-checkbox" id="selectAll" {% if all_selected %}checked{% endif %}>
+                                <label for="selectAll" class="form-check-label h5 mb-0 fw-medium cart-select-all-label">Выбрать всё</label>
                             </div>
                             <form method="post" action="{% url 'cart:clear' %}" class="mb-0">
                                 {% csrf_token %}
-                                <button type="submit" class="btn p-0 border-0 bg-transparent cart-clear-btn" onclick="return confirm('Точно очистить корзину? Все товары будут удалены.')" title="Очистить корзину">
-                                    <div class="cart-clear-icon-wrapper">
+                                <button type="submit" class="btn p-0 border-0 bg-transparent" onclick="return confirm('Точно очистить корзину? Все товары будут удалены.')" title="Очистить корзину">
+                                    <div class="cart-clear-icon-wrapper rounded-3 p-2">
                                         <i class="bi bi-trash3"></i>
                                     </div>
                                 </button>
@@ -50,15 +50,14 @@
 
                 <!-- Список товаров -->
                 {% for item in cart.items.all %}
-                    <div class="cart-item card border-0 shadow-sm rounded-4 mb-4" data-item-id="{{ item.id }}">
+                    <div class="cart-item card border-0 shadow-sm rounded-4 mb-4 glass-card-effect" data-item-id="{{ item.id }}">
                         <div class="card-body p-4">
                             <div class="d-flex align-items-center gap-3 mb-4">
                                 <input type="checkbox" class="form-check-input cart-item-checkbox" {% if item.is_selected %}checked{% endif %}>
-                                <span class="cart_text_muted fw-medium">Доступно для заказа</span>
+                                <span class="fw-medium cart-availability-text">Доступно для заказа</span>
                             </div>
                             
                             <div class="row g-4">
-                                <!-- Информация о товаре -->
                                 <div class="col-12 col-md-6">
                                     <div class="cart-product-container">
                                         <div class="cart-product-image bg-light rounded-3 overflow-hidden">
@@ -69,49 +68,57 @@
                                             {% endif %}
                                         </div>
                                         <div class="cart-product-info">
-                                            <h3 class="h5 fw-semibold mb-2 product-title">{{ item.product.name }}</h3>
-                                            <div class="cart_text_muted mb-3 product-description d-none d-md-block">
+                                            <h3 class="h5 fw-semibold mb-2 cart-product-title">{{ item.product.name }}</h3>
+                                            <div class="mb-3 cart-product-description d-none d-md-block">
                                                 {{ item.product.description|linebreaks|truncatechars:60 }}
                                             </div>
-                                            <div class="cart_text_muted small mb-3 product-description-sm d-md-none">
+                                            <div class="small mb-3 cart-product-description-sm d-md-none">
                                                 {{ item.product.description|linebreaks|truncatechars:40 }}
                                             </div>
                                             
                                             <div class="d-flex gap-2">
-                                                <button class="btn btn-sm p-2 cart-action-btn">
-                                                    <i class="bi bi-heart"></i>
-                                                </button>
-                                                <a href="{% url 'cart:remove' item.id %}" class="btn btn-sm p-2 cart-action-btn">
+                                                <form method="post" action="{% url 'shop:toggle_wishlist' item.product.id %}" class="wishlist-form">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn btn-sm p-2 cart-action-btn cart-action-heart" 
+                                                            data-item-id="{{ item.id }}"
+                                                            title="{% if item.product.in_wishlist %}Удалить из избранного{% else %}Добавить в избранное{% endif %}">
+                                                        <i class="bi bi-heart{% if item.product.in_wishlist %}-fill{% endif %}"></i>
+                                                    </button>
+                                                </form>
+                                                <a href="{% url 'cart:remove' item.id %}" class="btn btn-sm p-2 cart-action-btn cart-action-trash">
                                                     <i class="bi bi-trash3"></i>
                                                 </a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+
                                 <!-- Цена и количество -->
                                 <div class="col-12 col-md-6 cart-price-section">
                                     <div class="d-flex align-items-center justify-content-between h-100">
                                         <div class="product-price-container">
                                             {% if item.product.is_on_sale and item.product.old_price %}
                                                 <div class="d-flex align-items-center gap-2">
-                                                    <div class="fw-bold cart-price">{{ item.product.price|multiply:item.quantity|floatformat:"0" }} ₽</div>
-                                                    <div class="text-decoration-line-through text-muted small">{{ item.product.old_price|multiply:item.quantity|floatformat:"0" }} ₽</div>
+                                                    <div class="fw-bold cart-price-main">{{ item.product.price|multiply:item.quantity|floatformat:"0" }} ₽</div>
+                                                </div>
+                                                <div class="d-flex align-items-center gap-2">
+                                                    <div class="small cart-price-old text-decoration-line-through text-muted">{{ item.product.old_price|multiply:item.quantity|floatformat:"0" }} ₽</div>
+                                                    <div class="discount-percent-badge">-{{ item.product.discount_percentage }}%</div>
                                                 </div>
                                             {% else %}
-                                                <div class="text-white fw-bold cart-price">{{ item.product.price|multiply:item.quantity|floatformat:"0" }} ₽</div>
+                                                <div class="text-white fw-bold cart-price-main">{{ item.product.price|multiply:item.quantity|floatformat:"0" }} ₽</div>
                                             {% endif %}
-                                        </div> 
+                                        </div>
                                         <div class="d-flex align-items-center gap-2">
                                             <div class="input-group">
-                                                <button class="btn btn-outline-secondary rounded-3 minus-btn" 
-                                                        data-item-id="{{ item.id }}"
-                                                        title="Уменьшить количество">
+                                                <button class="btn cart-quantity-btn minus-btn rounded-3" 
+                                                        data-item-id="{{ item.id }}" title="Уменьшить количество">
                                                     <i class="bi bi-dash"></i>
                                                 </button>
-                                                <input type="number" class="form-control text-center quantity-input bg-transparent" value="{{ item.quantity }}" min="1" data-item-id="{{ item.id }}">
-                                                <button class="btn btn-outline-secondary rounded-3 plus-btn"
-                                                        data-item-id="{{ item.id }}"
-                                                        title="Увеличить количество">
+                                                <input type="number" class="form-control text-center quantity-input" 
+                                                    value="{{ item.quantity }}" min="1" data-item-id="{{ item.id }}">
+                                                <button class="btn cart-quantity-btn plus-btn rounded-3"
+                                                        data-item-id="{{ item.id }}" title="Увеличить количество">
                                                     <i class="bi bi-plus"></i>
                                                 </button>
                                             </div>
@@ -124,12 +131,12 @@
                 {% endfor %}
             {% else %}
                 <!-- Пустая корзина -->
-                <div class="empty-cart card border-0 shadow-sm rounded-4 text-center p-5">
+                <div class="empty-cart border-0 shadow-sm rounded-4 text-center p-5 glass-card-effect">
                     <div class="mb-4">
                         <i class="bi bi-cart-x empty-cart-icon"></i>
                     </div>
-                    <h3 class="h4 text-dark mb-3">Ваша корзина пуста</h3>
-                    <p class="text-muted mb-4">Добавьте товары, чтобы продолжить</p>
+                    <h3 class="h4 mb-3 empty-cart-title">Ваша корзина пуста</h3>
+                    <p class="mb-4 empty-cart-text">Добавьте товары, чтобы продолжить</p>
                     <a href="{% url 'shop:product_list' %}" class="btn empty_btn py-3 px-5 rounded-3">
                         <i class="bi bi-cart-plus"></i> Начать покупки
                     </a>
@@ -139,9 +146,9 @@
         <!-- Блок итогов -->
         {% if cart.items.all %}
         <div class="col-12 col-lg-4">
-            <div class="cart-summary card border-0 shadow-sm rounded-4 sticky-lg-top">
+            <div class="cart-summary card border-0 shadow-sm rounded-4 sticky-lg-top glass-card-effect">
                 <div class="card-body p-4 border-bottom">
-                    <a href="{% url 'cart:checkout' %}" class="btn checkout-btn w-100 py-3 fw-semibold rounded-3 position-relative">
+                    <a href="{% url 'cart:checkout' %}" class="btn checkout-btn w-100 py-3 fw-semibold position-relative checkout-btn-gradient">
                         Оформить заказ
                         <span class="checkout-arrow ms-2">
                             <i class="bi bi-arrow-right"></i>
@@ -151,22 +158,22 @@
                 
                 <div class="card-body p-4">
                     <div class="d-flex align-items-center gap-3 mb-4">
-                        <div class="cart-summary-icon rounded-3 p-2">
+                        <div class="cart-summary-icon">
                             <i class="bi bi-bag"></i>
                         </div>
-                        <h3 class="h5 fw-bold mb-0">Ваша корзина</h3>
+                        <h3 class="h5 fw-bold mb-0 summary-title">Ваша корзина</h3>
                     </div>
 
                     <div class="d-flex justify-content-between align-items-center py-2">
-                        <span class="cart_text_muted">Товары (<span class="selected-items-count">{{ selected_count }}</span>)</span>
-                        <span class="fw-medium selected-items-price">{{ total_price_selected|floatformat:"0" }} ₽</span>
+                        <span class="summary-item-text">Товары (<span class="selected-items-count">{{ selected_count }}</span>)</span>
+                        <span class="fw-medium selected-items-price summary-item-price">{{ total_price_selected|floatformat:"0" }} ₽</span>
                     </div>
                     
                     {% if selected_count > 0 %}
                         {% if total_savings > 0 %}
                             <div class="d-flex justify-content-between align-items-center py-2 cart-savings">
-                                <span class="text-success">Скидка</span>
-                                <span class="fw-medium selected-items-savings">- {{ total_savings|floatformat:"0" }} ₽</span>
+                                <span class="summary-discount-text">Скидка</span>
+                                <span class="fw-medium summary-discount-price selected-items-savings">- {{ total_savings|floatformat:"0" }} ₽</span>
                             </div>
                         {% endif %}
                     {% endif %}
@@ -174,8 +181,8 @@
                     <hr class="my-3">
 
                     <div class="d-flex justify-content-between align-items-center">
-                        <span class="h5 fw-bold">Итого</span>
-                        <span class="h4 fw-bold cart-total-price">{{ cart.get_total_price_after_discount|floatformat:"0" }} ₽</span>
+                        <span class="h5 fw-bold summary-total-text">Итого</span>
+                        <span class="h4 fw-bold summary-total-price">{{ cart.get_total_price_after_discount|floatformat:"0" }} ₽</span>
                     </div>
                 </div>
             </div>
