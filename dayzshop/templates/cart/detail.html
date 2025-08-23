@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load humanize %}
 {% load cart_tags %}
 
 {% block title %}Корзина{% endblock %}
@@ -17,8 +18,7 @@
                 <p class="mb-0 fw-medium cart-counter-text">
                     {{ cart.items.count }} 
                     {% if cart.items.count == 1 %}товар
-                    {% elif cart.items.count < 5 
-                        and cart.items.count != 0 %}товара
+                    {% elif cart.items.count < 5 and cart.items.count != 0 %}товара
                     {% else %}товаров{% endif %}
                 </p>
             </div>
@@ -39,8 +39,8 @@
                             <form method="post" action="{% url 'cart:clear' %}" class="mb-0">
                                 {% csrf_token %}
                                 <button type="submit" class="btn p-0 border-0 bg-transparent" onclick="return confirm('Точно очистить корзину? Все товары будут удалены.')" title="Очистить корзину">
-                                    <div class="cart-clear-icon-wrapper rounded-3 p-2">
-                                        <i class="bi bi-trash3"></i>
+                                    <div class="cart-clear-icon-wrapper rounded-3 p-2 position-relative">
+                                        <i class="bi bi-trash3 position-absolute top-50 start-50 translate-middle"></i>
                                     </div>
                                 </button>
                             </form>
@@ -70,23 +70,24 @@
                                         <div class="cart-product-info">
                                             <h3 class="h5 fw-semibold mb-2 cart-product-title">{{ item.product.name }}</h3>
                                             <div class="mb-3 cart-product-description d-none d-md-block">
-                                                {{ item.product.description|linebreaks|truncatechars:60 }}
+                                                {{ item.product.description }}
                                             </div>
                                             <div class="small mb-3 cart-product-description-sm d-md-none">
-                                                {{ item.product.description|linebreaks|truncatechars:40 }}
+                                                {{ item.product.description }}
                                             </div>
                                             
-                                            <div class="d-flex gap-2">
+                                            <div class="d-flex gap-2 m-1">
                                                 <form method="post" action="{% url 'shop:toggle_wishlist' item.product.id %}" class="wishlist-form">
                                                     {% csrf_token %}
-                                                    <button type="submit" class="btn btn-sm p-2 cart-action-btn cart-action-heart" 
-                                                            data-item-id="{{ item.id }}"
-                                                            title="{% if item.product.in_wishlist %}Удалить из избранного{% else %}Добавить в избранное{% endif %}">
-                                                        <i class="bi bi-heart{% if item.product.in_wishlist %}-fill{% endif %}"></i>
+                                                    <button type="submit" class="btn btn-sm cart-action-btn cart-action-heart position-relative" 
+                                                            title="{% if item.product|in_wishlist:request.user %}Удалить из избранного{% else %}Добавить в избранное{% endif %}">
+                                                        
+                                                        <i class="bi position-absolute top-50 start-50 translate-middle 
+                                                                {% if item.product|in_wishlist:request.user %}bi-heart-fill{% else %}bi-heart{% endif %}"></i>
                                                     </button>
                                                 </form>
-                                                <a href="{% url 'cart:remove' item.id %}" class="btn btn-sm p-2 cart-action-btn cart-action-trash">
-                                                    <i class="bi bi-trash3"></i>
+                                                <a href="{% url 'cart:remove' item.id %}" class="btn btn-sm cart-action-btn cart-action-trash position-relative">
+                                                    <i class="bi bi-trash3 position-absolute top-50 start-50 translate-middle"></i>
                                                 </a>
                                             </div>
                                         </div>
@@ -99,14 +100,14 @@
                                         <div class="product-price-container">
                                             {% if item.product.is_on_sale and item.product.old_price %}
                                                 <div class="d-flex align-items-center gap-2">
-                                                    <div class="fw-bold cart-price-main">{{ item.product.price|multiply:item.quantity|floatformat:"0" }} ₽</div>
+                                                    <div class="fw-bold cart-price-main">{{ item.product.price|multiply:item.quantity|floatformat|intcomma }} ₽</div>
                                                 </div>
                                                 <div class="d-flex align-items-center gap-2">
-                                                    <div class="small cart-price-old text-decoration-line-through text-muted">{{ item.product.old_price|multiply:item.quantity|floatformat:"0" }} ₽</div>
+                                                    <div class="small cart-price-old text-decoration-line-through text-muted">{{ item.product.old_price|multiply:item.quantity|floatformat|intcomma }} ₽</div>
                                                     <div class="discount-percent-badge">-{{ item.product.discount_percentage }}%</div>
                                                 </div>
                                             {% else %}
-                                                <div class="text-white fw-bold cart-price-main">{{ item.product.price|multiply:item.quantity|floatformat:"0" }} ₽</div>
+                                                <div class="text-white fw-bold cart-price-main">{{ item.product.price|multiply:item.quantity|floatformat|intcomma }} ₽</div>
                                             {% endif %}
                                         </div>
                                         <div class="d-flex align-items-center gap-2">
@@ -158,22 +159,22 @@
                 
                 <div class="card-body p-4">
                     <div class="d-flex align-items-center gap-3 mb-4">
-                        <div class="cart-summary-icon">
-                            <i class="bi bi-bag"></i>
+                        <div class="cart-summary-icon position-relative">
+                            <i class="bi bi-bag position-absolute top-50 start-50 translate-middle"></i>
                         </div>
                         <h3 class="h5 fw-bold mb-0 summary-title">Ваша корзина</h3>
                     </div>
 
                     <div class="d-flex justify-content-between align-items-center py-2">
                         <span class="summary-item-text">Товары (<span class="selected-items-count">{{ selected_count }}</span>)</span>
-                        <span class="fw-medium selected-items-price summary-item-price">{{ total_price_selected|floatformat:"0" }} ₽</span>
+                        <span class="fw-medium selected-items-price summary-item-price">{{ total_price_selected|floatformat|intcomma }} ₽</span>
                     </div>
                     
                     {% if selected_count > 0 %}
                         {% if total_savings > 0 %}
                             <div class="d-flex justify-content-between align-items-center py-2 cart-savings">
                                 <span class="summary-discount-text">Скидка</span>
-                                <span class="fw-medium summary-discount-price selected-items-savings">- {{ total_savings|floatformat:"0" }} ₽</span>
+                                <span class="fw-medium summary-discount-price selected-items-savings">- {{ total_savings|floatformat|intcomma }} ₽</span>
                             </div>
                         {% endif %}
                     {% endif %}
@@ -182,7 +183,7 @@
 
                     <div class="d-flex justify-content-between align-items-center">
                         <span class="h5 fw-bold summary-total-text">Итого</span>
-                        <span class="h4 fw-bold summary-total-price">{{ cart.get_total_price_after_discount|floatformat:"0" }} ₽</span>
+                        <span class="h4 fw-bold summary-total-price">{{ cart.get_total_price_after_discount|floatformat|intcomma }} ₽</span>
                     </div>
                 </div>
             </div>

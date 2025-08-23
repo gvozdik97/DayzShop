@@ -1,7 +1,106 @@
 {% load static %}
+{% load humanize %}
 {% load cart_tags %}
 
-<div class="col-12 col-md-6 mb-4">
+<div class="col-12 col-lg-6 col-xl-4 col-xxl-3">
+{% comment %} <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3 col-xxl-3"> {% endcomment %}
+    <div class="product-card glass-card h-100 p-4 p-lg-4 position-relative overflow-hidden">
+        
+        <!-- Изображение товара -->
+        <div class="product-image position-relative mb-3 overflow-hidden">
+            <div class="product-img-container">
+                {% if product.image %}
+                    <img src="{{ product.image.url }}" 
+                        class="product-img w-100 h-100 object-fit-cover" 
+                        alt="{{ product.name }}">
+                {% else %}
+                    <img src="{% static 'img/no-image.jpg' %}" 
+                        class="card-img-top img-fluid" 
+                        alt="No image" 
+                        style="product-img w-100 h-100 object-fit-cover">
+                {% endif %}
+            </div>
+            
+            <!-- Overlay с кнопками (показывается при hover) -->
+            <div class="product-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center gap-3">
+                <button class="overlay-btn btn rounded-circle position-relative" title="Быстрый просмотр">
+                    <i class="bi bi-eye lucide-icon-sm position-absolute top-50 start-50 translate-middle"></i>
+                </button>
+                <button class="overlay-btn btn rounded-circle favorite-btn position-relative" title="В избранное">
+                    <i class="bi bi-heart lucide-icon-sm position-absolute top-50 start-50 translate-middle"></i>
+                </button>
+            </div>
+
+            <!-- Бейджи -->
+            {% if product.is_on_sale and product.old_price %}
+                <div class="product-badges position-absolute top-0 start-0 mt-2 mx-2 d-flex flex-column gap-2">
+                    <span class="discount-badge badge">
+                        -{{ product.discount_percentage }}%
+                    </span>
+                </div>
+            {% endif %}
+            
+            <!-- Категория -->
+            <div class="position-absolute top-0 end-0 mt-2 me-2">
+                <span class="category-badge badge">
+                    {{ product.category.name|default:"Без категории" }}
+                </span>
+            </div>
+        </div>
+
+        <!-- Информация о товаре -->
+        <div class="product-info d-flex flex-column flex-grow-1">
+            <!-- Название -->
+            <h5 class="product-name mb-2">{{ product.name }}</h5>
+            
+            <!-- Описание -->
+            <p class="product-description mb-3 flex-grow-1">
+                {{ product.description|default:"Описание отсутствует" }}
+            </p>
+
+            <!-- Рейтинг -->
+            <div class="product-rating d-flex align-items-center gap-2 mb-3">
+                <div class="stars d-flex gap-1">
+                    <i data-lucide="star" class="star active"></i>
+                    <i data-lucide="star" class="star active"></i>
+                    <i data-lucide="star" class="star active"></i>
+                    <i data-lucide="star" class="star active"></i>
+                    <i data-lucide="star" class="star"></i>
+                </div>
+                <span class="rating-text">4.8</span>
+            </div>
+
+            <!-- Цена -->
+            <div class="product-price mb-3">
+                {% if product.is_on_sale and product.old_price %}
+                    <div class="d-flex align-items-baseline gap-2">
+                        <span class="current-price">{{ product.price|floatformat|intcomma }} ₽</span>
+                    </div>
+                    <span class="original-price">{{ product.old_price|floatformat|intcomma }} ₽</span>
+                {% else %}
+                    <div class="d-flex align-items-baseline gap-2">
+                        <span class="current-price">{{ product.price|floatformat|intcomma }} ₽</span>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Кнопка в корзину -->
+            <button 
+                class="btn add-to-cart-btn w-100 py-3 d-flex align-items-center justify-content-center gap-2 {% if product|is_in_cart:request %}added-to-cart{% endif %}" 
+                data-product-id="{{ product.id }}"
+                {% if product|is_in_cart:request %}data-is-in-cart="true"{% endif %}>
+                {% if product|is_in_cart:request %}
+                    <i class="bi bi-check-circle-fill lucide-icon-sm"></i> В корзине
+                {% else %}
+                    <i class="bi bi-cart2 lucide-icon-sm"></i> В корзину
+                {% endif %}
+            </button>
+        </div>
+    </div>
+</div>
+
+
+{% comment %} <div class="col-12 col-md-6 mb-4">
     <div class="card h-100 d-flex flex-column position-relative overflow-hidden">
         <div class="card-shine-effect"></div>
         <div class="cart-image-container">
@@ -45,7 +144,6 @@
                         <span>{{ product.price|floatformat:"0" }} ₽</span>
                     {% endif %}
                 </div>
-                {% comment %} <span class="h6 mb-0 price-badge">{{ product.price }} ₽</span> {% endcomment %}
             </div>
             <!-- Описание -->
             <p class="text-muted small mb-3" style="
@@ -83,4 +181,4 @@
             </div>
         </div>
     </div>
-</div>
+</div> {% endcomment %}

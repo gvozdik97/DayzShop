@@ -1,24 +1,24 @@
 // static/js/cart.js
 document.addEventListener('DOMContentLoaded', function() {
     // ==================== АНИМАЦИЯ НАЗВАНИЙ ТОВАРОВ ====================
-    function initMarqueeTitles() {
-        document.querySelectorAll('.product-name').forEach(function(el) {
-            const container = el.parentElement;
-            const textWidth = el.scrollWidth;
-            const containerWidth = container.offsetWidth;
+    // function initMarqueeTitles() {
+    //     document.querySelectorAll('.product-name').forEach(function(el) {
+    //         const container = el.parentElement;
+    //         const textWidth = el.scrollWidth;
+    //         const containerWidth = container.offsetWidth;
             
-            if (textWidth > containerWidth) {
-                el.classList.add('marquee');
+    //         if (textWidth > containerWidth) {
+    //             el.classList.add('marquee');
                 
-                // Создаем клон для плавной анимации
-                const clone = el.cloneNode(true);
-                clone.classList.add('marquee-clone');
-                container.appendChild(clone);
-            }
-        });
-    }
+    //             // Создаем клон для плавной анимации
+    //             const clone = el.cloneNode(true);
+    //             clone.classList.add('marquee-clone');
+    //             container.appendChild(clone);
+    //         }
+    //     });
+    // }
 
-    initMarqueeTitles();
+    // initMarqueeTitles();
 
     // ==================== УВЕДОМЛЕНИЯ ====================
     function showToast(message, type = 'success') {
@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 redirect: true
             },
             default: {
-                html: '<i class="bi bi-cart-plus"></i> В корзину',
+                html: '<i class="bi bi-cart2"></i> В корзину',
                 class: '',
                 disabled: false,
                 redirect: false
@@ -459,7 +459,7 @@ document.addEventListener('DOMContentLoaded', function() {
             showToast('Выберите хотя бы один товар для оформления заказа', 'error');
         }
     });
-
+    
     document.querySelectorAll('.wishlist-form').forEach(form => {
         form.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -482,10 +482,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     // Меняем иконку
                     if (data.in_wishlist) {
                         icon.classList.remove('bi-heart');
-                        icon.classList.add('bi-heart-fill', 'text-danger');
+                        icon.classList.add('bi-heart-fill');
                         button.title = 'Удалить из избранного';
                     } else {
-                        icon.classList.remove('bi-heart-fill', 'text-danger');
+                        icon.classList.remove('bi-heart-fill');
                         icon.classList.add('bi-heart');
                         button.title = 'Добавить в избранное';
                     }

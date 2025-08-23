@@ -1,5 +1,7 @@
 from django import template
 from cart.models import CartItem
+from shop.models import WishlistItem
+
 
 register = template.Library()
 
@@ -36,3 +38,13 @@ def floatformat(value, arg=0):
         return format(float(value), f'.{arg}f')
     except (ValueError, TypeError):
         return value
+
+@register.filter
+def in_wishlist(product, user):
+    """Проверяет, находится ли товар в избранном пользователя"""
+    if user.is_authenticated:
+        return WishlistItem.objects.filter(
+            wishlist__user=user, 
+            product=product
+        ).exists()
+    return False
