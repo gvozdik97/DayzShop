@@ -15,10 +15,13 @@
             <div class="catalog-header text-center mb-5">
                 <div class="d-flex align-items-center justify-content-center gap-4 gap-lg-5 mb-4">
                     <!-- Иконка магазина -->
-                    <div class="catalog-icon d-flex align-items-center justify-content-center position-relative shadow-lg">
+                    {% comment %} <div class="catalog-icon d-flex align-items-center justify-content-center position-relative shadow-lg">
                         <i class="bi bi-shop lucide-icon position-absolute top-50 start-50 translate-middle"></i>
-                        {% comment %} <i data-lucide="store" class="lucide-icon"></i> {% endcomment %}
+                    </div> {% endcomment %}
+                    <div class="catalog-icon d-flex align-items-center justify-content-center rounded-4 shadow-lg">
+                        <i data-lucide="store" class="lucide-icon"></i>
                     </div>
+
                     <!-- Заголовок и счетчик -->
                     <div>
                         <h1 class="catalog-title mb-2">КАТАЛОГ</h1>
@@ -65,8 +68,8 @@
                 <div class="glass-card p-4">
                     <!-- Заголовок фильтра -->
                     <div class="d-flex align-items-center gap-3 mb-3 position-relative">
-                        <div class="filter-icon rounded-3 position-relative">
-                            <i class="bi bi-funnel lucide-icon-sm position-absolute top-50 start-50 translate-middle"></i>
+                        <div class="filter-icon d-flex align-items-center justify-content-center rounded-3">
+                            <i data-lucide="filter" class="lucide-icon-sm"></i>
                         </div>
                         <h3 class="filter-title mb-0">Категории</h3>
                     </div>
@@ -181,8 +184,6 @@
                         {% include 'shop/includes/_product_cart.html' %}
                     {% endfor %}
 
-                    {% include 'shop/includes/_product_modal.html' %}
-
                 </div>
             </section>
 
@@ -252,7 +253,13 @@
                     </ul>
                 </nav>
             {% endif %}
+
+            
         </div>
     </div>
+    {% include 'shop/includes/_product_modal.html' %}
 {% endblock %}
 
+{% block javascript %}
+    <script src="{% static 'js/product_modal.js' %}"></script>
+{% endblock %}

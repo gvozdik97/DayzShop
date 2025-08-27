@@ -48,3 +48,7 @@ def in_wishlist(product, user):
             product=product
         ).exists()
     return False
+
+@register.filter
+def subtract(value, arg):
+    return value - arg

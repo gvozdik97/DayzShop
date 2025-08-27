@@ -24,7 +24,9 @@ body::before {
     background: 
         linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), /* Затемнение */
         url('../img/dayz-back2.jpg') no-repeat center center / cover;
-    backdrop-filter: blur(4px);
+    /* backdrop-filter: blur(4px); */
+    filter: blur(4px);
+    transform: scale(1.05);
     z-index: -1;
 }
 
@@ -71,7 +73,6 @@ btn-primary:hover {
 }
 
 .navbar-brand {
-    font-family: 'Russo One', sans-serif;
     font-size: 1.5rem;
     color: #2e7d32 !important;
     font-weight: 600;
@@ -421,8 +422,8 @@ btn-primary:hover {
 } */
 
 .mini-badge {
-    width: 18px; 
-    height: 18px; 
+    width: 15px; 
+    height: 15px; 
     display: flex;
     align-items: center; 
     justify-content: center;
@@ -730,6 +731,8 @@ a.checkout-btn {
 } */
 
 .add-to-cart-btn.loading {
+    min-width: 100%;
+    text-align: center;
     opacity: 0.8;
 }
 
@@ -744,6 +747,8 @@ a.checkout-btn {
 }
 
 .add-to-cart-btn.added-to-cart {
+    min-width: 100%;
+    text-align: center;
     background: rgba(250, 255, 253, 0.2) !important;
     border: 1px solid rgba(240, 250, 247, 0.2) !important;
     color: rgba(255, 255, 255, 0.5) !important;
@@ -841,9 +846,8 @@ btn-hover-fill:hover {
 .summary-discount-text { color: #6EE7B7 !important; }
 .summary-discount-price { color: #6EE7B7 !important; font-weight: 500 !important; }
 .summary-total-price {
-    font-size: 1.5rem; /* xs-md */
     color: #FFFFFF !important;
-    font-size: 1.875rem !important;
+    font-size: 1.5rem !important;
     font-weight: 700 !important;
     text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5) !important;
 }
@@ -963,7 +967,7 @@ btn-hover-fill:hover {
         font-size: 1.125rem; /* lg+ */
     }
     .summary-total-price {
-        font-size: 2rem; /* lg+ */
+        font-size: 1.875rem; /* lg+ */
     }
     .checkout-btn {
         font-size: 1.125rem; /* lg+ */
@@ -1219,7 +1223,7 @@ btn-hover-fill:hover {
     background-color: #f8f9fa !important;
     backdrop-filter: blur(8px);
     box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
-    border-radius: 30px 0 !important;
+    border-radius: 30px 30px 0 0 !important;
 }
 
 /* Зеленая пагинация с градиентами */
@@ -1847,8 +1851,8 @@ btn-hover-fill:hover {
 /* Стили для иконок действий в корзине */
 .cart-action-btn {
     /* line-height: 1; */
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
     /* display: flex;
     align-items: center;
     justify-content: center; */
@@ -1884,22 +1888,18 @@ btn-hover-fill:hover {
 }
 
 @media (max-width: 576px) {
-    .cart-action-btn {
-        width: 20px;
-        height: 20px;
-    }
     .cart-action-btn i {
-        font-size: 0.6rem;
+        font-size: 0.75rem;
     }
 }
 
 @media (min-width: 992px) {
     .cart-action-btn {
-        width: 28px;
-        height: 28px;
+        width: 30px;
+        height: 30px;
     }
     .cart-action-btn i {
-        font-size: 0.8rem;
+        font-size: 0.9rem;
     }
 }
 
@@ -2040,3 +2040,91 @@ btn-hover-fill:hover {
 .cart-savings {
     color: firebrick;
 }
+
+
+.wishlist-header {
+    padding: 2rem 0;
+}
+
+.wishlish-counter-text {
+    color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.wishlist-icon-wrapper {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, rgba(220, 53, 69, 0.2), rgba(220, 53, 69, 0.1));
+    border: 1px solid rgba(220, 53, 69, 0.3);
+}
+
+.empty-wishlist {
+    min-height: 50vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-icon {
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.btn-icon:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+.wishlist-remove-form .btn-icon:hover {
+    background: rgba(220, 53, 69, 0.2);
+    border-color: rgba(220, 53, 69, 0.3);
+}
+
+.btn-primary-glass {
+    background: linear-gradient(135deg, rgba(32, 201, 151, 0.2), rgba(32, 201, 151, 0.1));
+    border: 1px solid rgba(32, 201, 151, 0.3);
+    color: white;
+    border-radius: 12px;
+    padding: 1rem 2rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-primary-glass:hover {
+    background: linear-gradient(135deg, rgba(32, 201, 151, 0.3), rgba(32, 201, 151, 0.2));
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(32, 201, 151, 0.2);
+    color: white;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .wishlist-header {
+        text-align: center;
+        padding: 1rem 0;
+    }
+    
+    .wishlist-icon-wrapper {
+        width: 60px;
+        height: 60px;
+        margin: 0 auto;
+    }
+    
+    .empty-wishlist {
+        min-height: 40vh;
+        padding: 2rem 0;
+    }
+    
+    .btn-primary-glass {
+        padding: 0.75rem 1.5rem;
+    }
+}
+

@@ -63,6 +63,13 @@ class Product(models.Model):
         if self.is_on_sale and self.old_price:
             return int(100 - (self.price / self.old_price * 100))
         return 0
+    
+    @property
+    def savings(self):
+        """Расчет экономии при скидке"""
+        if self.is_on_sale and self.old_price:
+            return self.old_price - self.price
+        return 0
 
     def __str__(self):
         return f"{self.name} - {self.price}₽" + (

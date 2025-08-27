@@ -36,13 +36,13 @@
     height: 75px;
     background: linear-gradient(135deg, rgba(16, 185, 129, 0.8), rgba(5, 150, 105, 0.8));
     border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 25px;
+    border-radius: 20px;
 }
-.catalog-icon .bi-shop {
+.catalog-icon .lucide-icon {
     line-height: 1;
-    font-size: 2rem !important;
-    width: 2rem !important;
-    height: 2rem !important;
+    font-size: 2.5rem !important;
+    width: 2.5rem !important;
+    height: 2.5rem !important;
 }
 
 .catalog-title {
@@ -97,9 +97,14 @@
 }
 
 .lucide-icon-lg {
+    width: 32px;
+    height: 32px;
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.lucide-icon-xxl {
     width: 64px;
     height: 64px;
-    color: rgba(255, 255, 255, 0.3);
 }
 
 /* Поиск */
@@ -311,6 +316,7 @@
     line-height: 1.4;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
     overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .product-description {
@@ -327,11 +333,11 @@
     overflow: hidden;
 }
 
-@media (min-width: 992px) {
+/* @media (min-width: 992px) {
     .product-name {
         font-size: 1.125rem;
     }
-}
+} */
 
 /* Рейтинг */
 .stars .star {
@@ -355,7 +361,7 @@
 /* Цена */
 .current-price {
     color: #FFFFFF;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     font-weight: 700;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
 }
@@ -369,22 +375,23 @@
 
 @media (min-width: 992px) {
     .current-price {
-        font-size: 1.75rem;
+        font-size: 1.5rem;
     }
 }
 
 /* Кнопка "В корзину" */
 .add-to-cart-btn {
     font-size: 0.875rem !important;
+    font-weight: 600;
     background: linear-gradient(90deg, rgba(16, 185, 129, 0.8), rgba(5, 150, 105, 0.8));
     color: #FFFFFF;
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 12px !important;
-    font-weight: 600;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     height: 38px;
     transition: all 0.3s ease;
 }
+
 
 .add-to-cart-btn:hover {
     background: linear-gradient(90deg, rgba(16, 185, 129, 0.9), rgba(5, 150, 105, 0.9));

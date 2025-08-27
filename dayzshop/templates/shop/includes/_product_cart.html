@@ -4,7 +4,7 @@
 
 <div class="col-12 col-lg-6 col-xl-4 col-xxl-3">
 {% comment %} <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3 col-xxl-3"> {% endcomment %}
-    <div class="product-card glass-card h-100 p-4 p-lg-4 position-relative overflow-hidden">
+    <div class="product-card glass-card h-100 p-4 p-lg-4 position-relative overflow-hidden d-flex flex-column">
         
         <!-- Изображение товара -->
         <div class="product-image position-relative mb-3 overflow-hidden">
@@ -22,15 +22,31 @@
             </div>
             
             <!-- Overlay с кнопками (показывается при hover) -->
-            <div class="product-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center gap-3">
-                <button class="overlay-btn btn rounded-circle position-relative" title="Быстрый просмотр">
-                    <i class="bi bi-eye lucide-icon-sm position-absolute top-50 start-50 translate-middle"></i>
+            <div class="product-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center gap-3 rounded-3">
+                {% comment %} <button class="overlay-btn btn rounded-circle d-flex align-items-center justify-content-center p-0" 
+                        title="Быстрый просмотр"
+                    >
+                    <i data-lucide="eye" class="lucide-icon-sm"></i>
+                </button> {% endcomment %}
+                <!-- Быстрый просмотр -->
+                <button class="overlay-btn btn rounded-circle d-flex align-items-center justify-content-center p-0" 
+                        title="Быстрый просмотр"
+                        data-bs-toggle="modal" 
+                        data-bs-target="#productModal"
+                        data-product-id="{{ product.id }}">
+                    <i data-lucide="eye" class="lucide-icon-sm"></i>
                 </button>
-                <button class="overlay-btn btn rounded-circle favorite-btn position-relative" title="В избранное">
-                    <i class="bi bi-heart lucide-icon-sm position-absolute top-50 start-50 translate-middle"></i>
-                </button>
+                <form method="post" action="{% url 'shop:toggle_wishlist' product.id %}" class="wishlist-form mb-0">
+                    {% csrf_token %}
+                    <button type="submit" class="overlay-btn btn rounded-circle favorite-btn d-flex align-items-center justify-content-center p-0" 
+                            title="{% if request.user.is_authenticated and product.in_wishlist %}Удалить из избранного{% else %}Добавить в избранное{% endif %}"
+                            {% if request.user.is_authenticated and product.in_wishlist %}data-in-wishlist="true"{% endif %}>
+                        <i data-lucide="heart" class="lucide-icon-sm {% if request.user.is_authenticated and product.in_wishlist %}fill: currentColor;{% endif %}"
+                        {% if request.user.is_authenticated and product.in_wishlist %}fill="currentColor"{% endif %}></i>
+                    </button>
+                </form>
             </div>
-
+            
             <!-- Бейджи -->
             {% if product.is_on_sale and product.old_price %}
                 <div class="product-badges position-absolute top-0 start-0 mt-2 mx-2 d-flex flex-column gap-2">
@@ -85,16 +101,18 @@
             </div>
 
             <!-- Кнопка в корзину -->
-            <button 
-                class="btn add-to-cart-btn w-100 py-3 d-flex align-items-center justify-content-center gap-2 {% if product|is_in_cart:request %}added-to-cart{% endif %}" 
-                data-product-id="{{ product.id }}"
-                {% if product|is_in_cart:request %}data-is-in-cart="true"{% endif %}>
-                {% if product|is_in_cart:request %}
-                    <i class="bi bi-check-circle-fill lucide-icon-sm"></i> В корзине
-                {% else %}
-                    <i class="bi bi-cart2 lucide-icon-sm"></i> В корзину
-                {% endif %}
-            </button>
+            <div class="mt-auto">
+                <button 
+                    class="btn add-to-cart-btn w-100 py-3 d-flex align-items-center justify-content-center {% if product|is_in_cart:request %}added-to-cart{% endif %}" 
+                    data-product-id="{{ product.id }}"
+                    {% if product|is_in_cart:request %}data-is-in-cart="true"{% endif %}>
+                    {% if product|is_in_cart:request %}
+                        <i class="bi bi-check-circle-fill lucide-icon-sm"></i> В корзине
+                    {% else %}
+                        <i class="bi bi-cart2 lucide-icon-sm"></i> В корзину
+                    {% endif %}
+                </button>
+            </div>
         </div>
     </div>
 </div>

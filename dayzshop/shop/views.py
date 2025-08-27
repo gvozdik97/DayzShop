@@ -104,11 +104,22 @@ def product_modal(request, product_id):
             "in_cart": CartItem.objects.filter(
                 cart=get_cart(request), product=product
             ).exists(),
+            "in_wishlist": False
         }
+
+        if request.user.is_authenticated:
+            context['in_wishlist'] = WishlistItem.objects.filter(
+                wishlist__user=request.user, product=product
+            ).exists()
+        
         html = render_to_string("shop/includes/product_modal_content.html", context)
-        return JsonResponse(
-            {"success": True, "html": html, "product_name": product.name}
-        )
+        return JsonResponse({
+            "success": True, 
+            "html": html, 
+            "product_name": product.name,
+            "in_cart": context["in_cart"],
+            "in_wishlist": context["in_wishlist"]
+        })
     except Product.DoesNotExist:
         return JsonResponse(
             {"success": False, "error": f"Товар с ID {product_id} не найден"},

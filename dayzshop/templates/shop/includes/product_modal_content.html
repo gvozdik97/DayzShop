@@ -1,76 +1,83 @@
+{% load static %}
 {% load humanize %}
+{% load cart_tags %}
 
-<div class="row g-3">  
-    <!-- Левая колонка (изображение) -->
-    <div class="col-md-6">
-        {% if product.image %}
-            <img src="{{ product.image.url }}" 
-                 class="img-fluid rounded shadow-sm" 
-                 alt="{{ product.name }}"
-                 style="max-height: 400px; object-fit: contain;">
-        {% else %}
-            <div class="bg-light p-5 text-center rounded">
-                <i class="bi bi-image text-muted" style="font-size: 3rem;"></i>
-                <p class="mt-2">Нет изображения</p>
+<div class="row g-4 g-lg-5">
+    
+    <!-- Левая колонка: Изображение -->
+    <div class="col-lg-6">
+        <div class="product-image-container">
+            {% if product.image %}
+                <img src="{{ product.image.url }}" 
+                    alt="{{ product.name }}" 
+                    class="product-image">
+            {% else %}
+                <img src="{% static 'img/no-image.jpg' %}" 
+                    alt="No image" 
+                    class="product-image">
+            {% endif %}
+            
+            <!-- Индикатор наличия -->
+            <div class="stock-indicator">
+                <span class="stock-badge {% if product.available %}stock-in{% else %}stock-out{% endif %}">
+                    {% if product.available %}В наличии{% else %}Нет в наличии{% endif %}
+                </span>
             </div>
-        {% endif %}
+
+            <!-- Бейдж скидки -->
+            {% if product.is_on_sale and product.old_price %}
+                <div class="discount-badge">
+                    -{{ product.discount_percentage }}%
+                </div>
+            {% endif %}
+        </div>
     </div>
 
-    <!-- Правая колонка (информация) -->
-    <div class="col-md-6">
-        <!-- Заголовок и категория -->
-        <h3 class="mb-3">
-            <a href="{{ product.get_absolute_url }}" class="text-decoration-none">
-                {{ product.name }}
-            </a>
-        </h3>
-        <p class="text-muted mb-4">
-            <i class="bi bi-tag-fill"></i> {{ product.category.name }}
-        </p>
+    <!-- Правая колонка: Информация -->
+    <div class="col-lg-6">
         
-        <!-- Цена и наличие -->
-        <div class="d-flex align-items-center mb-4">
-            <span class="h4 fw-bold text-primary">{{ product.price|floatformat:"0"|intcomma }} руб.</span>
-            <span class="badge {% if product.available %}bg-success{% else %}bg-secondary{% endif %} ms-3">
-                {% if product.available %}В наличии{% else %}Нет в наличии{% endif %}
-            </span>
-        </div>
+        <!-- Категория -->
+        <span class="product-category">
+            {{ product.category.name|default:"Без категории" }}
+        </span>
+        
+        <!-- Название товара -->
+        <h2 class="product-title">
+            {{ product.name }}
+        </h2>
 
         <!-- Описание -->
-        <div class="mb-4">
-            <h5 class="border-bottom pb-2">Описание</h5>
-            <p class="mt-2">{{ product.description|linebreaksbr }}</p>  
+        <p class="product-description">
+            {{ product.description|default:"Описание отсутствует" }}
+        </p>
+
+        <!-- Рейтинг -->
+        <div class="rating-container">
+            <div class="stars">
+                <i data-lucide="star" class="star filled"></i>
+                <i data-lucide="star" class="star filled"></i>
+                <i data-lucide="star" class="star filled"></i>
+                <i data-lucide="star" class="star filled"></i>
+                <i data-lucide="star" class="star"></i>
+            </div>
+            <span class="rating-text">4.8</span>
+            <span class="rating-count">(24 отзыва)</span>
         </div>
 
-        <!-- Блок с количеством и кнопкой (только если в наличии) -->
-        {% if product.available %}
-        <div class="d-flex align-items-center mt-auto pt-3 border-top">
-            <!-- Счётчик -->
-            <div class="input-group me-3" style="width: 140px;">
-                <button class="btn btn-outline-secondary minus-btn" type="button">
-                    <i class="bi bi-dash"></i>
-                </button>
-                <input type="number" 
-                       class="form-control text-center quantity-input" 
-                       value="1" 
-                       min="1"
-                       aria-label="Количество">
-                <button class="btn btn-outline-secondary plus-btn" type="button">
-                    <i class="bi bi-plus"></i>
-                </button>
-            </div>
-            
-            <!-- Кнопка корзины -->
-            <button class="btn btn-warning add-to-cart-btn flex-grow-1 {% if in_cart %}disabled{% endif %}" 
-                    data-product-id="{{ product.id }}"
-                    style="min-width: 120px;">
-                {% if in_cart %}
-                    <i class="bi bi-check-circle"></i> В корзине
-                {% else %}
-                    <i class="bi bi-cart-plus"></i> Добавить
+        <!-- Цена -->
+        <div class="price-container">
+            <div class="d-flex align-items-baseline">
+                <span class="current-price">{{ product.price|floatformat|intcomma }} ₽</span>
+                {% if product.is_on_sale and product.old_price %}
+                    <span class="original-price">{{ product.old_price|floatformat|intcomma }} ₽</span>
                 {% endif %}
-            </button>
+            </div>
+            {% if product.is_on_sale and product.old_price %}
+                <div class="price-savings">
+                    Экономия: {{ product.savings|floatformat|intcomma }} ₽
+                </div>
+            {% endif %}
         </div>
-        {% endif %}
+
     </div>
 </div>

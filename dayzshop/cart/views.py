@@ -143,15 +143,18 @@ def clear_cart(request):
     messages.success(request, "✅ Корзина полностью очищена")
     return redirect("cart:detail")
 
+@login_required
 def order_list(request):
     orders = (
         Order.objects.filter(user=request.user)
         .select_related("user")
         .prefetch_related(
             Prefetch(
-                "orderitem_set", queryset=OrderItem.objects.select_related("product")
+                "orderitem_set", 
+                queryset=OrderItem.objects.select_related("product")
             )
         )
+        .order_by('-created_at')  # Сортировка по дате (новые сначала)
     )
     return render(request, "cart/order_list.html", {"orders": orders})
 

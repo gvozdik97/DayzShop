@@ -1,0 +1,192 @@
+<header class="header sticky-top">
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-xxl px-4">
+            
+            <!-- Логотип -->
+            <a class="navbar-brand d-flex align-items-center gap-3" href__="#">
+                <div class="logo-icon d-flex align-items-center justify-content-center rounded-3 shadow-lg">
+                    <i data-lucide="store" class="lucide-icon"></i>
+                </div>
+                <div>
+                    <span class="logo-title">ShopCart</span>
+                    <p class="logo-subtitle d-none d-sm-block mb-0">Интернет-магазин</p>
+                </div>
+            </a>
+
+            <!-- Кнопка для мобильного меню -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+                <i data-lucide="menu" class="lucide-icon"></i>
+            </button>
+
+            <!-- Основная навигация (Offcanvas для мобильных) -->
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="mainNav" aria-labelledby="mainNavLabel">
+                
+                <!-- Заголовок мобильного меню -->
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="mainNavLabel">Меню</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                
+                <div class="offcanvas-body">
+                    <!-- Поиск (в центре для десктопа, вверху для мобильного меню) -->
+                    <div class="d-flex flex-grow-1 mx-lg-4 my-3 my-lg-0">
+                        <div class="position-relative w-100" style="max-width: 400px;">
+                            <i data-lucide="search" class="search-icon position-absolute top-50 translate-middle-y ms-3"></i>
+                            <input type="text" class="search-input form-control ps-5 rounded-3" placeholder="Поиск...">
+                        </div>
+                    </div>
+
+                    <!-- Навигационные ссылки (справа для десктопа) -->
+                    <ul class="navbar-nav align-items-lg-center gap-2">
+                        <li class="nav-item">
+                            <a class="nav-link active" href__="#">
+                                <i data-lucide="layout-grid" class="lucide-icon-sm"></i>
+                                Каталог
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link position-relative" href__="#">
+                                <i data-lucide="shopping-cart" class="lucide-icon-sm"></i>
+                                Корзина
+                                <span class="cart-badge badge rounded-pill">3</span>
+                            </a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link" href__="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i data-lucide="user-circle" class="lucide-icon-sm"></i>
+                                Профиль
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href__="#">Мои заказы</a></li>
+                                <li><a class="dropdown-item" href__="#">Настройки</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href__="#">Выйти</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<style>
+.header {
+    background-color: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--glass-border);
+}
+
+/* Логотип */
+.logo-icon {
+    width: 44px;
+    height: 44px;
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.8), rgba(5, 150, 105, 0.8));
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+.logo-title {
+    color: #FFFFFF;
+    font-weight: 700;
+    font-size: 1.25rem;
+}
+.logo-subtitle {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+}
+
+/* Поиск */
+.search-input {
+    background-color: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    color: #FFFFFF;
+    height: 42px;
+}
+.search-input::placeholder { color: rgba(255, 255, 255, 0.6); }
+.search-input:focus {
+    background-color: var(--glass-bg);
+    border-color: var(--emerald-400);
+    box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.5);
+    color: #FFFFFF;
+}
+.search-icon {
+    color: rgba(255, 255, 255, 0.6);
+    width: 16px;
+    height: 16px;
+}
+
+/* Навигация */
+.nav-link {
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 500;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+}
+.nav-link:hover {
+    color: #FFFFFF;
+    background-color: var(--glass-bg);
+}
+.nav-link.active {
+    color: #FFFFFF;
+    background-color: var(--emerald-500);
+}
+
+/* Бейдж корзины */
+.cart-badge {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    font-size: 0.65rem;
+    line-height: 1;
+    padding: 0.25rem 0.4rem;
+    background-color: var(--red-500);
+}
+
+/* Выпадающее меню */
+.dropdown-menu {
+    background-color: rgba(31, 41, 55, 0.9);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: 0.75rem;
+    padding: 0.5rem;
+}
+.dropdown-item {
+    color: rgba(255, 255, 255, 0.8);
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+}
+.dropdown-item:hover, .dropdown-item:focus {
+    color: #FFFFFF;
+    background-color: var(--emerald-500);
+}
+.dropdown-divider {
+    border-color: var(--glass-border);
+}
+
+/* Мобильное меню (Offcanvas) */
+.navbar-toggler {
+    border: none;
+    padding: 0.5rem;
+}
+.navbar-toggler:focus { box-shadow: none; }
+.offcanvas {
+    background-color: rgba(17, 24, 39, 0.95);
+    backdrop-filter: blur(15px);
+    border-left: 1px solid var(--glass-border);
+    color: #FFFFFF;
+}
+.offcanvas-header {
+    border-bottom: 1px solid var(--glass-border);
+}
+.offcanvas-title {
+    font-weight: 600;
+}
+.offcanvas .nav-link {
+    font-size: 1.125rem;
+    padding: 1rem;
+}
+</style>
