@@ -39,7 +39,6 @@ def cart_detail(request):
             'all_selected': all_selected,
             'selected_count': selected_count
         }
-        # print("AJAX Response:", response_data)  # Для отладки
         return JsonResponse(response_data)
     
     if request.user.is_authenticated:

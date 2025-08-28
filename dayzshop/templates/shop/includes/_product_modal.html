@@ -3,12 +3,12 @@
         <div class="modal-content">
             
             <!-- Заголовок модального окна -->
-            <div class="modal-header">
+            {% comment %} <div class="modal-header">
                 <h1 class="modal-title fs-4 text-white fw-bold" id="productModalLabel">
                     Быстрый просмотр
                 </h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
-            </div>
+            </div> {% endcomment %}
 
             <!-- Содержимое модального окна -->
             <div class="modal-body" id="productModalBody">
@@ -20,17 +20,15 @@
             </div>
 
             <!-- Подвал модального окна с кнопками действий -->
-            <div class="modal-footer">
+            {% comment %} <div class="modal-footer">
                 <div class="d-flex flex-column flex-sm-row gap-3 w-100">
                     
-                    <!-- Основные кнопки действий -->
                     <div class="d-flex gap-3 flex-grow-1">
                         <button type="button" class="btn btn-primary-custom flex-grow-1" id="modalAddToCartBtn">
                             <i data-lucide="shopping-cart" class="me-2"></i>
                             Добавить в корзину
                         </button>
                         
-                        <!-- Кнопка избранного - используем data-атрибуты -->
                         <button type="button" 
                                 class="btn btn-secondary-custom btn-favorite d-flex align-items-center justify-content-center p-0" 
                                 id="modalFavoriteBtn"
@@ -42,12 +40,8 @@
                         </button>
                     </div>
 
-                    {% comment %} <!-- Кнопка закрытия -->
-                    <button type="button" class="btn btn-secondary-custom" data-bs-dismiss="modal">
-                        Закрыть
-                    </button> {% endcomment %}
                 </div>
-            </div>
+            </div> {% endcomment %}
 
         </div>
     </div>
@@ -64,7 +58,7 @@
         background: rgba(31, 41, 55, 0.95);
         backdrop-filter: blur(20px);
         border: 1px solid rgba(255, 255, 255, 0.2);
-        border-radius: 1.5rem;
+        border-radius: 1rem;
         box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
     }
 
@@ -74,7 +68,7 @@
     }
 
     .modal-body {
-        padding: 2rem;
+        padding: 1.5rem;
     }
 
     .modal-footer {
@@ -92,7 +86,17 @@
         opacity: 1;
     }
 
-    .product-image-container {
+    .product-modal-discount-badge {
+        background: linear-gradient(135deg, #10B981, #34D399);
+        color: #FFFFFF;
+        padding: 0.5rem 0.75rem;
+        border-radius: 20px;
+        border: none;
+        font-weight: 700;
+        font-size: 0.875rem;
+    }
+
+    .product-modal-image-container {
         position: relative;
         border-radius: 1rem;
         overflow: hidden;
@@ -101,141 +105,108 @@
         aspect-ratio: 1;
     }
 
-    .product-image {
+    .product-modal-image {
         width: 100%;
         height: 100%;
         object-fit: cover;
         transition: transform 0.3s ease;
     }
 
-    .product-image:hover {
+    .product-modal-image:hover {
         transform: scale(1.05);
     }
 
-    .stock-indicator {
-        position: absolute;
-        top: 1rem;
-        left: 1rem;
-        z-index: 10;
-    }
-
-    .stock-badge {
-        padding: 0.5rem 0.75rem;
-        border-radius: 0.75rem;
-        font-size: 0.875rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-    }
-
-    .stock-in {
-        background: rgba(16, 185, 129, 0.9);
-        color: #FFFFFF;
-        border: 1px solid #34D399;
-    }
-
-    .stock-out {
-        background: rgba(239, 68, 68, 0.9);
-        color: #FFFFFF;
-        border: 1px solid #EF4444;
-    }
-
-    .discount-badge {
-        position: absolute;
-        top: 1rem;
-        right: 1rem;
-        background: linear-gradient(135deg, #10B981, #34D399);
-        color: #FFFFFF;
-        padding: 0.5rem 0.75rem;
-        border-radius: 0.75rem;
-        font-weight: 700;
-        font-size: 0.875rem;
-        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
-    }
-
-    .product-title {
+    .product-modal-title {
         color: #FFFFFF;
         font-size: 1.75rem;
         font-weight: 700;
         line-height: 1.3;
         margin-bottom: 0.5rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
-    .product-category {
+    .product-modal-category {
         display: inline-block;
-        background: rgba(255, 255, 255, 0.1);
-        color: #6EE7B7;
-        padding: 0.25rem 0.75rem;
-        border-radius: 1rem;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        font-size: 0.875rem;
+        background-color: transparent;
+        color: #FFFFFF;
+        padding: 3px 6px;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 12px;
+        font-size: 0.7rem;
         font-weight: 500;
-        margin-bottom: 1rem;
+        margin-bottom: 0.5rem;
     }
 
-    .product-description {
+    .product-modal-description {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        max-height: 3.2em;
+        {% comment %} min-height: 3.2em; {% endcomment %}
+        overflow: hidden;
         color: rgba(255, 255, 255, 0.8);
-        font-size: 1rem;
+        font-size: 0.9rem;
         line-height: 1.6;
         margin-bottom: 1.5rem;
     }
 
-    .rating-container {
+    .product-modal-rating-container {
         display: flex;
         align-items: center;
         gap: 0.75rem;
-        margin-bottom: 1.5rem;
+        margin-bottom: 0.6rem;
     }
 
-    .stars {
+    .product-modal-stars {
         display: flex;
         gap: 0.25rem;
     }
 
-    .star {
+    .product-modal-star {
         width: 1.25rem;
         height: 1.25rem;
         color: #6B7280;
         transition: color 0.2s ease;
     }
 
-    .star.filled {
+    .product-modal-star.filled {
         color: #FBBF24;
         fill: #FBBF24;
     }
 
-    .rating-text {
+    .product-modal-rating-text {
         color: rgba(255, 255, 255, 0.9);
         font-weight: 600;
         font-size: 1rem;
     }
 
-    .rating-count {
+    .product-modal-rating-count {
         color: rgba(255, 255, 255, 0.6);
         font-size: 0.875rem;
     }
 
-    .price-container {
+    .product-modal-price-container {
         margin-bottom: 2rem;
     }
 
-    .current-price {
+    .product-modal-current-price {
         color: #FFFFFF;
-        font-size: 2.5rem;
+        font-size: 2rem;
         font-weight: 900;
         line-height: 1;
     }
 
-    .original-price {
+    .product-modal-original-price {
         color: rgba(255, 255, 255, 0.5);
-        font-size: 1.25rem;
+        font-size: 1.2rem;
         text-decoration: line-through;
         margin-left: 1rem;
     }
 
-    .price-savings {
+    .product-modal-price-savings {
         color: #6EE7B7;
-        font-size: 1rem;
+        font-size: 0.9rem;
         font-weight: 600;
         margin-top: 0.25rem;
     }
@@ -245,9 +216,9 @@
         border: 1px solid #34D399;
         color: #FFFFFF;
         font-weight: 600;
-        padding: 0.875rem 2rem;
+        {% comment %} padding: 0.875rem 2rem; {% endcomment %}
         border-radius: 0.75rem;
-        font-size: 1.1rem;
+        font-size: 1rem;
         transition: all 0.3s ease;
         box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
     }
@@ -322,7 +293,7 @@
         
         .btn-primary-custom {
             font-size: 1rem;
-            padding: 0.75rem 1.5rem;
+            {% comment %} padding: 0.75rem 1.5rem; {% endcomment %}
         }
     }
 </style>

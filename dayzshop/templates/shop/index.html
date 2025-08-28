@@ -28,9 +28,12 @@
             {% else %}
                 <div class="alert alert-info">Популярные товары отсутствуют</div>
             {% endif %}
-            {% include 'shop/includes/_product_modal.html' %}
         </div>
     </div>
     <!-- Модальное окно товара -->
     {% include 'shop/includes/_product_modal.html' %}
+{% endblock %}
+
+{% block javascript %}
+    <script src="{% static 'js/product_modal.js' %}"></script>
 {% endblock %}

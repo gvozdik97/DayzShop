@@ -143,12 +143,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Обновляем блок скидки
                 const savingsElement = document.querySelector('.selected-items-savings');
                 const savingsContainer = document.querySelector('.cart-savings');
-                
+
                 if (savingsElement && savingsContainer) {
-                    if (data.total_savings > 0 && data.selected_count > 0) {
+                    if ((Number(data.total_savings) > 0) && (Number(data.selected_count) > 0)) {
                         savingsElement.textContent = `- ${parseFloat(data.total_savings || 0).toLocaleString('ru-RU')} ₽`;
                         savingsContainer.style.display = 'flex';
                     } else {
+                        savingsElement.textContent = '';
                         savingsContainer.style.display = 'none';
                     }
                 }

@@ -843,8 +843,8 @@ btn-hover-fill:hover {
 }
 .summary-item-text { color: rgba(255, 255, 255, 0.8) !important; }
 .summary-item-price { color: #FFFFFF !important; font-weight: 500 !important; }
-.summary-discount-text { color: #6EE7B7 !important; }
-.summary-discount-price { color: #6EE7B7 !important; font-weight: 500 !important; }
+.summary-discount-text { color: #6EE7B7; }
+.summary-discount-price { color: #6EE7B7; font-weight: 500; }
 .summary-total-price {
     color: #FFFFFF !important;
     font-size: 1.5rem !important;
@@ -2035,11 +2035,6 @@ btn-hover-fill:hover {
     color: #198754 !important;
     font-weight: 500;
 } */
-
-
-.cart-savings {
-    color: firebrick;
-}
 
 
 .wishlist-header {

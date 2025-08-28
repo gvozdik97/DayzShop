@@ -2,82 +2,100 @@
 {% load humanize %}
 {% load cart_tags %}
 
-<div class="row g-4 g-lg-5">
+<div class="row g-4">
     
     <!-- Левая колонка: Изображение -->
     <div class="col-lg-6">
-        <div class="product-image-container">
+        <div class="product-modal-image-container">
             {% if product.image %}
                 <img src="{{ product.image.url }}" 
                     alt="{{ product.name }}" 
-                    class="product-image">
+                    class="product-modal-image">
             {% else %}
                 <img src="{% static 'img/no-image.jpg' %}" 
                     alt="No image" 
-                    class="product-image">
+                    class="product-modal-image">
             {% endif %}
-            
-            <!-- Индикатор наличия -->
-            <div class="stock-indicator">
-                <span class="stock-badge {% if product.available %}stock-in{% else %}stock-out{% endif %}">
-                    {% if product.available %}В наличии{% else %}Нет в наличии{% endif %}
-                </span>
-            </div>
 
             <!-- Бейдж скидки -->
             {% if product.is_on_sale and product.old_price %}
-                <div class="discount-badge">
-                    -{{ product.discount_percentage }}%
+                <div class="product-badges position-absolute top-0 start-0 mt-2 mx-2 d-flex flex-column gap-2">
+                    <span class="product-modal-discount-badge badge">
+                        -{{ product.discount_percentage }}%
+                    </span>
                 </div>
             {% endif %}
         </div>
     </div>
 
     <!-- Правая колонка: Информация -->
-    <div class="col-lg-6">
+    <div class="col-lg-6 d-flex flex-column" style="min-height: 100%; padding: 0.5rem 1rem 0.5rem 3.5rem;">
         
-        <!-- Категория -->
-        <span class="product-category">
-            {{ product.category.name|default:"Без категории" }}
-        </span>
-        
-        <!-- Название товара -->
-        <h2 class="product-title">
-            {{ product.name }}
-        </h2>
-
-        <!-- Описание -->
-        <p class="product-description">
-            {{ product.description|default:"Описание отсутствует" }}
-        </p>
-
-        <!-- Рейтинг -->
-        <div class="rating-container">
-            <div class="stars">
-                <i data-lucide="star" class="star filled"></i>
-                <i data-lucide="star" class="star filled"></i>
-                <i data-lucide="star" class="star filled"></i>
-                <i data-lucide="star" class="star filled"></i>
-                <i data-lucide="star" class="star"></i>
+        <!-- Контент, который растягивается -->
+        <div class="flex-grow-1">
+            <!-- Категория -->
+            <div>
+                <span class="product-modal-category">
+                    {{ product.category.name|default:"Без категории" }}
+                </span>
             </div>
-            <span class="rating-text">4.8</span>
-            <span class="rating-count">(24 отзыва)</span>
-        </div>
+            
+            <!-- Название товара -->
+            <h2 class="product-modal-title">
+                {{ product.name }}
+            </h2>
 
-        <!-- Цена -->
-        <div class="price-container">
-            <div class="d-flex align-items-baseline">
-                <span class="current-price">{{ product.price|floatformat|intcomma }} ₽</span>
+            <!-- Рейтинг -->
+            <div class="product-modal-rating-container">
+                <div class="product-modal-stars">
+                    <i data-lucide="star" class="product-modal-star filled"></i>
+                    <i data-lucide="star" class="product-modal-star filled"></i>
+                    <i data-lucide="star" class="product-modal-star filled"></i>
+                    <i data-lucide="star" class="product-modal-star filled"></i>
+                    <i data-lucide="star" class="product-modal-star"></i>
+                </div>
+                <span class="product-modal-rating-text">4.8</span>
+                <span class="product-modal-rating-count">(24 отзыва)</span>
+            </div>
+            
+            <!-- Описание -->
+            <p class="product-modal-description">
+                {{ product.description|default:"Описание отсутствует" }}
+            </p>
+
+            <!-- Цена -->
+            <div class="product-modal-price-container">
+                <div class="d-flex align-items-baseline">
+                    <span class="product-modal-current-price">{{ product.price|floatformat|intcomma }} ₽</span>
+                    {% if product.is_on_sale and product.old_price %}
+                        <span class="product-modal-original-price">{{ product.old_price|floatformat|intcomma }} ₽</span>
+                    {% endif %}
+                </div>
                 {% if product.is_on_sale and product.old_price %}
-                    <span class="original-price">{{ product.old_price|floatformat|intcomma }} ₽</span>
+                    <div class="product-modal-price-savings">
+                        Экономия: {{ product.savings|floatformat|intcomma }} ₽
+                    </div>
                 {% endif %}
             </div>
-            {% if product.is_on_sale and product.old_price %}
-                <div class="price-savings">
-                    Экономия: {{ product.savings|floatformat|intcomma }} ₽
-                </div>
-            {% endif %}
         </div>
 
+        <div class="mt-auto pt-4">
+            <div class="d-flex gap-3">
+                <button type="button" class="btn btn-primary-custom flex-grow-1 d-flex align-items-center justify-content-center" id="modalAddToCartBtn">
+                    <i data-lucide="shopping-cart" class="me-3 lucide-icon-smaller"></i>
+                    В корзину
+                </button>
+
+                <button type="button" 
+                        class="btn btn-secondary-custom btn-favorite d-flex align-items-center justify-content-center p-0" 
+                        id="modalFavoriteBtn"
+                        style="width: 3rem; height: 3rem;"
+                        data-product-id=""
+                        data-in-wishlist="false"
+                        title="Добавить в избранное">
+                    <i data-lucide="heart" class="lucide-icon-sm"></i>
+                </button>
+            </div>
+        </div>
     </div>
 </div>

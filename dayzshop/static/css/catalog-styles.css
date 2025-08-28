@@ -86,6 +86,11 @@
     color: #FFFFFF;
 }
 
+.lucide-icon-smaller {
+    width: 18px;
+    height: 18px;
+}
+
 .lucide-icon-sm {
     width: 20px;
     height: 20px;
@@ -304,7 +309,7 @@
 @media (min-width: 992px) {
     .discount-badge,
     .out-of-stock-badge {
-        font-size: 0.875rem;
+        font-size: 0.775rem;
     }
 }
 

@@ -90,11 +90,11 @@ document.addEventListener('DOMContentLoaded', function() {
         // Обновляем кнопку корзины
         if (addToCartBtn) {
             if (inCart) {
-                addToCartBtn.innerHTML = '<i data-lucide="check" class="me-2"></i>В корзине';
+                addToCartBtn.innerHTML = '<i data-lucide="check" class="me-3 lucide-icon-smaller"></i>В корзине';
                 addToCartBtn.classList.add('added-to-cart');
                 addToCartBtn.disabled = true;
             } else {
-                addToCartBtn.innerHTML = '<i data-lucide="shopping-cart" class="me-2"></i>Добавить в корзину';
+                addToCartBtn.innerHTML = '<i data-lucide="shopping-cart" class="me-3 lucide-icon-smaller"></i>В корзину';
                 addToCartBtn.classList.remove('added-to-cart');
                 addToCartBtn.disabled = false;
             }
@@ -326,7 +326,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                addToCartBtn.innerHTML = '<i data-lucide="check" class="me-2"></i>В корзине';
+                addToCartBtn.innerHTML = '<i data-lucide="check" class="me-3 lucide-icon-smaller"></i>В корзине';
                 addToCartBtn.classList.add('added-to-cart');
                 addToCartBtn.disabled = true;
                 updateCartCounter(data.cart_count || data.cart_total_items || 0);
