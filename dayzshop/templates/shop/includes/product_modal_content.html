@@ -81,6 +81,18 @@
 
         <div class="mt-auto pt-4">
             <div class="d-flex gap-3">
+                {% comment %} <button 
+                    class="btn add-to-cart-btn d-flex align-items-center justify-content-center flex-grow-1 {% if product|is_in_cart:request %}added-to-cart{% endif %}"
+                    style="flex: 1; min-width: 0; height: 44px;"
+                    data-product-id="{{ product.id }}"
+                    {% if product|is_in_cart:request %}data-is-in-cart="true"{% endif %}>
+                    {% if product|is_in_cart:request %}
+                        <i class="bi bi-check-circle-fill lucide-icon-sm"></i> В корзине
+                    {% else %}
+                        <i class="bi bi-cart2 lucide-icon-sm"></i> В корзину
+                    {% endif %}
+                </button> {% endcomment %}
+
                 <button type="button" class="btn btn-primary-custom flex-grow-1 d-flex align-items-center justify-content-center" id="modalAddToCartBtn">
                     <i data-lucide="shopping-cart" class="me-3 lucide-icon-smaller"></i>
                     В корзину

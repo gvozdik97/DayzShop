@@ -3,36 +3,50 @@
 {% load humanize %}
 {% load cart_tags %}
 
-
 {% block title %}Избранное - {{ block.super }}{% endblock %}
 
 {% block content %}
 <div class="container-xxl py-5">
-    <!-- Заголовок -->
-    <div class="wishlist-header mb-5">
-        <div class="d-flex align-items-center gap-4">
-            <div class="wishlist-icon-wrapper glass-card-effect rounded-4 d-flex align-items-center justify-content-center">
-                <i data-lucide="heart" class="lucide-icon-lg text-danger" fill="currentColor"></i>
+    {% if wishlist_items %}
+    <!-- Заголовок с анимацией -->
+    <div class="wishlist-header" id="wishlistHeader">
+        <div class="text-center">
+            <!-- Анимированная иконка -->
+            <div class="wishlist-hero-icon mb-4">
+                <div class="hero-icon-container">
+                    <i data-lucide="heart" class="hero-icon" fill="currentColor"></i>
+                    <div class="icon-glow"></div>
+                </div>
             </div>
-            <div>
-                <h1 class="h1 fw-bold mb-2 text-white">Избранное</h1>
-                <p class="mb-0 wishlish-counter-text fs-5">
-                    {{ wishlist_items.count }} 
-                    {% if wishlist_items.count == 1 %}товар
-                    {% elif wishlist_items.count < 5 and wishlist_items.count != 0 %}товара
-                    {% else %}товаров{% endif %}
+            
+            <!-- Основной заголовок -->
+            <h1 class="wishlist-main-title gradient-text mb-3">
+                Любимые товары
+            </h1>
+            
+            <!-- Подзаголовок с счетчиком -->
+            <div class="wishlist-subtitle">
+                <p class="wishlish-counter-text">
+                    <span class="counter-number">{{ wishlist_items.count }}</span>
+                    <span class="counter-label">
+                        {% if wishlist_items.count == 1 %}желанный предмет
+                        {% elif wishlist_items.count >= 2 and wishlist_items.count <= 4 %}желанных предмета
+                        {% elif wishlist_items.count == 0 %}желанных предметов
+                        {% else %}желанных предметов{% endif %}
+                    </span>
+                </p>
+                <p class="wishlist-description">
+                    Все, что вам понравилось, в одном месте
                 </p>
             </div>
         </div>
     </div>
-
-    {% if wishlist_items %}
+    
         <!-- Сетка товаров -->
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4" id="wishlistItemsGrid">
             {% for item in wishlist_items %}
                 <div class="col">
                     <div class="product-card glass-card h-100 p-4 position-relative overflow-hidden d-flex flex-column">
-                        
                         <!-- Изображение товара -->
                         <div class="product-image position-relative mb-4 overflow-hidden rounded-3">
                             <div class="product-img-container ratio ratio-1x1">
@@ -96,10 +110,11 @@
                             <!-- Кнопки действий -->
                             <div class="d-flex gap-2 mt-auto">
                                 <button 
-                                    class="btn add-to-cart-btn d-flex align-items-center justify-content-center flex-grow-1 {% if product|is_in_cart:request %}added-to-cart{% endif %}" 
-                                    data-product-id="{{ product.id }}"
-                                    {% if product|is_in_cart:request %}data-is-in-cart="true"{% endif %}>
-                                    {% if product|is_in_cart:request %}
+                                    class="btn add-to-cart-btn d-flex align-items-center justify-content-center flex-grow-1 {% if item.product|is_in_cart:request %}added-to-cart{% endif %}"
+                                    style="flex: 1; min-width: 0; height: 44px;"
+                                    data-product-id="{{ item.product.id }}"
+                                    {% if item.product|is_in_cart:request %}data-is-in-cart="true"{% endif %}>
+                                    {% if item.product|is_in_cart:request %}
                                         <i class="bi bi-check-circle-fill lucide-icon-sm"></i> В корзине
                                     {% else %}
                                         <i class="bi bi-cart2 lucide-icon-sm"></i> В корзину
@@ -115,17 +130,39 @@
             {% endfor %}
         </div>
     {% else %}
-        <!-- Пустое избранное -->
-        <div class="empty-wishlist text-center py-6">
-            <div class="empty-icon mb-4">
-                <i data-lucide="heart" class="lucide-icon-xxl text-muted" style="opacity: 0.5;"></i>
+        <!-- Гармоничная пустая страница -->
+        <div class="wishlist-empty-state">
+            <div class="empty-content text-center">
+                <!-- Анимированные элементы -->
+                <div class="empty-visual mb-5">
+                    <div class="floating-hearts">
+                        <i data-lucide="heart" class="heart-main" fill="currentColor"></i>
+                        <i data-lucide="sparkles" class="sparkle sparkle-1"></i>
+                        <i data-lucide="sparkles" class="sparkle sparkle-2"></i>
+                        <i data-lucide="sparkles" class="sparkle sparkle-3"></i>
+                    </div>
+                </div>
+
+                <!-- Текст -->
+                <div class="empty-text mb-5">
+                    <h2 class="empty-title gradient-text">Пока здесь тихо</h2>
+                    <p class="empty-subtitle">
+                        Находите товары, которые вас вдохновляют,<br>
+                        и сохраняйте их для быстрого доступа
+                    </p>
+                </div>
+
+                <!-- Кнопка -->
+                <div class="empty-actions">
+                    <a href="{% url 'shop:product_list' %}" class="wishlist-primary-btn">
+                        <span class="btn-content">
+                            <i data-lucide="compass" class="empty-btn-icon"></i>
+                            <span class="btn-text">Начать поиск</span>
+                        </span>
+                        <div class="btn-hover-effect"></div>
+                    </a>
+                </div>
             </div>
-            <h3 class="h3 text-white mb-3">Ваше избранное пусто</h3>
-            <p class="text-muted mb-4">Добавьте товары, которые вам понравились</p>
-            <a href="{% url 'shop:product_list' %}" class="btn btn-primary-glass px-5 py-3">
-                <i data-lucide="shopping-bag" class="lucide-icon-sm me-2"></i>
-                Начать покупки
-            </a>
         </div>
     {% endif %}
 </div>

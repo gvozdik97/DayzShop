@@ -1,0 +1,149 @@
+{% load static %}
+
+
+<div class="super-empty-cart-wrapper">
+    <div class="super-empty-cart">
+
+        <div class="empty-cart-content text-center">
+            <div class="hero-section mb-5">                <!-- Анимированный заголовок -->
+                <div class="glitch-container mb-4">
+                    <h1 class="display-3 fw-bold mb-3 text-white glitch-text" data-text="Корзина пуста">
+                        Корзина пуста
+                    </h1>
+                </div>
+                
+                <p class="lead subheading magic-typing-text text-white-80">
+                    <span class="typing-wrapper" id="typing-text"></span>
+                    <span class="cursor-anim">|</span>
+                </p>
+            </div>
+
+            <div class="cta-section mb-5">
+                <div class="d-flex flex-column flex-md-row gap-3 justify-content-center">
+                    <a href="{% url 'shop:product_list' %}" class="cart-btn-primary-custom">
+                        <span class="cart-btn-icon">🚀</span>
+                        <span class="cart-btn-text">Начать шопинг</span>
+                        <span class="btn-glow"></span>
+                        <span class="btn-particles"></span>
+                    </a>
+                    
+                    <a href="{% url 'shop:wishlist' %}" class="cart-btn-secondary-custom">
+                        <span class="cart-btn-icon">💖</span>
+                        <span class="cart-btn-text">В избранное</span>
+                        <span class="btn-glow"></span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="showcase-section mt-5">
+                <div class="section-title mb-4">
+                    <h3 class="text-white mb-3">Популярные категории</h3>
+                    <div class="title-underline mx-auto"></div>
+                </div>
+                <div class="row g-3 justify-content-center">
+                    <div class="col-6 col-md-4 col-lg-2">
+                        <div class="showcase-item text-center p-3 rounded-3">
+                            <div class="item-icon mb-2">
+                                <img src="{% static 'img/icons/pistol.png' %}" alt="Оружия">
+                            </div>
+                            <span class="text-white">Оружия</span>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-4 col-lg-2">
+                        <div class="showcase-item text-center p-3 rounded-3">
+                            <div class="item-icon mb-2">
+                                <img src="{% static 'img/icons/lamba.png' %}" alt="Техника">
+                            </div>
+                            <span class="text-white">Техника</span>
+                        </div>
+                    </div>
+                    {% comment %} <div class="col-6 col-md-4 col-lg-2">
+                        <div class="showcase-item text-center p-3 rounded-3">
+                            <div class="item-icon fs-1 mb-2">📱</div>
+                            <span class="text-white">Смартфоны</span>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-4 col-lg-2">
+                        <div class="showcase-item text-center p-3 rounded-3">
+                            <div class="item-icon fs-1 mb-2">💻</div>
+                            <span class="text-white">Ноутбуки</span>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-4 col-lg-2">
+                        <div class="showcase-item text-center p-3 rounded-3">
+                            <div class="item-icon fs-1 mb-2">👕</div>
+                            <span class="text-white">Одежда</span>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-4 col-lg-2">
+                        <div class="showcase-item text-center p-3 rounded-3">
+                            <div class="item-icon fs-1 mb-2">📚</div>
+                            <span class="text-white">Книги</span>
+                        </div>
+                    </div> {% endcomment %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Анимация печатания текста
+function typeWriter(text, element, speed = 100) {
+    let i = 0;
+    element.innerHTML = '';
+    
+    function type() {
+        if (i < text.length) {
+            element.innerHTML += text.charAt(i);
+            i++;
+            setTimeout(type, speed);
+        } else {
+            // После завершения печати запускаем анимацию курсора
+            document.querySelector('.cursor-anim').style.animation = 'blink 1s infinite';
+        }
+    }
+    
+    type();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const text = "Но ваши покупки ждут вас за углом...";
+    const typingElement = document.getElementById('typing-text');
+    
+    // Небольшая задержка перед началом анимации
+    setTimeout(() => {
+        typeWriter(text, typingElement, 80);
+    }, 1000);
+
+    // Анимация при наведении на категории
+    const showcaseItems = document.querySelectorAll('.showcase-item');
+    showcaseItems.forEach(item => {
+        item.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-5px)';
+        });
+        
+        item.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+        });
+    });
+
+    // Эффект частиц для кнопок
+    const primaryButton = document.querySelector('.cart-btn-primary-custom');
+    if (primaryButton) {
+        primaryButton.addEventListener('mouseenter', function() {
+            for (let i = 0; i < 8; i++) {
+                const spark = document.createElement('div');
+                spark.className = 'btn-spark-particle';
+                spark.style.left = Math.random() * 100 + '%';
+                spark.style.animationDelay = Math.random() * 0.5 + 's';
+                this.querySelector('.btn-particles').appendChild(spark);
+                
+                setTimeout(() => {
+                    spark.remove();
+                }, 1000);
+            }
+        });
+    }
+});
+</script>

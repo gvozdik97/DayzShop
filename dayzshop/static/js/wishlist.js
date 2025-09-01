@@ -174,19 +174,49 @@ document.addEventListener('DOMContentLoaded', function() {
                     setTimeout(() => {
                         card.remove();
                         
-                        // Обновляем счетчик в заголовке
-                        const countElement = document.querySelector('.wishlist-header .text-muted');
-                        if (countElement) {
-                            const currentCount = parseInt(countElement.textContent.match(/\d+/)[0]);
-                            const newCount = currentCount - 1;
-                            
-                            countElement.textContent = newCount + ' ' + 
-                                (newCount === 1 ? 'товар' : 
-                                 newCount < 5 ? 'товара' : 'товаров');
-                                 
-                            // Если товаров не осталось, показываем пустое состояние
-                            if (newCount === 0) {
+                        // Получаем оставшиеся карточки
+                        const remainingCards = document.querySelectorAll('#wishlistItemsGrid .col');
+                        
+                        // Если это был последний товар
+                        if (remainingCards.length === 0) {
+                            // Скрываем заголовок с анимацией
+                            const header = document.getElementById('wishlistHeader');
+                            if (header) {
+                                header.style.opacity = '0';
+                                header.style.transform = 'translateY(-20px)';
+                                header.style.transition = 'all 0.3s ease';
+                                
+                                setTimeout(() => {
+                                    header.remove();
+                                    // Показываем пустое состояние
+                                    location.reload(); // или создаем пустое состояние динамически
+                                }, 300);
+                            } else {
                                 location.reload();
+                            }
+                        } else {
+                            // Обновляем счетчик в заголовке
+                            const counterElement = document.querySelector('.wishlish-counter-text');
+                            if (counterElement) {
+                                const currentText = counterElement.textContent;
+                                const currentCount = parseInt(currentText.match(/\d+/)[0]);
+                                const newCount = currentCount - 1;
+                                
+                                // Определяем правильное склонение
+                                let wordForm;
+                                if (newCount === 1) {
+                                    wordForm = 'желанный предмет';
+                                } else if (newCount >= 2 && newCount <= 4) {
+                                    wordForm = 'желанных предмета';
+                                } else {
+                                    wordForm = 'желанных предметов';
+                                }
+                                
+                                // Обновляем текст
+                                counterElement.innerHTML = `
+                                    <span class="counter-number">${newCount}</span>
+                                    <span class="counter-label">${wordForm}</span>
+                                `;
                             }
                         }
                         

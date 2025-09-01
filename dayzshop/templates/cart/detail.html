@@ -8,6 +8,7 @@
 {% block content %}
 <div class="container-xxl cart-container pb-3">
     <!-- Заголовок корзины -->
+    {% if cart.items.all %}
     <div class="cart-header mb-4 py-4">
         <div class="d-flex align-items-center gap-3">
             <div class="cart-icon-wrapper cart-icon-gradient rounded-4 d-flex align-items-center justify-content-center">
@@ -24,9 +25,10 @@
             </div>
         </div>
     </div>
+    {% endif %}
     <div class="row g-4">
         <!-- Основной блок с товарами -->
-        <div class="col-12 col-lg-8">
+        <div class="col-12 {% if cart.items.all %}col-lg-8{% else %}col-lg-12{% endif %}">
             {% if cart.items.all %}
                 <!-- Блок выбора товаров -->
                 <div class="cart-select-all border-0 shadow-sm rounded-4 mb-4 glass-card-effect">
@@ -131,17 +133,8 @@
                     </div>
                 {% endfor %}
             {% else %}
-                <!-- Пустая корзина -->
-                <div class="empty-cart border-0 shadow-sm rounded-4 text-center p-5 glass-card-effect">
-                    <div class="mb-4">
-                        <i class="bi bi-cart-x empty-cart-icon"></i>
-                    </div>
-                    <h3 class="h4 mb-3 empty-cart-title">Ваша корзина пуста</h3>
-                    <p class="mb-4 empty-cart-text">Добавьте товары, чтобы продолжить</p>
-                    <a href="{% url 'shop:product_list' %}" class="btn empty_btn py-3 px-5 rounded-3">
-                        <i class="bi bi-cart-plus"></i> Начать покупки
-                    </a>
-                </div>
+                <!-- Улучшенная пустая корзина -->
+                {% include 'cart/includes/_empty_cart.html' %}
             {% endif %}
         </div>
         <!-- Блок итогов -->
