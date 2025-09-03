@@ -1,4 +1,5 @@
 import { CartUI } from './cart-ui.js';
+import { WishlistUI } from './wishlist-ui.js';
 
 // Главный файл инициализации
 console.log('DayZ Shop application initialized');
@@ -14,4 +15,5 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     CartUI.initCartStateSync();
+    WishlistUI.initWishlistButtons();
 });

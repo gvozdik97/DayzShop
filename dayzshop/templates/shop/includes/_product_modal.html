@@ -9,6 +9,9 @@
                 </h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
             </div> {% endcomment %}
+            <button type="button" class="btn-close-modal" data-bs-dismiss="modal" aria-label="Закрыть">
+                <i data-lucide="x" class="modal-close-icon"></i>
+            </button>
 
             <!-- Содержимое модального окна -->
             <div class="modal-body" id="productModalBody">
@@ -46,7 +49,75 @@
         padding: 1.5rem;
     }
 
-    .btn-close {
+    .btn-close-modal {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        width: 2.5rem;
+        height: 2.5rem;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1001;
+        transition: all 0.3s ease;
+        color: rgba(255, 255, 255, 0.8);
+    }
+
+    .btn-close-modal:hover {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: rgba(255, 255, 255, 0.3);
+        color: #FFFFFF;
+        transform: scale(1.1);
+    }
+
+    .btn-close-modal:active {
+        transform: scale(0.95);
+    }
+
+    .modal-close-icon {
+        width: 1.25rem;
+        height: 1.25rem;
+        transition: transform 0.2s ease;
+    }
+
+    .btn-close-modal:hover .modal-close-icon {
+        transform: rotate(90deg);
+    }
+
+    /* Адаптивность для мобильных устройств */
+    @media (max-width: 768px) {
+        .btn-close-modal {
+            top: 0.75rem;
+            right: 0.75rem;
+            width: 2.25rem;
+            height: 2.25rem;
+        }
+
+        .modal-close-icon {
+            width: 1.1rem;
+            height: 1.1rem;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .btn-close-modal {
+            top: 0.5rem;
+            right: 0.5rem;
+            width: 2rem;
+            height: 2rem;
+        }
+
+        .modal-close-icon {
+            width: 1rem;
+            height: 1rem;
+        }
+    }
+
+    {% comment %} .btn-close {
         background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3e%3cpath d='m.235.675 15.09 15.09a.5.5 0 0 0 .707-.707l-15.09-15.09a.5.5 0 1 0-.707.707'/%3e%3c/svg%3e") center/1em auto no-repeat;
         width: 2rem;
         height: 2rem;
@@ -54,7 +125,7 @@
     }
     .btn-close:hover {
         opacity: 1;
-    }
+    } {% endcomment %}
 
     .product-modal-discount-badge {
         background: linear-gradient(135deg, #10B981, #34D399);

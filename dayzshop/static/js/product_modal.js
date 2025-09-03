@@ -1,5 +1,6 @@
 // static/js/product_modal.js
 import { CartUI } from './cart-ui.js';
+import { WishlistUI } from './wishlist-ui.js';
 import { showToast, getCookie } from './utils.js';
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -44,6 +45,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (data.success) {
                     currentProductData = data;
                     modalBody.innerHTML = data.html;
+
+                    if (typeof WishlistUI !== 'undefined') {
+                        // Обновить состояние кнопки согласно текущим данным
+                        const modalFavoriteBtn = modalBody.querySelector('.favorite-btn');
+                        if (modalFavoriteBtn && currentProductData) {
+                            WishlistUI.updateButtonState(modalFavoriteBtn, currentProductData.in_wishlist);
+                        }
+                    }
                     
                     // Устанавливаем правильное состояние кнопки корзины
                     const modalAddToCartBtn = document.getElementById('modalAddToCartBtn');
@@ -67,6 +76,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.error('Fetch error:', error);
                 showModalError(modalBody, error.message);
             });
+    });
+
+    // После загрузки контента модального окна
+    modalBody.addEventListener('click', function(e) {
+        const favoriteBtn = e.target.closest('.favorite-btn');
+        if (favoriteBtn) {
+            e.preventDefault();
+            WishlistUI.handleWishlistToggle(favoriteBtn);
+        }
     });
     
     // function updateFavoriteButton(button, isFavorite) {

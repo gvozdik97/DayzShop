@@ -23,11 +23,6 @@
             
             <!-- Overlay с кнопками (показывается при hover) -->
             <div class="product-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center gap-3 rounded-3">
-                {% comment %} <button class="overlay-btn btn rounded-circle d-flex align-items-center justify-content-center p-0" 
-                        title="Быстрый просмотр"
-                    >
-                    <i data-lucide="eye" class="lucide-icon-sm"></i>
-                </button> {% endcomment %}
                 <!-- Быстрый просмотр -->
                 <button class="overlay-btn btn rounded-circle d-flex align-items-center justify-content-center p-0" 
                         title="Быстрый просмотр"
@@ -36,7 +31,16 @@
                         data-product-id="{{ product.id }}">
                     <i data-lucide="eye" class="lucide-icon-sm"></i>
                 </button>
-                <form method="post" action="{% url 'shop:toggle_wishlist' product.id %}" class="wishlist-form mb-0">
+                <!-- _product_cart.html -->
+                <button type="button" 
+                        class="overlay-btn btn rounded-circle favorite-btn {% if request.user.is_authenticated and product.in_wishlist %}active{% endif %} d-flex align-items-center justify-content-center p-0" 
+                        title="{% if request.user.is_authenticated and product.in_wishlist %}Удалить из избранного{% else %}Добавить в избранное{% endif %}"
+                        data-product-id="{{ product.id }}"
+                        {% if request.user.is_authenticated and product.in_wishlist %}data-in-wishlist="true"{% endif %}>
+                    <i data-lucide="heart" class="lucide-icon-sm {% if request.user.is_authenticated and product.in_wishlist %}currentColor{% endif %}"
+                    {% if request.user.is_authenticated and product.in_wishlist %}fill="currentColor"{% endif %}></i>
+                </button>
+                {% comment %} <form method="post" action="{% url 'shop:toggle_wishlist' product.id %}" class="wishlist-form mb-0">
                     {% csrf_token %}
                     <button type="submit" class="overlay-btn btn rounded-circle favorite-btn d-flex align-items-center justify-content-center p-0" 
                             title="{% if request.user.is_authenticated and product.in_wishlist %}Удалить из избранного{% else %}Добавить в избранное{% endif %}"
@@ -44,7 +48,7 @@
                         <i data-lucide="heart" class="lucide-icon-sm {% if request.user.is_authenticated and product.in_wishlist %}fill: currentColor;{% endif %}"
                         {% if request.user.is_authenticated and product.in_wishlist %}fill="currentColor"{% endif %}></i>
                     </button>
-                </form>
+                </form> {% endcomment %}
             </div>
             
             <!-- Бейджи -->

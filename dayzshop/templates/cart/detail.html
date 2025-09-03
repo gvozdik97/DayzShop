@@ -41,11 +41,19 @@
                             <form method="post" action="{% url 'cart:clear' %}" class="mb-0">
                                 {% csrf_token %}
                                 <button type="submit" class="btn p-0 border-0 bg-transparent" onclick="return confirm('Точно очистить корзину? Все товары будут удалены.')" title="Очистить корзину">
+                                    <div class="cart-clear-icon-wrapper rounded-3 p-2">
+                                        <i data-lucide="trash-2" class="lucide-icon-sm"></i>
+                                    </div>
+                                </button>
+                            </form>
+                            {% comment %} <form method="post" action="{% url 'cart:clear' %}" class="mb-0">
+                                {% csrf_token %}
+                                <button type="submit" class="btn p-0 border-0 bg-transparent" onclick="return confirm('Точно очистить корзину? Все товары будут удалены.')" title="Очистить корзину">
                                     <div class="cart-clear-icon-wrapper rounded-3 p-2 position-relative">
                                         <i class="bi bi-trash3 position-absolute top-50 start-50 translate-middle"></i>
                                     </div>
                                 </button>
-                            </form>
+                            </form> {% endcomment %}
                         </div>
                     </div>
                 </div>
@@ -79,7 +87,15 @@
                                             </div>
                                             
                                             <div class="d-flex gap-2 m-1">
-                                                <form method="post" action="{% url 'shop:toggle_wishlist' item.product.id %}" class="wishlist-form">
+                                                <button type="button" 
+                                                        class="btn btn-sm cart-action-btn cart-action-heart {% if item.product|in_wishlist:request.user %}active{% endif %} favorite-btn"
+                                                        data-product-id="{{ item.product.id }}"
+                                                        data-in-wishlist="{% if item.product|in_wishlist:request.user %}true{% else %}false{% endif %}"
+                                                        title="{% if item.product|in_wishlist:request.user %}Удалить из избранного{% else %}Добавить в избранное{% endif %}">
+                                                    <i data-lucide="heart" class="lucide-icon-sm"
+                                                    {% if item.product|in_wishlist:request.user %}fill="currentColor"{% endif %}></i>
+                                                </button>
+                                                {% comment %} <form method="post" action="{% url 'shop:toggle_wishlist' item.product.id %}" class="wishlist-form">
                                                     {% csrf_token %}
                                                     <button type="submit" class="btn btn-sm cart-action-btn cart-action-heart position-relative" 
                                                             title="{% if item.product|in_wishlist:request.user %}Удалить из избранного{% else %}Добавить в избранное{% endif %}">
@@ -87,9 +103,15 @@
                                                         <i class="bi position-absolute top-50 start-50 translate-middle 
                                                                 {% if item.product|in_wishlist:request.user %}bi-heart-fill{% else %}bi-heart{% endif %}"></i>
                                                     </button>
-                                                </form>
-                                                <a href="{% url 'cart:remove' item.id %}" class="btn btn-sm cart-action-btn cart-action-trash position-relative">
-                                                    <i class="bi bi-trash3 position-absolute top-50 start-50 translate-middle"></i>
+                                                </form> {% endcomment %}
+                                                {% comment %} <button type="button" 
+                                                        class="btn btn-sm cart-action-btn cart-action-trash remove-from-cart"
+                                                        data-item-id="{{ item.id }}"
+                                                        title="Удалить из корзины">
+                                                    <i data-lucide="trash-2" class="lucide-icon-sm"></i>
+                                                </button> {% endcomment %}
+                                                <a href="{% url 'cart:remove' item.id %}" class="btn btn-sm cart-action-btn cart-action-trash">
+                                                    <i data-lucide="trash-2" class="lucide-icon-sm"></i>
                                                 </a>
                                             </div>
                                         </div>
@@ -124,8 +146,7 @@
                                                     value="{{ item.quantity }}" min="1" max="10" data-item-id="{{ item.id }}">
                                                 <button class="btn cart-quantity-btn plus-btn rounded-3 {% if item.quantity >= 10 %}disabled{% endif %}"
                                                         data-item-id="{{ item.id }}" 
-                                                        title="Увеличить количество"
-                                                        {% if item.quantity >= 10 %}disabled{% endif %}>
+                                                        title="Увеличить количество">
                                                     <i class="bi bi-plus"></i>
                                                 </button>
                                             </div>

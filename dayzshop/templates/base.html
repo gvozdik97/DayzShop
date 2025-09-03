@@ -42,6 +42,8 @@
     
     <!-- Core JS Modules -->
     <script type="module" src="{% static 'js/utils.js' %}"></script>
+    <script type="module" src="{% static 'js/wishlist-service.js' %}"></script>
+    <script type="module" src="{% static 'js/wishlist-ui.js' %}"></script>
     <script type="module" src="{% static 'js/cart-service.js' %}"></script>
     <script type="module" src="{% static 'js/cart-ui.js' %}"></script>
     <script type="module" src="{% static 'js/main.js' %}"></script>
@@ -51,12 +53,16 @@
     <script type="module" src="{% static 'js/cart.js' %}"></script>
     {% endif %}
     
+    {% if request.path == '/wishlist/' %}
+    <script type="module" src="{% static 'js/wishlist.js' %}"></script>
+    {% endif %}
+
     {% if '/products/' in request.path or '/' == request.path %}
     <script type="module" src="{% static 'js/catalog.js' %}"></script>
     {% endif %}
     
     <script type="module" src="{% static 'js/product_modal.js' %}"></script>
-    <script type="module" src="{% static 'js/wishlist.js' %}"></script>
+    {% comment %} <script type="module" src="{% static 'js/wishlist.js' %}"></script> {% endcomment %}
     
     {% block javascript %}{% endblock %}
 

@@ -1833,43 +1833,70 @@ btn-hover-fill:hover {
 }
 
 
-/* Стили для иконок действий в корзине */
+/* Общие стили для кнопок действий в корзине */
 .cart-action-btn {
-    /* line-height: 1; */
     width: 28px;
     height: 28px;
-    /* display: flex;
-    align-items: center;
-    justify-content: center; */
     border-radius: 8px;
     background-color: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.15);
     color: rgba(255, 255, 255, 0.6) !important;
     transition: all 0.3s ease;
-    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
 }
 
 .cart-action-btn:hover {
-    transform: scale(1.1);
+    transform: scale(1.05);
 }
 
-/* Сердечко */
-.cart-action-heart:hover {
-    background-color: rgba(147, 112, 219, 0.3); 
-    border-color: rgba(138, 43, 226, 0.5);    
-    color: #F9A8D4 !important;               
+/* Стили для Lucide иконок в корзине */
+.cart-action-btn .lucide-icon-sm {
+    width: 16px;
+    height: 16px;
+    color: rgba(255, 255, 255, 0.6);
+    transition: all 0.3s ease;
 }
 
-.cart-action-heart .bi-heart-fill {
+/* Стили для сердечка */
+.cart-action-heart:hover,
+.cart-action-heart.active:hover {
+    background-color: rgba(147, 112, 219, 0.3) !important;
+    border-color: rgba(138, 43, 226, 0.5) !important;
+}  
+
+.cart-action-heart:hover .lucide-icon-sm {
     color: #F9A8D4 !important;
-    animation: heartBeat 0.6s ease;
 }
 
-/* Корзинка */
+.cart-action-heart.active {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+.cart-action-heart.active .lucide-icon-sm {
+    color: #F9A8D4 !important;
+}
+
+/* Стили для корзины */
 .cart-action-trash:hover {
     background-color: rgba(220, 53, 69, 0.3); 
-    border-color: rgba(220, 53, 69, 0.5);      
-    color: #dc3545 !important;                
+    border-color: rgba(220, 53, 69, 0.5); 
+}
+
+.cart-action-trash:hover .lucide-icon-sm {
+    color: #dc3545 !important;
+}
+
+/* Анимация для иконок */
+.cart-action-btn .lucide-icon-sm {
+    transition: all 0.2s ease;
+}
+
+.cart-action-btn:hover .lucide-icon-sm {
+    transform: scale(1.1);
 }
 
 @media (max-width: 576px) {
@@ -1948,27 +1975,34 @@ btn-hover-fill:hover {
 } */
 
 
+/* Стили для иконки очистки корзины */
 .cart-clear-icon-wrapper {
-    width: 36px;
-    height: 36px;
-    font-size: 1.1rem;
-    border-radius: 12px;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background-color: rgba(16, 185, 129, 0.2);
-    border: 1px solid rgba(16, 185, 129, 0.4); 
+    border: 1px solid rgba(16, 185, 129, 0.4);
     color: #6EE7B7 !important;
     transition: all 0.3s ease;
 }
 
-
-/* .cart-clear-btn:hover .cart-clear-icon-wrapper {
-    background-color: rgba(220, 53, 69, 0.3); 
-} */
-
 .cart-clear-icon-wrapper:hover {
+    background-color: rgba(220, 53, 69, 0.2);
+    border-color: rgba(220, 53, 69, 0.3);
     color: #dc3545 !important;
     transform: scale(1.05);
-    background-color: rgba(220, 53, 69, 0.2); 
-    border-color: rgba(220, 53, 69, 0.3);  
+}
+
+.cart-clear-icon-wrapper .lucide-icon-sm {
+    width: 18px;
+    height: 18px;
+    transition: all 0.3s ease;
+}
+
+.cart-clear-icon-wrapper:hover .lucide-icon-sm {
+    transform: scale(1.1);
 }
 
 
