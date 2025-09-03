@@ -1,5 +1,6 @@
 /* Контейнер для контента */
 .super-empty-cart-wrapper {
+    transition: all 0.8s ease;
     position: relative;
     min-height: 60vh;
     display: flex;

@@ -1,4 +1,4 @@
-// Инициализация каталога
+// static/js/catalog.js
 document.addEventListener('DOMContentLoaded', function() {
     
     // Поиск товаров
@@ -11,9 +11,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Кнопки избранного
     const favoriteButtons = document.querySelectorAll('.favorite-btn');
-    
-    // Кнопки "В корзину"
-    const addToCartButtons = document.querySelectorAll('.add-to-cart-btn');
 
     // Обработчик поиска
     searchInput.addEventListener('input', function(e) {
@@ -24,9 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Обработчики категорий
     categoryButtons.forEach(button => {
         button.addEventListener('click', function() {
-            // Убираем активный класс у всех кнопок
             categoryButtons.forEach(btn => btn.classList.remove('active'));
-            // Добавляем активный класс текущей кнопке
             this.classList.add('active');
             
             const category = this.dataset.category;
@@ -40,29 +35,12 @@ document.addEventListener('DOMContentLoaded', function() {
         button.addEventListener('click', function() {
             this.classList.toggle('active');
             
-            // Анимация сердечка
             const heart = this.querySelector('[data-lucide="heart"]');
             heart.style.transform = 'scale(1.2)';
             setTimeout(() => {
                 heart.style.transform = 'scale(1)';
             }, 200);
         });
-    });
-
-    // Обработчики "В корзину"
-    addToCartButtons.forEach(button => {
-        if (!button.disabled) {
-            button.addEventListener('click', function() {
-                // Анимация кнопки
-                this.style.transform = 'scale(0.95)';
-                setTimeout(() => {
-                    this.style.transform = 'scale(1)';
-                }, 150);
-
-                // Показать уведомление (можно заменить на toast)
-                alert('Товар добавлен в корзину!');
-            });
-        }
     });
 
     // Функция получения активной категории
@@ -81,12 +59,10 @@ document.addEventListener('DOMContentLoaded', function() {
             const productDescription = card.querySelector('.product-description').textContent.toLowerCase();
             const categoryBadge = card.querySelector('.category-badge').textContent.toLowerCase();
             
-            // Проверяем соответствие поиску
             const matchesSearch = searchTerm === '' || 
                 productName.includes(searchTerm) || 
                 productDescription.includes(searchTerm);
             
-            // Проверяем соответствие категории
             const matchesCategory = category === 'all' || 
                 categoryBadge.includes(getCategoryName(category).toLowerCase());
             
@@ -94,7 +70,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 card.style.display = 'block';
                 visibleCount++;
                 
-                // Анимация появления
                 setTimeout(() => {
                     card.style.opacity = '1';
                     card.style.transform = 'translateY(0)';
@@ -104,7 +79,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // Показываем/скрываем сообщение "Товары не найдены"
         if (visibleCount === 0) {
             productsGrid.style.display = 'none';
             noProductsSection.classList.remove('d-none');
@@ -113,11 +87,9 @@ document.addEventListener('DOMContentLoaded', function() {
             noProductsSection.classList.add('d-none');
         }
 
-        // Обновляем счетчик в заголовке
         document.querySelector('.catalog-subtitle').textContent = `${visibleCount} товаров`;
     }
 
-    // Функция получения названия категории
     function getCategoryName(category) {
         const categoryNames = {
             'all': 'Все товары',
@@ -129,20 +101,4 @@ document.addEventListener('DOMContentLoaded', function() {
         };
         return categoryNames[category] || category;
     }
-
-    // Инициализация Lucide иконок после динамических изменений
-    function reinitializeIcons() {
-        if (typeof lucide !== 'undefined') {
-            lucide.createIcons();
-        }
-    }
-
-    // Плавная прокрутка к товарам при фильтрации
-    function scrollToProducts() {
-        document.querySelector('.products-grid').scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-        });
-    }
-
 });

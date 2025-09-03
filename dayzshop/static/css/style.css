@@ -1459,6 +1459,17 @@ btn-hover-fill:hover {
     transform: scale(0.95);
 }
 
+.cart-quantity-btn.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: #f8f9fa !important;
+    border-color: #dee2e6 !important;
+}
+
+.cart-quantity-btn.disabled .bi {
+    color: #6c757d !important;
+}
+
 .disabled {
     opacity: 0.5;
     cursor: not-allowed;
@@ -1735,6 +1746,11 @@ btn-hover-fill:hover {
 }
 
 
+/* Плавные переходы для корзины */
+.cart-container {
+    transition: all 0.6s ease;
+}
+
 .cart-container .bi {
     margin: 0 !important;
     left: -1px;
@@ -1780,7 +1796,7 @@ btn-hover-fill:hover {
     background-color: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(8px);
     border: 1px solid rgba(255, 255, 255, 0.2);
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .cart-item:hover {
@@ -1973,6 +1989,51 @@ btn-hover-fill:hover {
     color: #FFFFFF !important;
     font-size: 1.125rem !important;
     font-weight: 500 !important;
+}
+
+/* Стили для состояния загрузки */
+.cart-item-checkbox:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+.cart-item-checkbox:disabled::after {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Стили для selectAll */
+#selectAll:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+.cart-savings {
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.cart-savings[style*="display: none"] {
+    opacity: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+}
+
+.cart-savings[style*="display: flex"] {
+    opacity: 1;
+    height: auto;
 }
 
 .form-check-input {

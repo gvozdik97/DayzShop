@@ -7,41 +7,41 @@
 
 {% block content %}
 <div class="container-xxl py-5">
-    {% if wishlist_items %}
-    <!-- Заголовок с анимацией -->
-    <div class="wishlist-header" id="wishlistHeader">
-        <div class="text-center">
-            <!-- Анимированная иконка -->
-            <div class="wishlist-hero-icon mb-4">
-                <div class="hero-icon-container">
-                    <i data-lucide="heart" class="hero-icon" fill="currentColor"></i>
-                    <div class="icon-glow"></div>
+    <div id="wishlistContent" style="display: {% if wishlist_items %}block{% else %}none{% endif %};">
+        <!-- Заголовок с анимацией -->
+        <div class="wishlist-header" id="wishlistHeader">
+            <div class="text-center">
+                <!-- Анимированная иконка -->
+                <div class="wishlist-hero-icon mb-4">
+                    <div class="hero-icon-container">
+                        <i data-lucide="heart" class="hero-icon" fill="currentColor"></i>
+                        <div class="icon-glow"></div>
+                    </div>
+                </div>
+                
+                <!-- Основной заголовок -->
+                <h1 class="wishlist-main-title gradient-text mb-3">
+                    Любимые товары
+                </h1>
+                
+                <!-- Подзаголовок с счетчиком -->
+                <div class="wishlist-subtitle">
+                    <p class="wishlish-counter-text">
+                        <span class="counter-number">{{ wishlist_items.count }}</span>
+                        <span class="counter-label">
+                            {% if wishlist_items.count == 1 %}желанный предмет
+                            {% elif wishlist_items.count >= 2 and wishlist_items.count <= 4 %}желанных предмета
+                            {% elif wishlist_items.count == 0 %}желанных предметов
+                            {% else %}желанных предметов{% endif %}
+                        </span>
+                    </p>
+                    <p class="wishlist-description">
+                        Все, что вам понравилось, в одном месте
+                    </p>
                 </div>
             </div>
-            
-            <!-- Основной заголовок -->
-            <h1 class="wishlist-main-title gradient-text mb-3">
-                Любимые товары
-            </h1>
-            
-            <!-- Подзаголовок с счетчиком -->
-            <div class="wishlist-subtitle">
-                <p class="wishlish-counter-text">
-                    <span class="counter-number">{{ wishlist_items.count }}</span>
-                    <span class="counter-label">
-                        {% if wishlist_items.count == 1 %}желанный предмет
-                        {% elif wishlist_items.count >= 2 and wishlist_items.count <= 4 %}желанных предмета
-                        {% elif wishlist_items.count == 0 %}желанных предметов
-                        {% else %}желанных предметов{% endif %}
-                    </span>
-                </p>
-                <p class="wishlist-description">
-                    Все, что вам понравилось, в одном месте
-                </p>
-            </div>
         </div>
-    </div>
-    
+        
         <!-- Сетка товаров -->
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4" id="wishlistItemsGrid">
             {% for item in wishlist_items %}
@@ -129,7 +129,8 @@
                 </div>
             {% endfor %}
         </div>
-    {% else %}
+    </div>
+    <div id="wishlistEmptyState" style="display: {% if wishlist_items %}none{% else %}block{% endif %};">
         <!-- Гармоничная пустая страница -->
         <div class="wishlist-empty-state">
             <div class="empty-content text-center">
@@ -164,6 +165,6 @@
                 </div>
             </div>
         </div>
-    {% endif %}
+    </div>
 </div>
 {% endblock %}

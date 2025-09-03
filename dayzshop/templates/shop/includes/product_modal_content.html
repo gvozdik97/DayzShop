@@ -81,32 +81,44 @@
 
         <div class="mt-auto pt-4">
             <div class="d-flex gap-3">
-                {% comment %} <button 
-                    class="btn add-to-cart-btn d-flex align-items-center justify-content-center flex-grow-1 {% if product|is_in_cart:request %}added-to-cart{% endif %}"
-                    style="flex: 1; min-width: 0; height: 44px;"
+                <!-- ОБНОВЛЕННАЯ КНОПКА КОРЗИНЫ -->
+                <button 
+                    class="btn add-to-cart-btn w-100 py-3 d-flex align-items-center justify-content-center {% if product|is_in_cart:request %}added-to-cart{% endif %}" 
+                    style="flex: 1; min-width: 0; height: 3rem;"
                     data-product-id="{{ product.id }}"
-                    {% if product|is_in_cart:request %}data-is-in-cart="true"{% endif %}>
+                    {% if product|is_in_cart:request %}data-is-in-cart="true"{% endif %}
+                    id="modalAddToCartBtn"
+                >
                     {% if product|is_in_cart:request %}
                         <i class="bi bi-check-circle-fill lucide-icon-sm"></i> В корзине
                     {% else %}
                         <i class="bi bi-cart2 lucide-icon-sm"></i> В корзину
                     {% endif %}
-                </button> {% endcomment %}
-
-                <button type="button" class="btn btn-primary-custom flex-grow-1 d-flex align-items-center justify-content-center" id="modalAddToCartBtn">
-                    <i data-lucide="shopping-cart" class="me-3 lucide-icon-smaller"></i>
-                    В корзину
                 </button>
 
-                <button type="button" 
+                <form method="post" action="{% url 'shop:toggle_wishlist' product.id %}" class="wishlist-form mb-0">
+                    {% csrf_token %}
+                    <button type="button" 
+                            class="btn btn-secondary-custom favorite-btn d-flex align-items-center justify-content-center p-0" 
+                            id="modalFavoriteBtn"
+                            style="width: 3rem; height: 3rem;"
+                            data-product-id="{{ product.id }}"
+                            data-in-wishlist="{% if request.user.is_authenticated and product.in_wishlist %}true{% else %}false{% endif %}"
+                            title="{% if request.user.is_authenticated and product.in_wishlist %}Удалить из избранного{% else %}Добавить в избранное{% endif %}">
+                        <i data-lucide="heart" class="lucide-icon-sm {% if request.user.is_authenticated and product.in_wishlist %}fill: currentColor;{% endif %}"
+                        {% if request.user.is_authenticated and product.in_wishlist %}fill="currentColor"{% endif %}></i>
+                    </button>
+                </form>
+                {% comment %} <button type="button" 
                         class="btn btn-secondary-custom btn-favorite d-flex align-items-center justify-content-center p-0" 
                         id="modalFavoriteBtn"
                         style="width: 3rem; height: 3rem;"
-                        data-product-id=""
-                        data-in-wishlist="false"
-                        title="Добавить в избранное">
-                    <i data-lucide="heart" class="lucide-icon-sm"></i>
-                </button>
+                        data-product-id="{{ product.id }}"
+                        data-in-wishlist="{% if request.user.is_authenticated and product.in_wishlist %}true{% else %}false{% endif %}"
+                        title="{% if request.user.is_authenticated and product.in_wishlist %}Удалить из избранного{% else %}Добавить в избранное{% endif %}">
+                    <i data-lucide="heart" class="lucide-icon-sm {% if request.user.is_authenticated and product.in_wishlist %}fill: currentColor;{% endif %}"
+                    {% if request.user.is_authenticated and product.in_wishlist %}fill="currentColor"{% endif %}></i>
+                </button> {% endcomment %}
             </div>
         </div>
     </div>
