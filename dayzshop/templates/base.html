@@ -24,6 +24,7 @@
 </head>
 
 <body class="d-flex flex-column h-100" data-user-authenticated="{% if request.user.is_authenticated %}true{% else %}false{% endif %}">
+
     <div id="cart-data" data-cart-url="{% url 'cart:detail' %}" style="display: none;"></div>
     {% include 'includes/_header.html' %}
 
@@ -62,7 +63,6 @@
     {% endif %}
     
     <script type="module" src="{% static 'js/product_modal.js' %}"></script>
-    {% comment %} <script type="module" src="{% static 'js/wishlist.js' %}"></script> {% endcomment %}
     
     {% block javascript %}{% endblock %}
 
