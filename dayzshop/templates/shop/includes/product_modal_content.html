@@ -95,21 +95,6 @@
                         <i class="bi bi-cart2 lucide-icon-sm"></i> В корзину
                     {% endif %}
                 </button>
-
-                {% comment %} <form method="post" action="{% url 'shop:toggle_wishlist' product.id %}" class="wishlist-form mb-0">
-                    {% csrf_token %}
-                    <button type="button" 
-                            class="btn btn-secondary-custom favorite-btn d-flex align-items-center justify-content-center p-0" 
-                            id="modalFavoriteBtn"
-                            style="width: 3rem; height: 3rem;"
-                            data-product-id="{{ product.id }}"
-                            data-in-wishlist="{% if request.user.is_authenticated and product.in_wishlist %}true{% else %}false{% endif %}"
-                            title="{% if request.user.is_authenticated and product.in_wishlist %}Удалить из избранного{% else %}Добавить в избранное{% endif %}">
-                        <i data-lucide="heart" class="lucide-icon-sm {% if request.user.is_authenticated and product.in_wishlist %}fill: currentColor;{% endif %}"
-                        {% if request.user.is_authenticated and product.in_wishlist %}fill="currentColor"{% endif %}></i>
-                    </button>
-                </form> {% endcomment %}
-                <!-- product_modal_content.html -->
                 <button type="button" 
                         class="btn btn-secondary-custom favorite-btn d-flex align-items-center justify-content-center p-0" 
                         style="width: 3rem; height: 3rem;"
@@ -119,16 +104,6 @@
                     <i data-lucide="heart" class="lucide-icon-sm {% if request.user.is_authenticated and product.in_wishlist %}currentColor{% endif %}"
                     {% if request.user.is_authenticated and product.in_wishlist %}fill="currentColor"{% endif %}></i>
                 </button>
-                {% comment %} <button type="button" 
-                        class="btn btn-secondary-custom btn-favorite d-flex align-items-center justify-content-center p-0" 
-                        id="modalFavoriteBtn"
-                        style="width: 3rem; height: 3rem;"
-                        data-product-id="{{ product.id }}"
-                        data-in-wishlist="{% if request.user.is_authenticated and product.in_wishlist %}true{% else %}false{% endif %}"
-                        title="{% if request.user.is_authenticated and product.in_wishlist %}Удалить из избранного{% else %}Добавить в избранное{% endif %}">
-                    <i data-lucide="heart" class="lucide-icon-sm {% if request.user.is_authenticated and product.in_wishlist %}fill: currentColor;{% endif %}"
-                    {% if request.user.is_authenticated and product.in_wishlist %}fill="currentColor"{% endif %}></i>
-                </button> {% endcomment %}
             </div>
         </div>
     </div>

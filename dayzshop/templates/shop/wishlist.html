@@ -65,7 +65,7 @@
                             <div class="position-absolute top-0 end-0 mt-2 me-2">
                                 <form method="post" action="{% url 'shop:remove_from_wishlist' item.id %}" class="wishlist-remove-form">
                                     {% csrf_token %}
-                                    <button type="submit" class="btn btn-icon glass-card-effect" title="Удалить из избранного">
+                                    <button type="submit" class="btn wish-btn-icon glass-card-effect" title="Удалить из избранного">
                                         <i data-lucide="x" class="lucide-icon-sm"></i>
                                     </button>
                                 </form>
@@ -120,7 +120,7 @@
                                         <i class="bi bi-cart2 lucide-icon-sm"></i> В корзину
                                     {% endif %}
                                 </button>
-                                <a href="{{ item.product.get_absolute_url }}" class="btn btn-icon glass-card-effect" title="Подробнее">
+                                <a href="{{ item.product.get_absolute_url }}" class="btn wish-btn-icon glass-card-effect" title="Подробнее">
                                     <i data-lucide="eye" class="lucide-icon-sm"></i>
                                 </a>
                             </div>
@@ -156,7 +156,7 @@
                 <!-- Кнопка -->
                 <div class="empty-actions">
                     <a href="{% url 'shop:product_list' %}" class="wishlist-primary-btn">
-                        <span class="btn-content">
+                        <span class="wish-btn-content">
                             <i data-lucide="compass" class="empty-btn-icon"></i>
                             <span class="btn-text">Начать поиск</span>
                         </span>

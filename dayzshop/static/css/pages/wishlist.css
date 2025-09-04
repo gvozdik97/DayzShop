@@ -1,0 +1,213 @@
+.wishlist-header {
+    margin-bottom: 4rem !important;
+}
+
+.wishlist-hero-icon {
+    position: relative;
+    margin-bottom: 2rem;
+}
+
+.hero-icon-container {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(239, 68, 68, 0.2));
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: 2rem;
+    animation: floatIcon 3s ease-in-out infinite;
+}
+
+.hero-icon {
+    width: 48px;
+    height: 48px;
+    color: #ef4444;
+    filter: drop-shadow(0 0 20px rgba(239, 68, 68, 0.4));
+}
+
+.icon-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 120%;
+    height: 120%;
+    background: radial-gradient(circle, rgba(239, 68, 68, 0.3) 0%, transparent 70%);
+    transform: translate(-50%, -50%);
+    animation: pulseGlow 2s ease-in-out infinite;
+}
+
+.wishlist-main-title {
+    font-size: 3rem;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, #fff 0%, #f0f0f0 50%, #e5e5e5 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    background-size: 200% 200%;
+    animation: gradientShift 4s ease infinite;
+}
+
+.wishlist-subtitle {
+    margin-top: 1.5rem;
+}
+
+.wishlish-counter-text {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 0.5rem;
+}
+
+.counter-number {
+    color: #22c55e;
+    font-weight: 700;
+    margin-right: 0.5rem;
+}
+
+.counter-label {
+    opacity: 0.9;
+}
+
+.wishlist-description {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 0;
+}
+
+/* ===== ПУСТАЯ СТРАНИЦА ===== */
+.wishlist-empty-state {
+    min-height: 75vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 0;
+}
+
+.empty-visual {
+    position: relative;
+    margin-bottom: 3rem;
+}
+
+.floating-hearts {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.heart-main {
+    width: 80px;
+    height: 80px;
+    color: rgba(239, 68, 68, 0.3);
+    animation: gentleFloat 4s ease-in-out infinite;
+}
+
+.sparkle {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    color: rgba(255, 255, 255, 0.6);
+    animation: sparkleFloat 3s ease-in-out infinite;
+}
+
+.sparkle-1 {
+    top: -20px;
+    left: 30px;
+    animation-delay: 0.5s;
+}
+
+.sparkle-2 {
+    top: 10px;
+    right: 20px;
+    animation-delay: 1s;
+}
+
+.sparkle-3 {
+    bottom: -15px;
+    left: 40px;
+    animation-delay: 1.5s;
+}
+
+.empty-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, #fff, #e5e5e5);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.empty-subtitle {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.6;
+    opacity: 0.9;
+}
+
+
+@media (max-width: 768px) {
+    .wishlist-main-title {
+        font-size: 2.2rem;
+    }
+    
+    .hero-icon-container {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .hero-icon {
+        width: 36px;
+        height: 36px;
+    }
+    
+    .wishlish-counter-text {
+        font-size: 1.3rem;
+    }
+    
+    .empty-title {
+        font-size: 2rem;
+    }
+    
+    .empty-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .wishlist-primary-btn {
+        padding: 1rem 2rem;
+        font-size: 1rem;
+    }
+    
+    .heart-main {
+        width: 60px;
+        height: 60px;
+    }
+}
+
+@media (max-width: 480px) {
+    .wishlist-main-title {
+        font-size: 1.8rem;
+    }
+    
+    .wishlish-counter-text {
+        font-size: 1.1rem;
+    }
+    
+    .empty-title {
+        font-size: 1.7rem;
+    }
+    
+    .empty-subtitle br {
+        display: none;
+    }
+    
+    .wish-btn-content {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}

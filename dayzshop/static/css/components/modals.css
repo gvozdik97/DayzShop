@@ -1,0 +1,296 @@
+/* Стили для модального окна товара */
+.modal.fade .modal-dialog {
+    transition: transform 0.3s ease-out;
+}
+
+#productModal .modal-dialog {
+    max-width: 800px;
+}
+
+#productModal .product-image {
+    max-height: 300px;
+    object-fit: contain;
+}
+
+#productModal .quantity-input {
+    width: 50px;
+    text-align: center;
+}
+
+.modal-backdrop {
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+}
+
+.modal-content {
+    background: rgba(31, 41, 55, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 1rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.modal-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 1.5rem 2rem 1rem;
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.btn-close-modal {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1001;
+    transition: all 0.3s ease;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.btn-close-modal:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+    color: #FFFFFF;
+    transform: scale(1.1);
+}
+
+.btn-close-modal:active {
+    transform: scale(0.95);
+}
+
+.modal-close-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    transition: transform 0.2s ease;
+}
+
+.btn-close-modal:hover .modal-close-icon {
+    transform: rotate(90deg);
+}
+
+.product-modal-discount-badge {
+    background: linear-gradient(135deg, #10B981, #34D399);
+    color: #FFFFFF;
+    padding: 0.5rem 0.75rem;
+    border-radius: 20px;
+    border: none;
+    font-weight: 700;
+    font-size: 0.875rem;
+}
+
+.product-modal-image-container {
+    position: relative;
+    border-radius: 1rem;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    aspect-ratio: 1;
+}
+
+.product-modal-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.product-modal-image:hover {
+    transform: scale(1.05);
+}
+
+.product-modal-title {
+    color: #FFFFFF;
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 0.5rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.product-modal-category {
+    display: inline-block;
+    background-color: transparent;
+    color: #FFFFFF;
+    padding: 3px 6px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    font-size: 0.7rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.product-modal-description {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    max-height: 3.2em;
+    overflow: hidden;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.product-modal-rating-container {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.6rem;
+}
+
+.product-modal-stars {
+    display: flex;
+    gap: 0.25rem;
+}
+
+.product-modal-star {
+    width: 1.25rem;
+    height: 1.25rem;
+    color: #6B7280;
+    transition: color 0.2s ease;
+}
+
+.product-modal-star.filled {
+    color: #FBBF24;
+    fill: #FBBF24;
+}
+
+.product-modal-rating-text {
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.product-modal-rating-count {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.875rem;
+}
+
+.product-modal-price-container {
+    margin-bottom: 2rem;
+}
+
+.product-modal-current-price {
+    color: #FFFFFF;
+    font-size: 2rem;
+    font-weight: 900;
+    line-height: 1;
+}
+
+.product-modal-original-price {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 1.2rem;
+    text-decoration: line-through;
+    margin-left: 1rem;
+}
+
+.product-modal-price-savings {
+    color: #6EE7B7;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-top: 0.25rem;
+}
+
+.btn-primary-custom {
+    background: linear-gradient(135deg, #10B981, #34D399);
+    border: 1px solid #34D399;
+    color: #FFFFFF;
+    font-weight: 600;
+    border-radius: 0.75rem;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.btn-primary-custom:hover {
+    background: linear-gradient(135deg, #34D399, #6EE7B7);
+    border-color: #6EE7B7;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+    color: #FFFFFF;
+}
+
+.btn-primary-custom:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn-secondary-custom {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+    padding: 0.875rem 1.5rem;
+    border-radius: 0.75rem;
+    transition: all 0.3s ease;
+}
+
+.btn-secondary-custom:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+    color: #FFFFFF;
+    transform: translateY(-1px);
+}
+
+
+@media (max-width: 768px) {
+    .btn-close-modal {
+        top: 0.75rem;
+        right: 0.75rem;
+        width: 2.25rem;
+        height: 2.25rem;
+    }
+
+    .modal-close-icon {
+        width: 1.1rem;
+        height: 1.1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .btn-close-modal {
+        top: 0.5rem;
+        right: 0.5rem;
+        width: 2rem;
+        height: 2rem;
+    }
+
+    .modal-close-icon {
+        width: 1rem;
+        height: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .modal-dialog {
+        margin: 0.5rem;
+    }
+    
+    .modal-body {
+        padding: 1.5rem;
+    }
+    
+    .product-title {
+        font-size: 1.5rem;
+    }
+    
+    .current-price {
+        font-size: 2rem;
+    }
+    
+    .btn-primary-custom {
+        font-size: 1rem;
+    }
+}

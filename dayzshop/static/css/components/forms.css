@@ -1,0 +1,94 @@
+.search-input {
+    background-color: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    color: #FFFFFF;
+    padding: 0.75rem;
+    transition: all 0.3s ease;
+    box-shadow: none !important;
+    font-weight: 400;
+    height: 40px;
+}
+
+.search-input::placeholder {
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.search-input:focus {
+    background-color: var(--glass-bg);
+    border-color: var(--color-primary-light);
+    box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.5);
+    color: #FFFFFF;
+    animation: searchPulse 1.5s infinite;
+}
+
+/* Автозаполнение */
+.search-input:-webkit-autofill,
+.search-input:-webkit-autofill:hover, 
+.search-input:-webkit-autofill:focus {
+    -webkit-text-fill-color: white;
+    -webkit-box-shadow: 0 0 0px 1000px rgba(255, 255, 255, 0.05) inset;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+
+/* Quantity Controls */
+.quantity-control {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.quantity-input {
+    max-width: 60px;
+    width: 40px;
+    height: 35px;
+    text-align: center;
+    padding: 0;
+    margin: 0 -1px;
+    -moz-appearance: textfield; /* Убирает стрелки в Firefox */
+    appearance: textfield;
+    color: #FFFFFF !important;
+    font-size: 1.125rem !important;
+    font-weight: 600 !important;
+    background-color: transparent !important;
+    border-color: rgba(255, 255, 255, 0) !important;
+    line-height: 1;
+}
+
+.quantity-input:focus {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+    box-shadow: 0 0 0 0.25rem rgba(40, 167, 69, 0.25);
+}
+
+/* Убираем стрелки в Webkit-браузерах */
+.quantity-input::-webkit-outer-spin-button,
+.quantity-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.form-check-input {
+    margin-top: 0 !important;
+    align-self: center;
+    width: 20px;
+    height: 20px;
+    transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-check-input:hover {
+    cursor: pointer;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+.form-check-label, .cart-item-checkbox + span {
+    line-height: 1.2;
+    vertical-align: middle;
+}
+
+/* Стили для selectAll */
+#selectAll:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}

@@ -9,15 +9,11 @@
     <div class="catalog-container min-vh-100 position-relative py-5">
         <!-- Основной контент -->
         <div class="container-xxl position-relative" style="padding: 0 90px;">
-        {% comment %} <div class="container-xxl px-4 px-sm-6 px-lg-8 py-5 position-relative"> {% endcomment %}
             
             <!-- Заголовок каталога -->
             <div class="catalog-header text-center mb-5">
                 <div class="d-flex align-items-center justify-content-center gap-4 gap-lg-5 mb-4">
                     <!-- Иконка магазина -->
-                    {% comment %} <div class="catalog-icon d-flex align-items-center justify-content-center position-relative shadow-lg">
-                        <i class="bi bi-shop lucide-icon position-absolute top-50 start-50 translate-middle"></i>
-                    </div> {% endcomment %}
                     <div class="catalog-icon d-flex align-items-center justify-content-center rounded-4 shadow-lg">
                         <i data-lucide="store" class="lucide-icon"></i>
                     </div>
@@ -63,8 +59,8 @@
             </section>
 
             <!-- Фильтр категорий -->
-            <section class="category-filter mb-4">
-            {% comment %} <section class="category-filter categories-scroll mb-4"> {% endcomment %}
+            {% comment %} <section class="category-filter mb-4"> {% endcomment %}
+            <section class="category-filter categories-scroll mb-4">
                 <div class="glass-card p-4">
                     <!-- Заголовок фильтра -->
                     <div class="d-flex align-items-center gap-3 mb-3 position-relative">
@@ -89,112 +85,17 @@
                     </div>
                 </div>
             </section>
-
-            {% comment %} <div class="mb-4 categories-scroll">
-                <div class="d-flex flex-wrap gap-2">
-                    <a href="{% url 'shop:product_list' %}" 
-                    class="btn btn-category {% if not category %}active-category{% endif %}">
-                        <i class="bi bi-grid me-2"></i>Все товары
-                    </a>
-                    {% for cat in categories %}
-                        <a href="{{ cat.get_absolute_url }}" 
-                        class="btn btn-category {% if category.slug == cat.slug %}active-category{% endif %}">
-                            <i class="bi bi-tag me-2"></i>{{ cat.name }}
-                            <span class="badge-count">{{ cat.products.count }}</span>
-                        </a>
-                    {% endfor %}
-                </div>
-            </div> {% endcomment %}
-            
-            <!-- Товары -->
-            {% comment %} <h2>
-                {% if category %}{{ category.name }}{% else %}Все товары{% endif %}
-                <small class="text-muted">({{ page_obj.paginator.count }})</small>
-            </h2> {% endcomment %}
             
             <!-- Сетка товаров -->
             <section class="products-grid">
                 <div class="row g-4" id="productsGrid">
 
-                    {% comment %} <!-- Карточка товара 4 -->
-                    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                        <div class="product-card glass-card h-100 p-4 p-lg-4 rounded-4 position-relative overflow-hidden">
-                            
-                            <!-- Изображение товара -->
-                            <div class="product-image position-relative mb-3 overflow-hidden rounded-3">
-                                <div class="product-img-container">
-                                    <img 
-                                        src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=400" 
-                                        alt="Книга"
-                                        class="product-img w-100 h-100 object-fit-cover"
-                                    >
-                                </div>
-                                
-                                <!-- Overlay с кнопками -->
-                                <div class="product-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center gap-3 rounded-3">
-                                    <button class="overlay-btn btn rounded-circle">
-                                        <i data-lucide="eye" class="lucide-icon-sm"></i>
-                                    </button>
-                                    <button class="overlay-btn btn rounded-circle favorite-btn">
-                                        <i data-lucide="heart" class="lucide-icon-sm"></i>
-                                    </button>
-                                </div>
-
-                                <!-- Бейджи -->
-                                <div class="product-badges position-absolute top-3 start-3 d-flex flex-column gap-2">
-                                    <span class="discount-badge badge">-25%</span>
-                                </div>
-                                
-                                <!-- Категория -->
-                                <div class="position-absolute top-3 end-3">
-                                    <span class="category-badge badge">Книги</span>
-                                </div>
-                            </div>
-
-                            <!-- Информация о товаре -->
-                            <div class="product-info d-flex flex-column flex-grow-1">
-                                <h5 class="product-name mb-2">Чистый код</h5>
-                                <p class="product-description mb-3 flex-grow-1">
-                                    Руководство по созданию качественного кода
-                                </p>
-                                <div class="product-rating d-flex align-items-center gap-2 mb-3">
-                                    <div class="stars d-flex gap-1">
-                                        <i data-lucide="star" class="star active"></i>
-                                        <i data-lucide="star" class="star active"></i>
-                                        <i data-lucide="star" class="star active"></i>
-                                        <i data-lucide="star" class="star active"></i>
-                                        <i data-lucide="star" class="star active"></i>
-                                    </div>
-                                    <span class="rating-text">4.9</span>
-                                </div>
-                                <div class="product-price mb-3">
-                                    <div class="d-flex align-items-baseline gap-2">
-                                        <span class="current-price">1 490 ₽</span>
-                                    </div>
-                                    <span class="original-price">1 990 ₽</span>
-                                </div>
-                                <button class="add-to-cart-btn btn w-100 py-3 rounded-3 d-flex align-items-center justify-content-center gap-2">
-                                    <i data-lucide="shopping-cart" class="lucide-icon-sm"></i>
-                                    В корзину
-                                </button>
-                            </div>
-                        </div>
-                    </div> {% endcomment %}
                     {% for product in page_obj %}
                         {% include 'shop/includes/_product_cart.html' %}
                     {% endfor %}
 
                 </div>
             </section>
-
-
-            {% comment %} <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
-                {% for product in page_obj %}
-                    {% include 'shop/includes/_product_cart.html' %}
-                {% endfor %}
-
-                {% include 'shop/includes/_product_modal.html' %}
-            </div> {% endcomment %}
 
             <!-- Пагинация -->
             {% if page_obj.paginator.num_pages > 1 %}

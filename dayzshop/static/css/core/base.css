@@ -1,0 +1,259 @@
+html, body {
+    height: 100%;
+}
+
+body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-attachment: fixed;
+    color: #FFFFFF;
+    padding-top: 70px;
+    position: relative;
+    min-height: 100vh;
+    margin: 0;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+        url('../../img/dayz-back2.jpg') no-repeat center center / cover;
+    filter: blur(4px);
+    transform: scale(1.05);
+    z-index: -1;
+}
+
+.main-content {
+    margin-top: var(--header-height);
+    margin-bottom: 30px;
+}
+
+/* Цветовые утилиты с прозрачностью */
+.text-white-80 { color: rgba(255, 255, 255, 0.8) !important; }
+.text-white-70 { color: rgba(255, 255, 255, 0.7) !important; }
+.text-white-60 { color: rgba(255, 255, 255, 0.6) !important; }
+.text-emerald-300 { color: #6EE7B7 !important; } /* Акцентный зеленый */
+
+.animate-bounce {
+    animation: bounce 0.5s;
+}
+
+/* Анимации в корзине */
+.updated {
+    animation: highlight 1s;
+}
+
+.removing {
+    opacity: 0;
+    transform: translateX(100px);
+    transition: all 0.5s ease;
+}
+
+/* Стили для Debug Toolbar */
+#djDebug {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    z-index: 10000;
+}
+
+#djDebugToolbar {
+    background-color: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+}
+
+#djDebugToolbar li {
+    list-style-type: none;
+}
+
+#djDebugToolbar a {
+    color: #212529;
+    text-decoration: none;
+}
+
+#djDebugToolbar a:hover {
+    color: #0d6efd;
+}
+
+/* Фикс для z-index в модальных окнах */
+.debug-toolbar-always-on-top {
+    z-index: 10001 !important;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+/* @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+} */
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+@keyframes btn-spark {
+    0% { transform: scale(0); opacity: 1; }
+    100% { transform: scale(2); opacity: 0; }
+}
+
+@keyframes icon-bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+}
+
+/* Анимация перехода */
+@keyframes glassTransition {
+    0% { background: var(--bs-primary); }
+    100% { background: rgba(255, 255, 255, 0.15); }
+}
+
+@keyframes highlight {
+    0% { background-color: rgba(32, 201, 151, 0.3); }
+    100% { background-color: transparent; }
+}
+
+/* Анимация при фокусе */
+@keyframes searchPulse {
+    0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.1); }
+    70% { box-shadow: 0 0 0 8px rgba(255, 255, 255, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+}
+
+/* Анимация появления/исчезания */
+@keyframes toastSlideIn {
+    0% { transform: translateX(-50%) translateY(-100px); opacity: 0; }
+    100% { transform: translateX(-50%) translateY(0); opacity: 1; }
+}
+
+@keyframes toastSlideOut {
+    0% { transform: translateX(-50%) translateY(0); opacity: 1; }
+    100% { transform: translateX(-50%) translateY(-100px); opacity: 0; }
+}
+
+@keyframes cartItemAdded {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.03); }
+    100% { transform: scale(1); }
+}
+
+@keyframes floatIcon {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-10px) rotate(5deg); }
+}
+
+@keyframes pulseGlow {
+    0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.1); }
+}
+
+@keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+@keyframes gentleFloat {
+    0%, 100% { transform: translateY(0px) scale(1); }
+    50% { transform: translateY(-15px) scale(1.05); }
+}
+
+@keyframes sparkleFloat {
+    0%, 100% { 
+        transform: translateY(0px) rotate(0deg) scale(1);
+        opacity: 0.6;
+    }
+    50% { 
+        transform: translateY(-20px) rotate(180deg) scale(1.2);
+        opacity: 1;
+    }
+}
+
+@keyframes inner-pulse {
+    0%, 100% {
+        opacity: 0.6;
+        transform: translate(-50%, -50%) scale(0.8);
+    }
+    50% {
+        opacity: 0.9;
+        transform: translate(-50%, -50%) scale(1.1);
+    }
+}
+
+@keyframes rotate-glow {
+    0% {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+    100% {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+@keyframes text-glitch {
+    0%, 100% { transform: translateX(0); }
+    5% { transform: translateX(-2px); }
+    10% { transform: translateX(2px); }
+    15% { transform: translateX(-1px); }
+    20% { transform: translateX(1px); }
+    25% { transform: translateX(0); }
+}
+
+@keyframes glitch-anim-1 {
+    0%, 100% { opacity: 0; transform: translateX(0); }
+    5% { opacity: 0.8; transform: translateX(-4px); }
+    10% { opacity: 0; transform: translateX(4px); }
+}
+
+@keyframes glitch-anim-2 {
+    0%, 100% { opacity: 0; transform: translateX(0); }
+    5% { opacity: 0.8; transform: translateX(4px); }
+    10% { opacity: 0; transform: translateX(-4px); }
+}
+
+@media (max-width: 768px) {
+    .fixed-header {
+        height: 50px;
+    }
+    .main-content {
+        margin-top: 50px;
+    }
+    /* .d-flex.flex-wrap {
+        flex-direction: column;
+    }
+    
+    .flex-grow-1 {
+        width: 100%;
+        margin-bottom: 10px;
+    } */
+    .category-menu {
+        backdrop-filter: none;
+        background-color: rgba(30, 30, 30, 0.9);
+    }
+    .categories-scroll {
+        overflow-x: auto;
+        white-space: nowrap;
+        padding-bottom: 10px;
+        -webkit-overflow-scrolling: touch;
+    }
+    .categories-scroll .d-flex {
+        flex-wrap: nowrap;
+        display: inline-flex;
+    }
+}

@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Функция фильтрации товаров
     function filterProducts(searchTerm, category) {
-        const productCards = document.querySelectorAll('.products-grid .col-12');
+        const productCards = document.querySelectorAll('.products-grid');
         let visibleCount = 0;
 
         productCards.forEach(card => {

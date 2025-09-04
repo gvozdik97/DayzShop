@@ -78,7 +78,7 @@
                                         <div class="me-2">
                                             <img src="{% static 'img/icons/user2.svg' %}" 
                                                     alt="Profile icon" 
-                                                    class="svg-icon">
+                                                    class="profile-icon">
                                         </div>
                                         <div>
                                             <span class="fw-bold text-black">{{ user.username }}</span>
@@ -181,7 +181,7 @@
     </div>
 </header>
 
-<style>
+{% comment %} <style>
     /* Стили для зеленой шторки */
     .offcanvas {
         width: 280px;
@@ -261,4 +261,4 @@
             padding: 10px 14px;
         }
     }
-</style>
+</style> {% endcomment %}

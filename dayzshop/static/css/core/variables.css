@@ -1,0 +1,43 @@
+/* core/_variables.css */
+:root {
+    /* Цветовая палитра */
+    --color-primary: #10B981;
+    --color-primary-dark: #059669;
+    --color-primary-light: #34D399;
+    --color-primary-lighter: #6EE7B7;
+    
+    --color-danger: #dc3545;
+    --color-warning: #ff8c00;
+    --color-success: #198754;
+
+    --rose-500: rgba(244, 63, 94, 1);
+    --yellow-400: #FBBF24;
+    --red-500: #EF4444;
+
+    /* Оттенки серого и фона */
+    --color-bg-dark: #1a202c;
+    --color-text: #FFFFFF;
+    --color-text-muted: rgba(255, 255, 255, 0.7);
+    
+    /* Эффекты стекла (Glassmorphism) */
+    --glass-bg: rgba(255, 255, 255, 0.1);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --glass-bg-hover: rgba(255, 255, 255, 0.15);
+    --glass-border-hover: rgba(255, 255, 255, 0.3);
+
+    /* Тени */
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15);
+    --shadow-lg: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    
+    /* Скругления */
+    --border-radius: 0.375rem;
+    --border-radius-md: 0.75rem;
+    --border-radius-lg: 1rem;
+    --border-radius-xl: 1.5rem;
+    
+    /* Анимации */
+    --transition-fast: 0.15s ease;
+    --transition-base: 0.3s ease;
+    --transition-slow: 0.5s ease;
+}

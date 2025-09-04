@@ -1,0 +1,140 @@
+.card-body {
+    flex: 1 0 auto; /* Занимает оставшееся пространство */
+}
+
+.glass-card-effect {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    backdrop-filter: blur(16px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;
+}
+.glass-card-effect:hover {
+    background-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+.card {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: none;
+    backdrop-filter: blur(8px);
+    border: 1px solid #eee;
+    transition: all 0.3s ease;
+    color: #eee;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+
+.card-header {
+    color: white !important;
+    background: rgba(40, 167, 69, 0.15) !important;
+    backdrop-filter: blur(12px);
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Эффект "жидкого стекла" при наведении */
+.card-header:hover {
+    background: rgba(40, 167, 69, 0.25) !important;
+}
+
+.card-header .bi {
+    text-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
+    transition: all 0.3s ease;
+}
+
+.card-header h5 {
+    text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+}
+
+.glass-card {
+    background-color: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    transition: all 0.3s ease;
+    border-radius: 20px !important;
+}
+
+.glass-card:hover {
+    background-color: var(--glass-bg-hover);
+    border-color: var(--glass-border-hover);
+    box-shadow: 0 12px 48px 0 rgba(0, 0, 0, 0.5);
+}
+
+.glass-list {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+}
+
+
+/* Стили для блестящей полоски */
+.card-shine-effect {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(
+        to right,
+        rgba(255, 255, 255, 0),
+        rgba(255, 255, 255, 0.1),
+        rgba(255, 255, 255, 0)
+    );
+    transform: skewX(-25deg);
+    z-index: 0;
+    transition: left 0.6s ease;
+}
+
+.card:hover .card-shine-effect {
+    left: 150%;
+}
+
+
+@media (max-width: 767.98px) {
+    .card-header h5 {
+        font-size: 1.05rem !important;
+        margin-left: 0.25rem;
+    }
+    .card-header .bi {
+        font-size: 1.1rem !important;
+    }
+    .product-image-container {
+        height: 250px;
+    }
+}
+
+@media (max-width: 576px) {
+    .card {
+        min-height: 300px; 
+    }
+    
+    .card-title {
+        font-size: 1rem;
+    }
+    .card-footer .btn {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.8rem;
+        min-width: 80px;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .card-header h5 {
+        font-size: 1rem !important;
+        letter-spacing: 0.3px;
+    }
+    .card-header .bi {
+        font-size: 1rem !important;
+    }
+}
+
+@media (max-width: 400px) {
+    .card-header h5 {
+        font-size: 0.95rem !important;
+    }
+}
